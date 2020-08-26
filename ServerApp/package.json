@@ -1,0 +1,26 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "Gestione delle perizie per Andrea Del Pup",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glavermicocca/perizia.git"
+  },
+  "keywords": [
+    "nodejs",
+    "postgres"
+  ],
+  "author": "Giacomo Lavermicocca",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/glavermicocca/perizia/issues"
+  },
+  "homepage": "https://github.com/glavermicocca/perizia#readme",
+  "dependencies": {
+    "pg": "^8.3.2"
+  }
+}

@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  perizia:
+   image: perizia:1.0.0
+   restart: always
+   depends_on:
+      - db
+      - adminer
+   build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        buildno: 1
+   environment: 
+      PGUSER: postgres
+      PGHOST: db
+      PGPASSWORD: example
+      PGDATABASE: postgres
+      PGPORT: 5432
+   ports:
+      - "3005:3000"
+   networks:
+      - internal-network
+  db:
+   image: postgres
+   restart: always
+   environment:
+      POSTGRES_PASSWORD: example
+   networks:
+      - internal-network
+   
+  adminer:
+   image: adminer
+   restart: always
+   ports:
+      - 8080:8080
+   networks:
+      - internal-network
+
+networks:
+   internal-network:
