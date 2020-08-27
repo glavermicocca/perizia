@@ -5,7 +5,7 @@ const UserProfile = ({ user, handleLogout }) => {
   return (
     <li className="dropdown nav-item">
       <a
-        href=""
+        href="#id"
         className="dropdown-toggle nav-link"
         data-toggle="dropdown"
         role="button"
@@ -17,7 +17,7 @@ const UserProfile = ({ user, handleLogout }) => {
         <span className="caret" />
       </a>
       <ul className="dropdown-menu" style={{ right: 0, left: "auto" }}>
-        <a className="dropdown-item" href="" onClick={handleLogout}>
+        <a className="dropdown-item" href="#id" onClick={handleLogout}>
           <i className="fa fa-sign-out" style={{ marginRight: "0.5em" }} />
           Log out
         </a>

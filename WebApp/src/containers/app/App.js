@@ -19,7 +19,7 @@ import ReposPage from "../repo/ReposPage";
 import About from "../about/About";
 import NotFound from "../misc/NotFound";
 
-import { logout } from "../../actions/auth";
+import { logout, dati } from "../../actions/auth";
 
 import "./app.css";
 
@@ -27,6 +27,11 @@ class App extends Component {
   handleLogout() {
     const { user } = this.props;
     this.props.dispatch(logout(user));
+  }
+
+  handleDati() {
+    const { user } = this.props;
+    this.props.dispatch(dati(user));
   }
 
   render() {
@@ -37,6 +42,7 @@ class App extends Component {
         <div>
           <div className="container">
             <Header user={user} handleLogout={() => this.handleLogout()} />
+            <button style={{ width: "100px", height: "100px" }} onClick={() => { this.handleDati() }}></button>
             <div className="appContent">
               <Switch>
                 <Route exact path="/" component={Home} />

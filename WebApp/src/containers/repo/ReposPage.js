@@ -84,11 +84,11 @@ class ReposPage extends PureComponent {
     rowData,
     rowIndex
   }) => (
-    <a href={cellData.html_url} target="_blank" rel="noopener noreferrer">
-      <img src={cellData.avatar_url} width="32" height="32" alt="owner" />
-      <span style={{ marginLeft: "0.5em" }}>{cellData.login}</span>
-    </a>
-  );
+      <a href={cellData.html_url} target="_blank" rel="noopener noreferrer">
+        <img src={cellData.avatar_url} width="32" height="32" alt="owner" />
+        <span style={{ marginLeft: "0.5em" }}>{cellData.login}</span>
+      </a>
+    );
 
   linkCellRenderer = ({
     cellData,
@@ -97,8 +97,8 @@ class ReposPage extends PureComponent {
     rowData,
     rowIndex
   }) => (
-    <a href={cellData} target="_blank" rel="noopener noreferrer">{cellData}</a>
-  );
+      <a href={cellData} target="_blank" rel="noopener noreferrer">{cellData}</a>
+    );
 
   stargazerCellRenderer = ({
     cellData,
@@ -107,13 +107,13 @@ class ReposPage extends PureComponent {
     rowData,
     rowIndex
   }) => (
-    <span className="pull-right">
-      {cellData.toLocaleString()}
-      {" "}
-      <i className="fa fa-star" style={{ color: "gold" }} />
-      {" "}
-    </span>
-  );
+      <span className="pull-right">
+        {cellData.toLocaleString()}
+        {" "}
+        <i className="fa fa-star" style={{ color: "gold" }} />
+        {" "}
+      </span>
+    );
 
   render() {
     const { page, error, repos, isFetching } = this.props;
@@ -130,7 +130,7 @@ class ReposPage extends PureComponent {
             <li className={prevStyles}>
               <a
                 className="page-link"
-                href=""
+                href="#id"
                 onClick={this.handlePreviousPageClick}
               >
                 <span>Previous</span>
@@ -140,7 +140,7 @@ class ReposPage extends PureComponent {
               <li className="page-item">
                 <a
                   className="page-link"
-                  href=""
+                  href="#id"
                   onClick={this.handleRefreshClick}
                 >
                   <span>Refresh page {page}</span>
@@ -155,7 +155,7 @@ class ReposPage extends PureComponent {
             <li className={nextStyles}>
               <a
                 className="page-link"
-                href=""
+                href="#id"
                 onClick={this.handleNextPageClick}
               >
                 <span>Next</span>

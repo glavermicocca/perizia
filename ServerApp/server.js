@@ -99,6 +99,23 @@ app.post("/api/logout", function (req, res) {
   }
 });
 
+app.post("/api/dati", function (req, res) {
+  console.log("Requesting /api/dati ...");
+
+  var jwtToken = extractToken(req);
+  try {
+    var profile = jwt.verify(jwtToken, JWT_SECRET);
+    res.status(200).json({ message: `User ${profile.user} logged out` });
+
+    alertClients("info", `User '${profile.user}' just dati`);
+  } catch (err) {
+    console.log("jwt verify error", err);
+    res.status(500).json({ message: "Invalid jwt token" });
+
+    alertClients("error", `JWT verify error`);
+  }
+});
+
 // Start the server
 server.listen(port);
 console.log("Server is listening on port " + port);

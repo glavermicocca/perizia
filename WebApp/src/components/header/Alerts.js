@@ -42,7 +42,7 @@ class Alerts extends Component {
     return (
       <li className="dropdown nav-item">
         <a
-          href=""
+          href="#id"
           className="nav-link"
           data-toggle="dropdown"
           role="button"
@@ -62,7 +62,7 @@ class Alerts extends Component {
             overflowX: "hidden"
           }}
         >
-          <a className="dropdown-item text-xs-center">
+          <a href="#id" className="dropdown-item text-xs-center">
             {count === 0 &&
               <span>
                 No alerts as of{" "}
@@ -82,7 +82,7 @@ class Alerts extends Component {
 
           {count > 0 &&
             alerts.map((alert, i) => (
-              <a key={i} className="dropdown-item">
+              <a href="#id" key={i} className="dropdown-item">
                 {this.alert(alert.type, alert.message, alert.time)}
                 <div className="dropdown-divider" />
               </a>
@@ -92,7 +92,7 @@ class Alerts extends Component {
             {count > 0 &&
               <a
                 className="btn btn-sm btn-default"
-                href=""
+                href="#id"
                 title="Dismiss all"
                 onClick={this.dismiss}
               >
@@ -102,7 +102,7 @@ class Alerts extends Component {
             {hasError &&
               <a
                 className="btn btn-sm btn-primary"
-                href=""
+                href="#id"
                 title="Reconnect"
                 onClick={this.reconnect}
               >

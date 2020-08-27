@@ -15,6 +15,10 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
+export const DATI_REQUEST = "DATI_REQUEST";
+export const DATI_SUCCESS = "DATI_SUCCESS";
+export const DATI_FAILURE = "DATI_FAILURE";
+
 function loginRequest(user) {
   return {
     type: LOGIN_REQUEST,
@@ -106,5 +110,51 @@ export function logout(user) {
     logoutRequest,
     logoutSuccess,
     logoutFailure
+  );
+}
+
+// ------------------------------------------------------
+
+function datiRequest(user) {
+  return {
+    type: DATI_REQUEST,
+    user
+  };
+}
+
+function datiSuccess(payload) {
+  return {
+    type: DATI_SUCCESS,
+    user: payload.user
+  };
+}
+
+function datiFailure(error) {
+  return {
+    type: DATI_FAILURE,
+    error
+  };
+}
+
+export function dati(user) {
+  const idToken = loadIdToken();
+  const config = {
+    method: "post",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`
+    },
+    body: JSON.stringify({
+      user
+    })
+  };
+
+  return callApi(
+    "/api/dati",
+    config,
+    datiRequest,
+    datiSuccess,
+    datiFailure
   );
 }
