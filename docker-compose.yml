@@ -11,6 +11,13 @@ services:
       dockerfile: DockerfileServerApp
       args:
         buildno: 1
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGPASSWORD: example
+      PGDATABASE: postgres
+      PGPORT: 5432
+
     ports:
       - 3001:3001
     networks:
@@ -28,12 +35,15 @@ services:
       dockerfile: DockerfileWebApp
       args:
         buildno: 1
-    environment:
-      PGUSER: postgres
-      PGHOST: db
-      PGPASSWORD: example
-      PGDATABASE: postgres
-      PGPORT: 5432
+    # environment:
+    #   PGUSER: postgres
+    #   PGHOST: db
+    #   PGPASSWORD: example
+    #   PGDATABASE: postgres
+    #   PGPORT: 5432
+    volumes:
+      - ./WebApp/public:/WebApp/public
+      - ./WebApp/src:/WebApp/src
     ports:
       - 3010:3000
     networks:

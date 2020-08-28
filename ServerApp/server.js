@@ -116,6 +116,59 @@ app.post("/api/dati", function (req, res) {
   }
 });
 
+// -------------------------------------------------------------------------------------
+// -------------------------------- DB CRUD / API --------------------------------------
+// -------------------------------------------------------------------------------------
+
+// db Connection w/ Heroku
+// const db = require('knex')({
+//   client: 'pg',
+//   connection: {
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: true,
+//   }
+// });
+
+// db Connection w/ localhost
+var db = require('knex')({
+  client: 'pg',
+  connection: {
+    host: process.env.PGHOST,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+    port: process.env.PGPORT
+  }
+});
+
+// Controllers - aka, the db queries
+const main = require('./controllers/main')
+
+const checkToken = (req, res, next) => {
+  var jwtToken = extractToken(req);
+  try {
+    var profile = jwt.verify(jwtToken, JWT_SECRET);
+    console.log(profile)
+    next()
+  } catch (err) {
+    console.log("jwt verify error", err);
+    res.status(500).json({ message: "Invalid jwt token" });
+
+    alertClients("error", `JWT verify error`);
+  }
+}
+
+// App Routes - Auth
+app.get('/crud', checkToken, (req, res) => main.getTableData(req, res, db))
+
+app.post('/crud', (req, res) => main.postTableData(req, res, db))
+app.put('/crud', (req, res) => main.putTableData(req, res, db))
+app.delete('/crud', (req, res) => main.deleteTableData(req, res, db))
+
+// -------------------------------------------------------------------------------------
+// --------------------------------- START SERVER --------------------------------------
+// -------------------------------------------------------------------------------------
+
 // Start the server
 server.listen(port);
 console.log("Server is listening on port " + port);

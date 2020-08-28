@@ -2,9 +2,11 @@
   "description": "This is for the api server",
   "name": "server-api",
   "dependencies": {
-    "express": "^4.16.2",
     "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
+    "knex": "^0.21.5",
+    "pg": "^8.3.3",
     "socket.io": "^2.0.4"
   },
   "scripts": {

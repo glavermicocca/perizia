@@ -21,6 +21,8 @@ import NotFound from "../misc/NotFound";
 
 import { logout, dati } from "../../actions/auth";
 
+import AppMain from '../../App.js'
+
 import "./app.css";
 
 class App extends Component {
@@ -42,10 +44,11 @@ class App extends Component {
         <div>
           <div className="container">
             <Header user={user} handleLogout={() => this.handleLogout()} />
-            <button style={{ width: "100px", height: "100px" }} onClick={() => { this.handleDati() }}></button>
+            <button style={{ width: "200px", height: "100px" }} onClick={() => { this.handleDati() }}></button>
             <div className="appContent">
               <Switch>
-                <Route exact path="/" component={Home} />
+                <Route exact path="/" component={AppMain} />
+                <Route path="/app" Component={AppMain} />
                 <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />
                 <PrivateRoute
