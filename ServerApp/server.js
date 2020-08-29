@@ -14,6 +14,10 @@ var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
 var port = 3001;
 
+// UPLOAD FILE
+const multer = require('multer')
+const upload = multer()
+
 // Configure app to use bodyParser to parse json data
 var app = express();
 var server = require("http").createServer(app);
@@ -164,6 +168,20 @@ app.get('/crud', checkToken, (req, res) => main.getTableData(req, res, db))
 app.post('/crud', (req, res) => main.postTableData(req, res, db))
 app.put('/crud', (req, res) => main.putTableData(req, res, db))
 app.delete('/crud', (req, res) => main.deleteTableData(req, res, db))
+
+// -------------------------------------------------------------------------------------
+// --------------------------------- UPLOAD FILE ---------------------------------------
+// -------------------------------------------------------------------------------------
+
+// creating POST endpoint /file
+app.post('/file', upload.single('file'), (req, res) => {
+  console.log('body', req.file.length, req.file)
+
+  // here you can do anything that you want for the file
+  // ex: you want to save it to database here
+
+  res.json({ success: true })
+})
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- START SERVER --------------------------------------

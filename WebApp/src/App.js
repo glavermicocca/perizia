@@ -60,7 +60,7 @@ class App extends Component {
         </Row>
         <Row>
           <Col>
-            <DataTable items={this.state.items} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
+            <DataTable items={this.props.dati} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
           </Col>
         </Row>
         <Row>
@@ -70,10 +70,10 @@ class App extends Component {
               color="primary"
               style={{ float: "left", marginRight: "10px" }}
               className="btn btn-primary"
-              data={this.state.items}>
+              data={this.props.dati}>
               Download CSV
             </CSVLink>
-            <ModalForm buttonLabel="Add Item" addItemToState={this.addItemToState} />
+            <ModalForm className="modal-xl" buttonLabel="Add Item" addItemToState={this.addItemToState} />
           </Col>
         </Row>
       </Container>
@@ -91,9 +91,9 @@ App.contextTypes = {
 };
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const { crud } = state;
   return {
-    user: auth ? auth.user : null
+    dati: crud.dati
   };
 };
 

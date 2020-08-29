@@ -3,7 +3,7 @@ import {
     loadIdToken
 } from "../utils/apiUtils";
 
-export function dati(user) {
+export function dati() {
     const idToken = loadIdToken();
     const config = {
         method: "get",
@@ -34,8 +34,10 @@ function datiRequest() {
 }
 
 function datiSuccess(payload) {
+    console.log(payload)
     return {
-        type: DATI_SUCCESS
+        type: DATI_SUCCESS,
+        dati: payload
     };
 }
 
