@@ -7,12 +7,12 @@ import UploadItem from '../UploadItem/UploadItem'
 import Styles from './UploadProgress.module.css'
 
 const UploadProgress = props => {
-  const { fileProgress, uploadFile } = props
+  const { fileProgress, uploadFile, id } = props
   const uploadedFileAmount = size(fileProgress)
 
   useEffect(() => {
     const fileToUpload = toArray(fileProgress).filter(file => file.progress === 0)
-    uploadFile(fileToUpload)
+    uploadFile(fileToUpload, id)
   }, [uploadedFileAmount])
 
   return uploadedFileAmount > 0 ? (
@@ -30,7 +30,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  uploadFile: files => dispatch(uploadFile(files)),
+  uploadFile: (files, id) => {
+    dispatch(uploadFile(files, id))
+  },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadProgress)

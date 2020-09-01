@@ -3,7 +3,8 @@ import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import auth from "../reducers/auth";
 import alerts from "../reducers/alerts";
-import dati from "../reducers/crud";
+import crud from "../reducers/crud";
+import immagini from '../reducers/immagini'
 import { selectedUsersPage, usersByPage } from "../reducers/users";
 import { selectedReposPage, reposByPage } from "../reducers/repos";
 import UploadFile from '../redux/uploadFile/uploadFile.reducer'
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   usersByPage,
   selectedReposPage,
   reposByPage,
-  crud: dati,
+  crud,
+  immagini,
   UploadFile
 });
 

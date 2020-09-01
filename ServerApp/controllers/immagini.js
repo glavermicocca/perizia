@@ -1,5 +1,9 @@
+const uuid = require('uuid')
+const fs = require('fs')
+
 const getTableData = (req, res, db) => {
-  db.select('*').from('immagini')
+  const { id } = req.query
+  db.select('*').from('immagini').where({ id })
     .then(items => {
       if (items.length) {
         res.json(items)
@@ -11,32 +15,21 @@ const getTableData = (req, res, db) => {
 }
 
 const postTableData = (req, res, db) => {
-  const { stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
-  const added = new Date()
-  db('immagini').insert({
-    stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note, added
-  })
+  const { originalname } = req.file
+  const path = 'img/' + uuid.v4()
+  const id = req.headers['id']
+  db('immagini').insert({ id, file_name: originalname, path })
     .returning('*')
     .then(item => {
+      console.log(__dirname)
+      fs.writeFileSync(__dirname + '/../' + path, req.file.buffer);
+      fs.chmodSync(__dirname + '/../' + path, 4)
       res.json(item)
+      //res.json({ success: true })
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
-}
-
-const putTableData = (req, res, db) => {
-  const { id, stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
-  db('immagini').where({ id }).update({
-    stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note
-  })
-    .returning('*')
-    .then(item => {
-      res.json(item)
-    })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
+    .catch(err =>
+      res.status(400).json({ dbError: 'db error' })
+    )
 }
 
 const deleteTableData = (req, res, db) => {
@@ -45,12 +38,13 @@ const deleteTableData = (req, res, db) => {
     .then(() => {
       res.json({ delete: 'true' })
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
+    .catch(err =>
+      res.status(400).json({ dbError: 'db error' })
+    )
 }
 
 module.exports = {
   getTableData,
   postTableData,
-  putTableData,
   deleteTableData
 }

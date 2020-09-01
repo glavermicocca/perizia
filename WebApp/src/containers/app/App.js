@@ -20,9 +20,9 @@ import About from "../about/About";
 import NotFound from "../misc/NotFound";
 
 import { logout, dati } from "../../actions/auth";
-import { postPerizia } from '../../actions/crud'
+//import { postPeriziaItem } from '../../actions/crud'
 
-import AppMain from '../../App.js'
+import Dati from '../dati/Dati.js'
 
 import "./app.css";
 
@@ -41,15 +41,15 @@ class App extends Component {
     const { user } = this.props;
     const isAuthenticated = true && user;
 
-    console.log(location.pathname)
-    let arrSearch = location.pathname.split('/')
-    console.log(arrSearch)
-    if (arrSearch.length >= 5) {
-      const body = {
-        stato: arrSearch[0], anno: arrSearch[1], valore: parseFloat(arrSearch[2]), uuid: arrSearch[3]
-      }
-      this.props.dispatch(postPerizia(body))
-    }
+    // console.log(location.pathname)
+    // let arrSearch = location.pathname.split('/')
+    // console.log(arrSearch)
+    // if (arrSearch.length >= 5) {
+    //   const body = {
+    //     stato: arrSearch[0], anno: arrSearch[1], valore: parseFloat(arrSearch[2]), uuid: arrSearch[3]
+    //   }
+    //   this.props.dispatch(postPeriziaItem(body))
+    // }
 
     return (
       <Router>
@@ -64,7 +64,7 @@ class App extends Component {
                 <PrivateRoute
                   path="/app"
                   isAuthenticated={isAuthenticated}
-                  component={AppMain}
+                  component={Dati}
                 />
                 <PrivateRoute
                   path="/users"

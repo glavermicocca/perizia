@@ -128,8 +128,6 @@ app.post("/api/dati", function (req, res) {
   }
 });
 
-app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db));
-
 // -------------------------------------------------------------------------------------
 // -------------------------------- DB CRUD / API --------------------------------------
 // -------------------------------------------------------------------------------------
@@ -155,9 +153,6 @@ var db = require('knex')({
   }
 });
 
-// Controllers - aka, the db queries
-const perizia = require('./controllers/perizia')
-
 const checkToken = (req, res, next) => {
   var jwtToken = extractToken(req);
   try {
@@ -172,25 +167,28 @@ const checkToken = (req, res, next) => {
   }
 }
 
-// App Routes - Auth
+// App Routes - Perizia
+const perizia = require('./controllers/perizia')
 app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
+app.post('/crud', checkToken, (req, res) => perizia.postTableData(req, res, db))
+app.put('/crud', checkToken, (req, res) => perizia.putTableData(req, res, db))
+app.delete('/crud', checkToken, (req, res) => perizia.deleteTableData(req, res, db))
+// App Route - Singola Perizia
+app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db))
 
-app.post('/crud', (req, res) => perizia.postTableData(req, res, db))
-app.put('/crud', (req, res) => perizia.putTableData(req, res, db))
-app.delete('/crud', (req, res) => perizia.deleteTableData(req, res, db))
+// App Routes - Immagini
+const immagini = require('./controllers/immagini')
+app.get('/crud_immagini', checkToken, (req, res) => immagini.getTableData(req, res, db))
+app.delete('/crud_immagini', checkToken, (req, res) => immagini.deleteTableData(req, res, db))
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- UPLOAD FILE ---------------------------------------
 // -------------------------------------------------------------------------------------
 
 // creating POST endpoint /file
-app.post('/file', upload.single('file'), (req, res) => {
+app.post('/file_immagini', checkToken, upload.single('file'), (req, res) => {
   console.log('body', req.file.length, req.file)
-
-  // here you can do anything that you want for the file
-  // ex: you want to save it to database here
-
-  res.json({ success: true })
+  immagini.postTableData(req, res, db)
 })
 
 // -------------------------------------------------------------------------------------

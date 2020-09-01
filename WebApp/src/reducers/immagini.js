@@ -1,13 +1,11 @@
 import {
   DATI_FAILURE,
   DATI_SUCCESS,
-  DATI_SUCCESS_ITEM,
   DATI_REQUEST
-} from "../actions/crud";
+} from "../actions/immagini";
 
 const initialState = {
   items: [],
-  item: null,
   hasError: false
 };
 
@@ -25,16 +23,6 @@ export default function alerts(state = initialState, action = {}) {
         { hasError: false },
         {
           items: [...action.items]
-        }
-      )
-    }
-    case DATI_SUCCESS_ITEM: {
-      return Object.assign(
-        {},
-        state,
-        { hasError: false },
-        {
-          item: action.item
         }
       )
     }

@@ -1,13 +1,21 @@
-import React, { Component } from 'react'
-import { Table, Button } from 'reactstrap';
-import ModalForm from '../Modals/Modal'
+import PropTypes from "prop-types";
 
-class DataTable extends Component {
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Button, Modal, Table } from 'reactstrap'
+import { dati } from '../../actions/immagini'
+
+class DatiImmagini extends Component {
+
+  getItems() {
+    console.log(this.props.id)
+    this.props.dispatch(dati(this.props.id))
+  }
 
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
-      fetch('/crud', {
+      fetch('/immagini', {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json'
@@ -23,7 +31,10 @@ class DataTable extends Component {
           console.log(err)
         })
     }
+  }
 
+  componentDidMount() {
+    this.getItems()
   }
 
   render() {
@@ -32,14 +43,9 @@ class DataTable extends Component {
       return (
         <tr key={item.id}>
           <th scope="row">{item.id}</th>
-          <td>{item.stato}</td>
-          <td>{item.anno}</td>
-          <td>{item.valore}</td>
-          <td>{item.uuid}</td>
-          <td style={{ width: "150px" }}>
+          <td>{item.file_name}</td>
+          <td style={{ width: "75px" }}>
             <div>
-              <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState} onFailure={this.props.onFailure} />
-              {' '}
               <Button color="danger" onClick={() => this.deleteItem(item.id)}>Del</Button>
             </div>
           </td>
@@ -52,10 +58,7 @@ class DataTable extends Component {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Stato</th>
-            <th>Anno</th>
-            <th>Valore</th>
-            <th>uuid</th>
+            <th>filename</th>
           </tr>
         </thead>
         <tbody>
@@ -66,4 +69,20 @@ class DataTable extends Component {
   }
 }
 
-export default DataTable
+DatiImmagini.propTypes = {
+  user: PropTypes.string,
+  dispatch: PropTypes.func.isRequired
+};
+
+DatiImmagini.contextTypes = {
+  store: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => {
+  const { immagini } = state;
+  return {
+    items: immagini.items
+  };
+}
+
+export default connect(mapStateToProps)(DatiImmagini);

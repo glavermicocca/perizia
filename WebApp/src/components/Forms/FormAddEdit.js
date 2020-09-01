@@ -42,19 +42,21 @@ class AddEditForm extends React.Component {
     switch (target) {
       case 'stato':
         qrcode += e.target.value + '/' + this.state.anno + '/' + this.state.valore + '/' + this.state.uuid
+        this.setState({ qrcode })
         break;
       case 'anno':
         qrcode += this.state.stato + '/' + e.target.value + '/' + this.state.valore + '/' + this.state.uuid
+        this.setState({ qrcode })
         break;
       case 'valore':
         qrcode += this.state.stato + '/' + this.state.anno + '/' + e.target.value + '/' + this.state.uuid
+        this.setState({ qrcode })
         break;
       case 'uuid':
         qrcode += this.state.stato + '/' + this.state.anno + '/' + this.state.valore + '/' + e.target.value
+        this.setState({ qrcode })
         break;
     }
-    console.log(qrcode)
-    this.setState({ qrcode })
   }
 
   submitFormAdd = e => {
@@ -99,12 +101,16 @@ class AddEditForm extends React.Component {
         console.log(item)
         if (Array.isArray(item)) {
           this.props.addItemToState(item[0])
-          this.props.toggle()
+          this.props.setItemId(item[0].id)
         } else {
           console.log('failure')
+          this.props.onFailure('Nessuna riga inserita...')
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        this.props.onFailure(err)
+      })
   }
 
   submitFormEdit = e => {
@@ -142,9 +148,8 @@ class AddEditForm extends React.Component {
       .then(response => response.json())
       .then(item => {
         if (Array.isArray(item)) {
-          // console.log(item[0])
           this.props.updateState(item[0])
-          this.props.toggle()
+          //this.props.toggle()
         } else {
           console.log('failure')
         }
@@ -160,6 +165,7 @@ class AddEditForm extends React.Component {
         stato,
         anno,
         valore,
+        uuid,
 
         periodo,
         valuta,
@@ -177,9 +183,11 @@ class AddEditForm extends React.Component {
         variante,
         note } = this.props.item
 
+      const qrcode = this.props.location.origin + '/' + stato + '/' + anno + '/' + valore + '/' + uuid
+
       this.setState({
-        id, stato, anno, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
-        peso, diametro, spessore, conservazione, rarita, variante, note
+        id, stato, anno, valore, uuid, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
+        peso, diametro, spessore, conservazione, rarita, variante, note, qrcode
       })
     }
   }
@@ -196,7 +204,7 @@ class AddEditForm extends React.Component {
           <QRCode level='L' value={this.state.qrcode} />
         </center>
         <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
-          <Card>
+          <Card className="shadow p-3 mb-5 bg-white rounded">
             <CardBody>
               <CardTitle>Generiche</CardTitle>
               <Row>
@@ -255,7 +263,7 @@ class AddEditForm extends React.Component {
               </FormGroup>
             </CardBody>
           </Card>
-          <Card>
+          <Card className="shadow p-3 mb-5 bg-white rounded">
             <CardBody>
               <CardTitle>Specifiche</CardTitle>
               <FormGroup>
@@ -289,7 +297,7 @@ class AddEditForm extends React.Component {
             </CardBody>
           </Card>
 
-          <Button>Submit</Button>
+          <Button>Salva</Button>
         </Form>
       </>
     );

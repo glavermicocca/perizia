@@ -4,8 +4,8 @@
   right: 0;
   background-color: white;
   width: 400px;
-  overflow: scroll;
-  max-height: 400px;
+  overflow: visible;
+  max-height: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }

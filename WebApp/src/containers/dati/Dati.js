@@ -1,51 +1,47 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
-import ModalForm from './components/Modals/Modal'
-import DataTable from './components/Tables/DataTable'
+import ModalForm from '../../components/Modals/Modal'
+import DataTable from '../../components/Tables/DataTable'
 import { CSVLink } from "react-csv"
-import { dati } from './actions/crud'
+import { dati, datiRequest, datiSuccess, datiFailure } from '../../actions/crud'
 
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-class App extends Component {
-  state = {
-    items: []
-  }
+class Dati extends Component {
 
   getItems() {
     this.props.dispatch(dati());
-    // fetch('/crud')
-    //   .then(response => response.json())
-    //   .then(items => this.setState({ items }))
-    //   .catch(err => console.log(err))
   }
 
   addItemToState = (item) => {
-    console.log('add intemmmmmm')
-    this.props.dispatch(dati());
-    // this.setState(prevState => ({
-    //   items: [...prevState.items, item]
-    // }))
+    const newArray = [...this.props.items, item]
+    this.props.dispatch(datiSuccess(newArray))
   }
 
   updateState = (item) => {
-    const itemIndex = this.state.items.findIndex(data => data.id === item.id)
+    const itemIndex = this.props.items.findIndex(data => data.id === item.id)
     const newArray = [
       // destructure all items from beginning to the indexed item
-      ...this.state.items.slice(0, itemIndex),
+      ...this.props.items.slice(0, itemIndex),
       // add the updated item to the array
       item,
       // add the rest of the items to the array from the index after the replaced item
-      ...this.state.items.slice(itemIndex + 1)
+      ...this.props.items.slice(itemIndex + 1)
     ]
-    this.setState({ items: newArray })
+
+    this.props.dispatch(datiSuccess(newArray))
   }
 
   deleteItemFromState = (id) => {
-    const updatedItems = this.state.items.filter(item => item.id !== id)
-    this.setState({ items: updatedItems })
+    const newArray = this.props.items.filter(item => item.id !== id)
+
+    this.props.dispatch(datiSuccess(newArray))
+  }
+
+  onFailure = (error) => {
+    this.props.dispatch(datiFailure(error))
   }
 
   componentDidMount() {
@@ -57,7 +53,7 @@ class App extends Component {
       <Container className="App">
         <Row>
           <Col>
-            <DataTable items={this.props.dati} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />
+            <DataTable items={this.props.items} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} onFailure={this.onFailure} />
           </Col>
         </Row>
         <Row>
@@ -67,10 +63,10 @@ class App extends Component {
               color="primary"
               style={{ float: "left", marginRight: "10px" }}
               className="btn btn-primary"
-              data={this.props.dati}>
+              data={this.props.items}>
               Download CSV
             </CSVLink>
-            <ModalForm className="modal-xl" buttonLabel="Add Item" addItemToState={this.addItemToState} />
+            <ModalForm buttonLabel="Add Item" addItemToState={this.addItemToState} />
           </Col>
         </Row>
       </Container>
@@ -78,20 +74,20 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
+Dati.propTypes = {
   user: PropTypes.string,
   dispatch: PropTypes.func.isRequired
 };
 
-App.contextTypes = {
+Dati.contextTypes = {
   store: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   const { crud } = state;
   return {
-    dati: crud.dati
+    items: crud.items
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Dati);

@@ -4,6 +4,8 @@ import {
   loadIdToken
 } from "../../utils/apiUtils";
 
+import { datiSuccess } from '../../actions/immagini'
+
 export const setUploadFile = data => ({
   type: uploadFileTypes.SET_UPLOAD_FILE,
   payload: data,
@@ -27,20 +29,22 @@ export const failureUploadFile = id => ({
   payload: id,
 })
 
-export const uploadFile = files => dispatch => {
+export const uploadFile = (files, id) => dispatch => {
   if (files.length) {
     const idToken = loadIdToken();
-    const headers = {
-      Authorization: `Bearer ${idToken}`
-    }
     files.forEach(async file => {
       const formPayload = new FormData()
       formPayload.append('file', file.file)
 
+      const headers = {
+        Authorization: `Bearer ${idToken}`,
+        id
+      }
+
       try {
         await axios({
           baseURL: '/',
-          url: '/file',
+          url: '/file_immagini',
           method: 'post',
           data: formPayload,
           headers,
@@ -52,6 +56,7 @@ export const uploadFile = files => dispatch => {
           },
         })
         dispatch(successUploadFile(file.id))
+        dispatch()
       } catch (error) {
         dispatch(failureUploadFile(file.id))
       }

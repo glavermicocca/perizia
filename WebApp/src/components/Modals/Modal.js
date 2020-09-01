@@ -8,13 +8,21 @@ import AddEditForm from '../Forms/FormAddEdit'
 import UploadProgress from '../UploadProgress/UploadProgress'
 import { setUploadFile } from '../../redux/uploadFile/uploadFile.actions'
 
-import { datiPost } from '../../actions/crud'
+import DatiImmagini from '../immagini/DatiImmagini'
 
 class ModalForm extends Component {
   constructor(props) {
     super(props)
+
+    const { item } = this.props
+    let id = null
+    if (item) {
+      id = item.id
+    }
+
     this.state = {
-      modal: false
+      modal: false,
+      id
     }
   }
 
@@ -22,6 +30,10 @@ class ModalForm extends Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }))
+  }
+
+  setItemId = (id) => {
+    this.setState({ id })
   }
 
   render() {
@@ -57,18 +69,26 @@ class ModalForm extends Component {
     return (
       <div>
         {button}
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className="modal-xl">
           <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
           <ModalBody>
             <AddEditForm
               location={location}
-              datiPost={(body) => this.props.dispatch(datiPost(body))}
               addItemToState={this.props.addItemToState}
               updateState={this.props.updateState}
+              onFailure={this.props.onFailure}
               toggle={this.toggle}
+              setItemId={this.setItemId}
               item={this.props.item} />
-            <input type="file" multiple onChange={handleAttachFIle} />
-            <UploadProgress />
+            {this.state.id != null ? (
+              <>
+                <input type="file" multiple onChange={handleAttachFIle} />
+                <UploadProgress id={this.state.id} />
+                <DatiImmagini id={this.state.id}/>
+              </>
+            ) : (
+                <span>Devi prima salvare per caricare le immagini</span>
+              )}
           </ModalBody>
         </Modal>
       </div>
@@ -84,8 +104,12 @@ Modal.contextTypes = {
   store: PropTypes.object.isRequired
 };
 
+const mapStateToProps = state => ({
+
+})
+
 const mapDispatchToProps = dispatch => ({
   setUploadFile: files => dispatch(setUploadFile(files)),
 })
 
-export default connect(mapDispatchToProps)(ModalForm)
+export default connect(mapStateToProps, mapDispatchToProps)(ModalForm)
