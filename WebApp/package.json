@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/cloudmu/react-redux-starter-kit/issues"
   },
-  "proxy": "http://perizia_server_app:3001",
+  "proxy": "https://p.erroridiconiazione.com/endpoint/",
   "devDependencies": {
     "react-scripts": "3.4.3"
   },

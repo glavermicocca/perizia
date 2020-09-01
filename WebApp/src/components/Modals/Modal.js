@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
@@ -5,6 +7,8 @@ import AddEditForm from '../Forms/FormAddEdit'
 
 import UploadProgress from '../UploadProgress/UploadProgress'
 import { setUploadFile } from '../../redux/uploadFile/uploadFile.actions'
+
+import { datiPost } from '../../actions/crud'
 
 class ModalForm extends Component {
   constructor(props) {
@@ -57,6 +61,8 @@ class ModalForm extends Component {
           <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
           <ModalBody>
             <AddEditForm
+              location={location}
+              datiPost={(body) => this.props.dispatch(datiPost(body))}
               addItemToState={this.props.addItemToState}
               updateState={this.props.updateState}
               toggle={this.toggle}
@@ -70,8 +76,16 @@ class ModalForm extends Component {
   }
 }
 
+Modal.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+Modal.contextTypes = {
+  store: PropTypes.object.isRequired
+};
+
 const mapDispatchToProps = dispatch => ({
   setUploadFile: files => dispatch(setUploadFile(files)),
 })
 
-export default connect(null, mapDispatchToProps)(ModalForm)
+export default connect(mapDispatchToProps)(ModalForm)

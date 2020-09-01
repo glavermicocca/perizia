@@ -12,7 +12,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
-var port = 3001;
+var port = 3002;
 
 // UPLOAD FILE
 const multer = require('multer')
@@ -23,6 +23,14 @@ var app = express();
 var server = require("http").createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+//NO in PRODUZIONE
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', '*')
+  res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
+  next();
+});
 
 // and support socket io
 var io = require("socket.io")(server);
@@ -68,7 +76,7 @@ function alertClients(type, msg) {
 
 setInterval(() => {
   io.sockets.emit("alert", { message: "Interval", time: new Date(), type: "info" });
-}, 10000)
+}, 120000)
 
 /**
  * Util function to extract jwt token from the authorization header
@@ -120,6 +128,8 @@ app.post("/api/dati", function (req, res) {
   }
 });
 
+app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db));
+
 // -------------------------------------------------------------------------------------
 // -------------------------------- DB CRUD / API --------------------------------------
 // -------------------------------------------------------------------------------------
@@ -146,7 +156,7 @@ var db = require('knex')({
 });
 
 // Controllers - aka, the db queries
-const main = require('./controllers/main')
+const perizia = require('./controllers/perizia')
 
 const checkToken = (req, res, next) => {
   var jwtToken = extractToken(req);
@@ -163,11 +173,11 @@ const checkToken = (req, res, next) => {
 }
 
 // App Routes - Auth
-app.get('/crud', checkToken, (req, res) => main.getTableData(req, res, db))
+app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
 
-app.post('/crud', (req, res) => main.postTableData(req, res, db))
-app.put('/crud', (req, res) => main.putTableData(req, res, db))
-app.delete('/crud', (req, res) => main.deleteTableData(req, res, db))
+app.post('/crud', (req, res) => perizia.postTableData(req, res, db))
+app.put('/crud', (req, res) => perizia.putTableData(req, res, db))
+app.delete('/crud', (req, res) => perizia.deleteTableData(req, res, db))
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- UPLOAD FILE ---------------------------------------

@@ -3,6 +3,26 @@ import {
     loadIdToken
 } from "../utils/apiUtils";
 
+export function postPerizia(body) {
+    const config = {
+        method: "post",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body)
+    };
+
+    return callApi(
+        "/perizia",
+        config,
+        datiRequest,
+        datiSuccess,
+        datiFailure
+    );
+}
+
+
 export function dati() {
     const idToken = loadIdToken();
     const config = {
@@ -12,6 +32,27 @@ export function dati() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${idToken}`
         }
+    };
+
+    return callApi(
+        "/crud",
+        config,
+        datiRequest,
+        datiSuccess,
+        datiFailure
+    );
+}
+
+export function datiPost(body) {
+    const idToken = loadIdToken();
+    const config = {
+        method: "post",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${idToken}`
+        },
+        body
     };
 
     return callApi(

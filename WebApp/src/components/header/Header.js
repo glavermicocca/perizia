@@ -58,6 +58,12 @@ class Header extends Component {
             >
               <Link className="nav-link" to="/about">About Us</Link>
             </li>
+            <li
+              title="App"
+              className={isUsersPage ? "nav-item active" : "nav-item"}
+            >
+              <Link className="nav-link" to="/app">App</Link>
+            </li>
           </ul>
 
           <ul className="navbar-nav mt-2 mt-md-0">

@@ -23,9 +23,11 @@ class App extends Component {
   }
 
   addItemToState = (item) => {
-    this.setState(prevState => ({
-      items: [...prevState.items, item]
-    }))
+    console.log('add intemmmmmm')
+    this.props.dispatch(dati());
+    // this.setState(prevState => ({
+    //   items: [...prevState.items, item]
+    // }))
   }
 
   updateState = (item) => {
@@ -53,11 +55,6 @@ class App extends Component {
   render() {
     return (
       <Container className="App">
-        <Row>
-          <Col>
-            <h1 style={{ margin: "20px 0" }}>CRUD Database</h1>
-          </Col>
-        </Row>
         <Row>
           <Col>
             <DataTable items={this.props.dati} updateState={this.updateState} deleteItemFromState={this.deleteItemFromState} />

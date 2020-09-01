@@ -10,26 +10,42 @@ const getTableData = (req, res, db) => {
     .catch(err => res.status(400).json({ dbError: 'db error' }))
 }
 
+const postPerizia = (req, res, db) => {
+  const { stato, anno, valore, uuid } = req.body
+  db.select('*').from('perizia').where({ stato, anno, valore, uuid })
+    .then(items => {
+      if (items.length) {
+        res.json(items)
+      } else {
+        res.json({ dataExists: 'false' })
+      }
+    })
+    .catch(err => 
+      res.status(400).json({ dbError: 'db error' })
+      )
+}
+
 const postTableData = (req, res, db) => {
-  const { stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
+  const { stato, anno, uuid, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
     peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
   const added = new Date()
   db('perizia').insert({
-    stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
+    stato, anno, uuid, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
     peso, diametro, spessore, conservazione, rarita, variante, note, added
   })
     .returning('*')
     .then(item => {
       res.json(item)
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
+    .catch(err =>
+      res.status(400).json({ dbError: 'db error' }))
 }
 
 const putTableData = (req, res, db) => {
-  const { id, stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
+  const { id, stato, anno, uuid, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
     peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
   db('perizia').where({ id }).update({
-    stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
+    stato, anno, uuid, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
     peso, diametro, spessore, conservazione, rarita, variante, note
   })
     .returning('*')
@@ -52,5 +68,6 @@ module.exports = {
   getTableData,
   postTableData,
   putTableData,
-  deleteTableData
+  deleteTableData,
+  postPerizia
 }

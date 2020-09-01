@@ -1,6 +1,10 @@
 import React from 'react';
 import { Button, Form, FormGroup, Col, Row, Label, Input, Card, CardBody, CardTitle } from 'reactstrap';
 
+import {
+  loadIdToken,
+} from "../../utils/apiUtils";
+
 import QRCode from 'qrcode.react';
 
 class AddEditForm extends React.Component {
@@ -10,17 +14,19 @@ class AddEditForm extends React.Component {
     stato: '',
     anno: '',
     valore: '',
+    uuid: '',
 
     periodo: '',
     valuta: '',
+    zecca: '',
     lega_metallurgica: '',
     orientamento_asse: '',
     contorno: '',
     riferimento: '',
 
-    peso: null,
-    diametro: null,
-    spessore: null,
+    peso: '',
+    diametro: '',
+    spessore: '',
     conservazione: '',
     rarita: '',
     variante: '',
@@ -31,38 +37,57 @@ class AddEditForm extends React.Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value })
-
     var target = e.target.name
-    if (target == "stato" || target == 'anno' || target == 'valore') {
-      var qrcode = this.state.stato + this.state.anno + this.state.valore
-      this.setState({ qrcode })
+    var qrcode = this.props.location.origin + '/'
+    switch (target) {
+      case 'stato':
+        qrcode += e.target.value + '/' + this.state.anno + '/' + this.state.valore + '/' + this.state.uuid
+        break;
+      case 'anno':
+        qrcode += this.state.stato + '/' + e.target.value + '/' + this.state.valore + '/' + this.state.uuid
+        break;
+      case 'valore':
+        qrcode += this.state.stato + '/' + this.state.anno + '/' + e.target.value + '/' + this.state.uuid
+        break;
+      case 'uuid':
+        qrcode += this.state.stato + '/' + this.state.anno + '/' + this.state.valore + '/' + e.target.value
+        break;
     }
+    console.log(qrcode)
+    this.setState({ qrcode })
   }
 
   submitFormAdd = e => {
     e.preventDefault()
-    fetch('http://localhost:3000/crud', {
+
+    const idToken = loadIdToken();
+    fetch('/crud', {
       method: 'post',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
       },
       body: JSON.stringify({
+        id: this.state.id,
+
         stato: this.state.stato,
         anno: this.state.anno,
         valore: this.state.valore,
+        uuid: this.state.uuid,
 
         //generiche
         periodo: this.state.periodo,
         valuta: this.state.valuta,
+        zecca: this.state.zecca,
         lega_metallurgica: this.state.lega_metallurgica,
         orientamento_asse: this.state.orientamento_asse,
         contorno: this.state.contorno,
         riferimento: this.state.riferimento,
 
         //specifiche
-        peso: this.state.peso,
-        diametro: this.state.diametro,
-        spessore: this.state.spessore,
+        peso: this.state.peso == '' ? null : this.state.peso,
+        diametro: this.state.diametro == '' ? null : this.state.diametro,
+        spessore: this.state.spessore == '' ? null : this.state.spessore,
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
@@ -71,6 +96,7 @@ class AddEditForm extends React.Component {
     })
       .then(response => response.json())
       .then(item => {
+        console.log(item)
         if (Array.isArray(item)) {
           this.props.addItemToState(item[0])
           this.props.toggle()
@@ -83,10 +109,13 @@ class AddEditForm extends React.Component {
 
   submitFormEdit = e => {
     e.preventDefault()
-    fetch('http://localhost:3000/crud', {
+
+    const idToken = loadIdToken();
+    fetch('/crud', {
       method: 'put',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`
       },
       body: JSON.stringify({
         id: this.state.id,
@@ -94,15 +123,16 @@ class AddEditForm extends React.Component {
         //generiche
         periodo: this.state.periodo,
         valuta: this.state.valuta,
+        zecca: this.state.zecca,
         lega_metallurgica: this.state.lega_metallurgica,
         orientamento_asse: this.state.orientamento_asse,
         contorno: this.state.contorno,
         riferimento: this.state.riferimento,
 
         //specifiche
-        peso: this.state.peso,
-        diametro: this.state.diametro,
-        spessore: this.state.spessore,
+        peso: this.state.peso == '' ? null : this.state.peso,
+        diametro: this.state.diametro == '' ? null : this.state.diametro,
+        spessore: this.state.spessore == '' ? null : this.state.spessore,
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
@@ -125,13 +155,15 @@ class AddEditForm extends React.Component {
   componentDidMount() {
     // if item exists, populate the state with proper data
     if (this.props.item) {
-      const { id,
+      const {
+        id,
         stato,
         anno,
         valore,
 
         periodo,
         valuta,
+        zecca,
         lega_metallurgica,
         orientamento_asse,
         contorno,
@@ -146,7 +178,7 @@ class AddEditForm extends React.Component {
         note } = this.props.item
 
       this.setState({
-        id, stato, anno, valore, periodo, valuta, lega_metallurgica, orientamento_asse, contorno, riferimento,
+        id, stato, anno, valore, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
         peso, diametro, spessore, conservazione, rarita, variante, note
       })
     }
@@ -161,7 +193,7 @@ class AddEditForm extends React.Component {
     return (
       <>
         <center>
-          <QRCode value={this.state.qrcode} />
+          <QRCode level='L' value={this.state.qrcode} />
         </center>
         <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
           <Card>
@@ -189,7 +221,7 @@ class AddEditForm extends React.Component {
                 <Col sm={3}>
                   <FormGroup>
                     <Label for="uuid">uuid</Label>
-                    <Input readOnly type="text" name="uuid" id="uuid" onChange={this.onChange} value={this.state.uuid === null ? '' : this.state.uuid} />
+                    <Input readOnly={readOnly} type="text" name="uuid" id="uuid" onChange={this.onChange} value={this.state.uuid === null ? '' : this.state.uuid} />
                   </FormGroup>
                 </Col>
               </Row>
@@ -200,10 +232,6 @@ class AddEditForm extends React.Component {
               <FormGroup>
                 <Label for="valuta">Valuta</Label>
                 <Input type="text" name="valuta" id="valuta" onChange={this.onChange} value={this.state.valuta === null ? '' : this.state.valuta} />
-              </FormGroup>
-              <FormGroup>
-                <Label for="zecca">Zecca</Label>
-                <Input name="zecca" id="zecca" onChange={this.onChange} value={this.state.zecca === null ? '' : this.state.zecca} />
               </FormGroup>
               <FormGroup>
                 <Label for="zecca">Zecca</Label>

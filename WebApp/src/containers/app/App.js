@@ -20,6 +20,7 @@ import About from "../about/About";
 import NotFound from "../misc/NotFound";
 
 import { logout, dati } from "../../actions/auth";
+import { postPerizia } from '../../actions/crud'
 
 import AppMain from '../../App.js'
 
@@ -39,18 +40,32 @@ class App extends Component {
   render() {
     const { user } = this.props;
     const isAuthenticated = true && user;
+
+    console.log(location.pathname)
+    let arrSearch = location.pathname.split('/')
+    console.log(arrSearch)
+    if (arrSearch.length >= 5) {
+      const body = {
+        stato: arrSearch[0], anno: arrSearch[1], valore: parseFloat(arrSearch[2]), uuid: arrSearch[3]
+      }
+      this.props.dispatch(postPerizia(body))
+    }
+
     return (
       <Router>
         <div>
           <div className="container">
             <Header user={user} handleLogout={() => this.handleLogout()} />
-            <button style={{ width: "200px", height: "100px" }} onClick={() => { this.handleDati() }}></button>
+            {/* <button style={{ width: "200px", height: "100px" }} onClick={() => { this.handleDati() }}></button> */}
             <div className="appContent">
               <Switch>
-                <Route exact path="/" component={AppMain} />
-                <Route path="/app" Component={AppMain} />
                 <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />
+                <PrivateRoute
+                  path="/app"
+                  isAuthenticated={isAuthenticated}
+                  component={AppMain}
+                />
                 <PrivateRoute
                   path="/users"
                   isAuthenticated={isAuthenticated}
@@ -61,6 +76,8 @@ class App extends Component {
                   isAuthenticated={isAuthenticated}
                   component={ReposPage}
                 />
+                <Route path="/"
+                  component={Home} />
                 <Route component={NotFound} />
               </Switch>
             </div>
