@@ -40,7 +40,7 @@ export function callApi(
       .then(checkStatus)
       .then(parseJSON)
       .then(json => {
-        dispatch(onRequestSuccess(json));
+        dispatch(onRequestSuccess(json, dispatch));
       })
       .catch(error => {
         const response = error.response;

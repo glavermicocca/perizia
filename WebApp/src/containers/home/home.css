@@ -1,7 +1,11 @@
-.home-humility{
+.home-humility {
   text-align: center;
 }
 
-.home-fa-twitter{
+.home-fa-twitter {
   margin-left: 2em;
+}
+
+h5 {
+  margin-left: 0.5rem !important;
 }

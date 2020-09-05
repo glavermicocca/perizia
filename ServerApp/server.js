@@ -24,6 +24,10 @@ var server = require("http").createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const path = require('path');
+const imgDir = path.join(__dirname, 'img');
+app.use(express.static(imgDir));
+
 //NO in PRODUZIONE
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -55,7 +59,7 @@ app.post("/api/login", function (req, res) {
     // Once authenticated, the user profiles is signed and the jwt token is returned as response to the client.
     // It's expected the jwt token will be included in the subsequent client requests.
     const profile = { user: credentials.user, role: "ADMIN" };
-    const jwtToken = jwt.sign(profile, JWT_SECRET, { expiresIn: 5 * 60 }); // expires in 300 seconds (5 min)
+    const jwtToken = jwt.sign(profile, JWT_SECRET, { expiresIn: 60 * 60 * 24 }); // expires in 300 seconds (5 min)
     res.status(200).json({
       id_token: jwtToken
     });
@@ -178,8 +182,10 @@ app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db))
 
 // App Routes - Immagini
 const immagini = require('./controllers/immagini')
-app.get('/crud_immagini', checkToken, (req, res) => immagini.getTableData(req, res, db))
-app.delete('/crud_immagini', checkToken, (req, res) => immagini.deleteTableData(req, res, db))
+app.get('/crud_immagini', (req, res) => immagini.getTableData(req, res, db))
+app.delete('/crud_immagini', checkToken, (req, res) => {
+  immagini.deleteTableData(req, res, db)
+})
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- UPLOAD FILE ---------------------------------------

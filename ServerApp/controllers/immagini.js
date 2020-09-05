@@ -1,5 +1,6 @@
 const uuid = require('uuid')
 const fs = require('fs')
+const path = require('path')
 
 const getTableData = (req, res, db) => {
   const { id } = req.query
@@ -16,14 +17,17 @@ const getTableData = (req, res, db) => {
 
 const postTableData = (req, res, db) => {
   const { originalname } = req.file
-  const path = 'img/' + uuid.v4()
+  const ext = path.extname(originalname)
+  const filename = uuid.v4() + ext
   const id = req.headers['id']
-  db('immagini').insert({ id, file_name: originalname, path })
+
+  const serverLocation = path.join(__dirname, '..', 'img', filename)
+
+  db('immagini').insert({ id, originalname, filename })
     .returning('*')
     .then(item => {
-      console.log(__dirname)
-      fs.writeFileSync(__dirname + '/../' + path, req.file.buffer);
-      fs.chmodSync(__dirname + '/../' + path, 4)
+      fs.writeFileSync(serverLocation, req.file.buffer);
+      fs.chmodSync(serverLocation, 4)
       res.json(item)
       //res.json({ success: true })
     })
@@ -33,9 +37,11 @@ const postTableData = (req, res, db) => {
 }
 
 const deleteTableData = (req, res, db) => {
-  const { id } = req.body
-  db('immagini').where({ id }).del()
+  const { filename } = req.body
+  db('immagini').where({ filename }).del()
     .then(() => {
+      const pathFilename = path.join(__dirname, '..', 'img', filename)
+      fs.unlinkSync(pathFilename)
       res.json({ delete: 'true' })
     })
     .catch(err =>

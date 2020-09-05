@@ -26,7 +26,7 @@ class Header extends Component {
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <Link to="/" className="navbar-brand">
         <div title="Home" className="brand" />
-        Home
+        Errori di coniazione
       </Link>
       
         <button
@@ -41,24 +41,6 @@ class Header extends Component {
         <div id="navbarCollapse" className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             <li
-              title="Github Users with over 1000 Followers"
-              className={isUsersPage ? "nav-item active" : "nav-item"}
-            >
-              <Link className="nav-link" to="/users">Most Followed Users</Link>
-            </li>
-            <li
-              title="Github Repos with over 10000 Stars"
-              className={isReposPage ? "nav-item active" : "nav-item"}
-            >
-              <Link className="nav-link" to="/repos">Most Starred Repos</Link>
-            </li>
-            <li
-              title="About"
-              className={isAboutPage ? "nav-item active" : "nav-item"}
-            >
-              <Link className="nav-link" to="/about">About Us</Link>
-            </li>
-            <li
               title="App"
               className={isUsersPage ? "nav-item active" : "nav-item"}
             >
@@ -67,7 +49,7 @@ class Header extends Component {
           </ul>
 
           <ul className="navbar-nav mt-2 mt-md-0">
-            <Alerts />
+            {/* <Alerts /> */}
             <UserProfile user={user} handleLogout={this.onLogoutClick} />
           </ul>
         </div>

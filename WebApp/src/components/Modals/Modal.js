@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import AddEditForm from '../Forms/FormAddEdit'
 
-import UploadProgress from '../UploadProgress/UploadProgress'
 import { setUploadFile } from '../../redux/uploadFile/uploadFile.actions'
 
 import DatiImmagini from '../immagini/DatiImmagini'
@@ -82,9 +81,12 @@ class ModalForm extends Component {
               item={this.props.item} />
             {this.state.id != null ? (
               <>
-                <input type="file" multiple onChange={handleAttachFIle} />
-                <UploadProgress id={this.state.id} />
-                <DatiImmagini id={this.state.id}/>
+                <form className="d-flex justify-content-around">
+                  <div className="form-group">
+                    <input type="file" className="form-control-file" id="exampleFormControlFile1" multiple onChange={handleAttachFIle} />
+                  </div>
+                </form>
+                <DatiImmagini id={this.state.id} />
               </>
             ) : (
                 <span>Devi prima salvare per caricare le immagini</span>
@@ -110,6 +112,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUploadFile: files => dispatch(setUploadFile(files)),
+  onFailure: err => dispatch(onFailure(err)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalForm)

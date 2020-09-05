@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { FormGroup, Col, Row, Label, FormText, Card, CardBody, CardTitle } from 'reactstrap';
+import {
+  FormGroup, Col, Row, Label, Card, CardBody, CardTitle
+} from 'reactstrap';
 
 import { postPeriziaItem } from '../../actions/crud'
 
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+
+import Carousel from '../../components/immagini/Carousel'
 
 import "./home.css";
 
@@ -28,100 +32,89 @@ class Home extends Component {
   }
 
   render() {
-    const { item } = this.props
-    if (item == null || item.dataExists) return (<p>Nessua perizia trovata...</p>)
+    const { item, immagini } = this.props
+    if (item == null || item.dataExists) return null
+
     return (
       <>
+        <h4>Perizia fotografica di Andrea Del Pup</h4>
         <Card className="shadow p-3 mb-5 bg-white rounded">
           <CardBody>
-            <CardTitle>Generiche</CardTitle>
-            <Row>
-              <Col sm={3}>
-                <FormGroup>
-                  <Label for="stato">Stato</Label>
-                  <FormText name='stato' id='stato'>{item.stato}</FormText>
-                </FormGroup>
-              </Col>
-              <Col sm={3}>
-                <FormGroup>
-                  <Label for="anno">Anno</Label>
-                  <FormText name='anno' id='anno'>{item.anno}</FormText>
-                </FormGroup>
-              </Col>
-              <Col sm={3}>
-                <FormGroup>
-                  <Label for="valore">Valore</Label>
-                  <FormText name="valore" id="valore">{item.valore}</FormText>
-                </FormGroup>
-              </Col>
-              <Col sm={3}>
-                <FormGroup>
-                  <Label for="uuid">uuid</Label>
-                  <FormText name="uuid" id="uuid">{item.uuid}</FormText>
-                </FormGroup>
-              </Col>
-            </Row>
+            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Generiche</h4><br></br></CardTitle>
+            <FormGroup>
+              <Label for="descrizione">Descrizione</Label>
+              <h5 name="descrizione" id="descrizione">{item.descrizione}</h5>
+            </FormGroup>
             <FormGroup>
               <Label for="periodo">Periodo</Label>
-              <FormText name="periodo" id="periodo">{item.periodo}</FormText>
+              <h5 name="periodo" id="periodo">{item.periodo}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="valuta">Valuta</Label>
-              <FormText name="valuta" id="valuta">{item.valuta}</FormText>
+              <h5 name="valuta" id="valuta">{item.valuta}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="zecca">Zecca</Label>
-              <FormText name="zecca" id="zecca">{item.zecca}</FormText>
+              <h5 name="zecca" id="zecca">{item.zecca}</h5>
             </FormGroup>
             <FormGroup>
-              <Label for="lega_metallurgica">Lega metallurgica</Label>
-              <FormText name="lega_metallurgica" id="lega_metallurgica">{item.lega_metallurgica}</FormText>
+              <Label for="lega_metallica">Lega metallica</Label>
+              <h5 name="lega_metallica" id="lega_metallica">{item.lega_metallica}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="orientamento_asse">Orientamento asse</Label>
-              <FormText name="orientamento_asse" id="orientamento_asse">{item.orientamento_asse}</FormText>
+              <h5 name="orientamento_asse" id="orientamento_asse">{item.orientamento_asse}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="contorno">Contorno</Label>
-              <FormText name="contorno" id="contorno">{item.contorno}</FormText>
+              <h5 name="contorno" id="contorno">{item.contorno}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="riferimento">Riferimento</Label>
-              <FormText name="riferimento" id="riferimento">{item.riferimento}</FormText>
+              <h5 name="riferimento" id="riferimento">{item.riferimento}</h5>
+            </FormGroup>
+            <FormGroup>
+              <Label for="data_perizia">Data perizia</Label>
+              <h5 name="data_perizia" id="data_perizia">{item.data_perizia}</h5>
             </FormGroup>
           </CardBody>
         </Card>
         <Card className="shadow p-3 mb-5 bg-white rounded">
           <CardBody>
-            <CardTitle>Specifiche</CardTitle>
+            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Specifiche</h4><br></br></CardTitle>
             <FormGroup>
               <Label for="peso">Peso</Label>
-              <FormText name="peso" id="peso">{item.peso}</FormText>
+              <h5 name="peso" id="peso">{item.peso}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="diametro">Diametro</Label>
-              <FormText name="diametro" id="diametro">{item.diametro}</FormText>
+              <h5 name="diametro" id="diametro">{item.diametro}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="spessore">Spessore</Label>
-              <FormText name="spessore" id="spessore">{item.spessore}</FormText>
+              <h5 name="spessore" id="spessore">{item.spessore}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="spessore">Conservazione</Label>
-              <FormText name="conservazione">{item.conservazione}</FormText>
+              <h5 name="conservazione">{item.conservazione}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="rarita">Rarità</Label>
-              <FormText name="rarita" id="rarita">{item.rarita}</FormText>
+              <h5 name="rarita" id="rarita">{item.rarita}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="variante">Variante</Label>
-              <FormText name="variante" id="variante">{item.variante}</FormText>
+              <h5 name="variante" id="variante">{item.variante}</h5>
             </FormGroup>
             <FormGroup>
               <Label for="note">Note</Label>
-              <FormText name="note" id="note">{item.note}</FormText>
+              <h5 name="note" id="note">{item.note}</h5>
             </FormGroup>
+          </CardBody>
+        </Card>
+        <Card className="d-flex justify-content-around shadow p-3 mb-5 bg-white rounded">
+          <CardBody>
+            <Carousel data={this.props.immagini} />
           </CardBody>
         </Card>
       </>
@@ -139,9 +132,10 @@ Home.contextTypes = {
 };
 
 const mapStateToProps = state => {
-  const { crud } = state;
+  const { crud, immagini } = state;
   return {
-    item: crud.item
+    item: crud.item,
+    immagini: immagini.items
   };
 };
 

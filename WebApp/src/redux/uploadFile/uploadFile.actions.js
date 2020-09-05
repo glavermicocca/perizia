@@ -44,7 +44,7 @@ export const uploadFile = (files, id) => dispatch => {
       try {
         await axios({
           baseURL: '/',
-          url: '/file_immagini',
+          url: '/endpoint/file_immagini',
           method: 'post',
           data: formPayload,
           headers,
@@ -56,7 +56,6 @@ export const uploadFile = (files, id) => dispatch => {
           },
         })
         dispatch(successUploadFile(file.id))
-        dispatch()
       } catch (error) {
         dispatch(failureUploadFile(file.id))
       }

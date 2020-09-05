@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 // would require configuring the server. So we will use HashRouter here.
 // Please change to BrowserRouter if you have your own backend server.
 ///////////////////////////////////////////////////////////////////////////
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { connect } from "react-redux";
 import Header from "../../components/header/Header";
@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, item } = this.props;
     const isAuthenticated = true && user;
 
     // console.log(location.pathname)
@@ -51,38 +51,31 @@ class App extends Component {
     //   this.props.dispatch(postPeriziaItem(body))
     // }
 
+    var showHeader = true
+
+    if (item != null) {
+      showHeader = false
+    }
+
     return (
       <Router>
         <div>
           <div className="container">
-            <Header user={user} handleLogout={() => this.handleLogout()} />
-            {/* <button style={{ width: "200px", height: "100px" }} onClick={() => { this.handleDati() }}></button> */}
+            {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
             <div className="appContent">
               <Switch>
-                <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />
                 <PrivateRoute
                   path="/app"
                   isAuthenticated={isAuthenticated}
                   component={Dati}
                 />
-                <PrivateRoute
-                  path="/users"
-                  isAuthenticated={isAuthenticated}
-                  component={UsersPage}
-                />
-                <PrivateRoute
-                  path="/repos"
-                  isAuthenticated={isAuthenticated}
-                  component={ReposPage}
-                />
                 <Route path="/"
                   component={Home} />
-                <Route component={NotFound} />
+                {/* <Route component={NotFound} /> */}
               </Switch>
             </div>
           </div>
-          <Footer />
         </div>
       </Router>
     );
@@ -99,9 +92,10 @@ App.contextTypes = {
 };
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const { auth, crud } = state;
   return {
-    user: auth ? auth.user : null
+    user: auth ? auth.user : null,
+    item: crud.item
   };
 };
 

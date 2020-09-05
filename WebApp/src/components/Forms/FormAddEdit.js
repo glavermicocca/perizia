@@ -16,13 +16,15 @@ class AddEditForm extends React.Component {
     valore: '',
     uuid: '',
 
+    descrizione: '',
     periodo: '',
     valuta: '',
     zecca: '',
-    lega_metallurgica: '',
+    lega_metallica: '',
     orientamento_asse: '',
     contorno: '',
     riferimento: '',
+    data_riferimento: '',
 
     peso: '',
     diametro: '',
@@ -63,7 +65,7 @@ class AddEditForm extends React.Component {
     e.preventDefault()
 
     const idToken = loadIdToken();
-    fetch('/crud', {
+    fetch('/endpoint/crud', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -78,18 +80,20 @@ class AddEditForm extends React.Component {
         uuid: this.state.uuid,
 
         //generiche
+        descrizione: this.state.descrizione,
         periodo: this.state.periodo,
         valuta: this.state.valuta,
         zecca: this.state.zecca,
-        lega_metallurgica: this.state.lega_metallurgica,
+        lega_metallica: this.state.lega_metallica,
         orientamento_asse: this.state.orientamento_asse,
         contorno: this.state.contorno,
         riferimento: this.state.riferimento,
+        data_riferimento: this.state.data_riferimento,
 
         //specifiche
-        peso: this.state.peso == '' ? null : this.state.peso,
-        diametro: this.state.diametro == '' ? null : this.state.diametro,
-        spessore: this.state.spessore == '' ? null : this.state.spessore,
+        peso: this.state.peso,
+        diametro: this.state.diametro,
+        spessore: this.state.spessore,
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
@@ -117,7 +121,7 @@ class AddEditForm extends React.Component {
     e.preventDefault()
 
     const idToken = loadIdToken();
-    fetch('/crud', {
+    fetch('/endpoint/crud', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json',
@@ -126,19 +130,26 @@ class AddEditForm extends React.Component {
       body: JSON.stringify({
         id: this.state.id,
 
+        stato: this.state.stato,
+        anno: this.state.anno,
+        valore: this.state.valore,
+        uuid: this.state.uuid,
+
         //generiche
+        descrizione: this.state.descrizione,
         periodo: this.state.periodo,
         valuta: this.state.valuta,
         zecca: this.state.zecca,
-        lega_metallurgica: this.state.lega_metallurgica,
+        lega_metallica: this.state.lega_metallica,
         orientamento_asse: this.state.orientamento_asse,
         contorno: this.state.contorno,
         riferimento: this.state.riferimento,
+        data_perizia: this.state.data_perizia,
 
         //specifiche
-        peso: this.state.peso == '' ? null : this.state.peso,
-        diametro: this.state.diametro == '' ? null : this.state.diametro,
-        spessore: this.state.spessore == '' ? null : this.state.spessore,
+        peso: this.state.peso,
+        diametro: this.state.diametro,
+        spessore: this.state.spessore,
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
@@ -167,13 +178,15 @@ class AddEditForm extends React.Component {
         valore,
         uuid,
 
+        descrizione,
         periodo,
         valuta,
         zecca,
-        lega_metallurgica,
+        lega_metallica,
         orientamento_asse,
         contorno,
         riferimento,
+        data_perizia,
 
         peso,
         diametro,
@@ -186,7 +199,7 @@ class AddEditForm extends React.Component {
       const qrcode = this.props.location.origin + '/' + stato + '/' + anno + '/' + valore + '/' + uuid
 
       this.setState({
-        id, stato, anno, valore, uuid, periodo, valuta, zecca, lega_metallurgica, orientamento_asse, contorno, riferimento,
+        id, stato, anno, valore, uuid, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
         peso, diametro, spessore, conservazione, rarita, variante, note, qrcode
       })
     }
@@ -195,9 +208,9 @@ class AddEditForm extends React.Component {
   render() {
     const { item } = this.props
     let readOnly = false
-    if (item) {
-      readOnly = true
-    }
+    // if (item) {
+    //   readOnly = true
+    // }
     return (
       <>
         <center>
@@ -234,6 +247,10 @@ class AddEditForm extends React.Component {
                 </Col>
               </Row>
               <FormGroup>
+                <Label for="descrizione">Descrizione</Label>
+                <Input type="text" name="descrizione" id="descrizione" onChange={this.onChange} value={this.state.descrizione === null ? '' : this.state.descrizione} />
+              </FormGroup>
+              <FormGroup>
                 <Label for="periodo">Periodo</Label>
                 <Input type="text" name="periodo" id="periodo" onChange={this.onChange} value={this.state.periodo === null ? '' : this.state.periodo} />
               </FormGroup>
@@ -246,8 +263,8 @@ class AddEditForm extends React.Component {
                 <Input name="zecca" id="zecca" onChange={this.onChange} value={this.state.zecca === null ? '' : this.state.zecca} />
               </FormGroup>
               <FormGroup>
-                <Label for="lega_metallurgica">Lega metallurgica</Label>
-                <Input name="lega_metallurgica" id="lega_metallurgica" onChange={this.onChange} value={this.state.lega_metallurgica === null ? '' : this.state.lega_metallurgica} />
+                <Label for="lega_metallica">Lega metallica</Label>
+                <Input name="lega_metallica" id="lega_metallica" onChange={this.onChange} value={this.state.lega_metallica === null ? '' : this.state.lega_metallica} />
               </FormGroup>
               <FormGroup>
                 <Label for="orientamento_asse">Orientamento asse</Label>
@@ -260,6 +277,10 @@ class AddEditForm extends React.Component {
               <FormGroup>
                 <Label for="riferimento">Riferimento</Label>
                 <Input type="text" name="riferimento" id="riferimento" onChange={this.onChange} value={this.state.riferimento === null ? '' : this.state.riferimento} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="data_perizia">Data perizia</Label>
+                <Input type="text" name="data_perizia" id="data_perizia" onChange={this.onChange} value={this.state.data_perizia === null ? '' : this.state.data_perizia} />
               </FormGroup>
             </CardBody>
           </Card>

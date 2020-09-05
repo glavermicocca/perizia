@@ -3,6 +3,8 @@ import {
     loadIdToken
 } from "../utils/apiUtils";
 
+import { dati as datiImmagini } from './immagini'
+
 export function postPerizia(body) {
     const config = {
         method: "post",
@@ -14,7 +16,7 @@ export function postPerizia(body) {
     };
 
     return callApi(
-        "/perizia",
+        "/endpoint/perizia",
         config,
         datiRequest,
         datiSuccess,
@@ -33,7 +35,7 @@ export function postPeriziaItem(body) {
     };
 
     return callApi(
-        "/perizia",
+        "/endpoint/perizia",
         config,
         datiRequest,
         datiSuccessItem,
@@ -53,7 +55,7 @@ export function dati() {
     };
 
     return callApi(
-        "/crud",
+        "/endpoint/crud",
         config,
         datiRequest,
         datiSuccess,
@@ -84,8 +86,9 @@ export function datiSuccess(items) {
     };
 }
 
-export function datiSuccessItem(items) {
+export function datiSuccessItem(items, dispatch) {
     if (Array.isArray(items)) {
+        dispatch(datiImmagini(items[0].id))
         return {
             type: DATI_SUCCESS_ITEM,
             item: items[0]

@@ -2,15 +2,21 @@ import React, { Component } from 'react'
 import { Table, Button } from 'reactstrap';
 import ModalForm from '../Modals/Modal'
 
+import {
+  loadIdToken,
+} from "../../utils/apiUtils";
+
 class DataTable extends Component {
 
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
-      fetch('/crud', {
+      const idToken = loadIdToken();
+      fetch('/endpoint/crud', {
         method: 'delete',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${idToken}`
         },
         body: JSON.stringify({ id })
       })
@@ -36,14 +42,18 @@ class DataTable extends Component {
           <td>{item.anno}</td>
           <td>{item.valore}</td>
           <td>{item.uuid}</td>
-          <td style={{ width: "150px" }}>
+          <td style={{ width: "240px" }}>
             <div>
               <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState} onFailure={this.props.onFailure} />
               {' '}
               <Button color="danger" onClick={() => this.deleteItem(item.id)}>Del</Button>
+              {' '}
+              <Button color="primary" onClick={() => {
+                window.open(item.stato + '/' + item.anno + '/' + item.valore + '/' + item.uuid, '', "width=450,height=auto")
+              }}>link 🔗</Button>
             </div>
           </td>
-        </tr>
+        </tr >
       )
     })
 
@@ -61,7 +71,7 @@ class DataTable extends Component {
         <tbody>
           {items}
         </tbody>
-      </Table>
+      </Table >
     )
   }
 }
