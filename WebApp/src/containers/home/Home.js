@@ -37,12 +37,15 @@ class Home extends Component {
 
     return (
       <>
-        <h4>Perizia fotografica di Andrea Del Pup</h4>
+        <h4>Perizia di Andrea Del Pup</h4>
         <Card className="shadow p-3 mb-5 bg-white rounded">
           <CardBody>
-            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Generiche</h4><br></br></CardTitle>
+            <Carousel autoPlay={false} data={immagini} />
+          </CardBody>
+          <CardBody>
+            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Informazioni generiche</h4><br></br></CardTitle>
             <FormGroup>
-              <Label for="descrizione">Descrizione</Label>
+              <Label for="descrizione">Tipo moneta</Label>
               <h5 name="descrizione" id="descrizione">{item.descrizione}</h5>
             </FormGroup>
             <FormGroup>
@@ -81,7 +84,7 @@ class Home extends Component {
         </Card>
         <Card className="shadow p-3 mb-5 bg-white rounded">
           <CardBody>
-            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Specifiche</h4><br></br></CardTitle>
+            <CardTitle><h4>&nbsp;&nbsp;&nbsp;Informazioni specifiche</h4><br></br></CardTitle>
             <FormGroup>
               <Label for="peso">Peso</Label>
               <h5 name="peso" id="peso">{item.peso}</h5>
@@ -103,18 +106,17 @@ class Home extends Component {
               <h5 name="rarita" id="rarita">{item.rarita}</h5>
             </FormGroup>
             <FormGroup>
-              <Label for="variante">Variante</Label>
+              <Label for="variante">Errore/Variante</Label>
               <h5 name="variante" id="variante">{item.variante}</h5>
+            </FormGroup>
+            <FormGroup>
+              <Label for="collegamento">Collegamento a descrizione errore</Label>
+              <h5 name="collegamento" id="collegamento"><a href={item.collegamento} target="_blank">{item.collegamento} 🔗</a></h5>
             </FormGroup>
             <FormGroup>
               <Label for="note">Note</Label>
               <h5 name="note" id="note">{item.note}</h5>
             </FormGroup>
-          </CardBody>
-        </Card>
-        <Card className="d-flex justify-content-around shadow p-3 mb-5 bg-white rounded">
-          <CardBody>
-            <Carousel data={this.props.immagini} />
           </CardBody>
         </Card>
       </>

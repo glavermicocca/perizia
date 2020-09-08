@@ -12,11 +12,11 @@ const getTableData = (req, res, db) => {
 
 const postTableData = (req, res, db) => {
   const { stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
   const added = new Date()
   db('errori_di_coniazione').insert({
     stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note, added
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, added
   })
     .returning('*')
     .then(item => {
@@ -27,10 +27,10 @@ const postTableData = (req, res, db) => {
 
 const putTableData = (req, res, db) => {
   const { id, stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
   db('errori_di_coniazione').where({ id }).update({
     stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, note
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note
   })
     .returning('*')
     .then(item => {

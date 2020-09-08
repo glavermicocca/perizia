@@ -27,11 +27,11 @@ const postPerizia = (req, res, db) => {
 
 const postTableData = (req, res, db) => {
   const { stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
   const added = new Date()
   db('perizia').insert({
     stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, note, added
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, added
   })
     .returning('*')
     .then(item => {
@@ -43,10 +43,10 @@ const postTableData = (req, res, db) => {
 
 const putTableData = (req, res, db) => {
   const { id, stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, note } = req.body
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
   db('perizia').where({ id }).update({
     stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, note
+    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note
   })
     .returning('*')
     .then(item => {

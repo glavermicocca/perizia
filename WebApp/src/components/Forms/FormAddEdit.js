@@ -32,6 +32,7 @@ class AddEditForm extends React.Component {
     conservazione: '',
     rarita: '',
     variante: '',
+    collegamento : '',
     note: '',
 
     qrcode: ''
@@ -97,6 +98,7 @@ class AddEditForm extends React.Component {
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
+        collegamento: this.state.collegamento,
         note: this.state.note,
       })
     })
@@ -153,6 +155,7 @@ class AddEditForm extends React.Component {
         conservazione: this.state.conservazione,
         rarita: this.state.rarita,
         variante: this.state.variante,
+        collegamento: this.state.collegamento,
         note: this.state.note,
       })
     })
@@ -194,13 +197,14 @@ class AddEditForm extends React.Component {
         conservazione,
         rarita,
         variante,
+        collegamento,
         note } = this.props.item
 
       const qrcode = this.props.location.origin + '/' + stato + '/' + anno + '/' + valore + '/' + uuid
 
       this.setState({
         id, stato, anno, valore, uuid, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-        peso, diametro, spessore, conservazione, rarita, variante, note, qrcode
+        peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, qrcode
       })
     }
   }
@@ -247,7 +251,7 @@ class AddEditForm extends React.Component {
                 </Col>
               </Row>
               <FormGroup>
-                <Label for="descrizione">Descrizione</Label>
+                <Label for="descrizione">Tipo moneta</Label>
                 <Input type="text" name="descrizione" id="descrizione" onChange={this.onChange} value={this.state.descrizione === null ? '' : this.state.descrizione} />
               </FormGroup>
               <FormGroup>
@@ -308,8 +312,12 @@ class AddEditForm extends React.Component {
                 <Input type="text" name="rarita" id="rarita" onChange={this.onChange} value={this.state.rarita} />
               </FormGroup>
               <FormGroup>
-                <Label for="variante">Variante</Label>
+                <Label for="variante">Errore/Variante</Label>
                 <Input type="text" name="variante" id="variante" onChange={this.onChange} value={this.state.variante} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="collegamento">Collegamento a descrizione errore</Label>
+                <Input type="text" name="collegamento" id="collegamento" onChange={this.onChange} value={this.state.collegamento} />
               </FormGroup>
               <FormGroup>
                 <Label for="note">Note</Label>
