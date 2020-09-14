@@ -72,10 +72,10 @@ class ModalForm extends Component {
           <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
           <ModalBody>
             <AddEditForm
-              location={location}
+              location={document.location}
               addItemToState={this.props.addItemToState}
               updateState={this.props.updateState}
-              onFailure={this.props.onFailure}
+              //onFailure={this.props.onFailure}
               toggle={this.toggle}
               setItemId={this.setItemId}
               item={this.props.item} />
@@ -112,7 +112,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUploadFile: files => dispatch(setUploadFile(files)),
-  onFailure: err => dispatch(onFailure(err)),
+  //onFailure: err => dispatch(onFailure(err)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalForm)

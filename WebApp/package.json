@@ -33,6 +33,7 @@
   "devDependencies": {
     "react-scripts": "3.4.3"
   },
+  "proxy":"http://localhost:3000/",
   "dependencies": {
     "axios": "^0.20.0",
     "bootstrap": "^5.0.0-alpha.1",

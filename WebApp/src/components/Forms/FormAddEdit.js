@@ -66,7 +66,7 @@ class AddEditForm extends React.Component {
     e.preventDefault()
 
     const idToken = loadIdToken();
-    fetch('/endpoint/crud', {
+    fetch('/crud', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ class AddEditForm extends React.Component {
     e.preventDefault()
 
     const idToken = loadIdToken();
-    fetch('/endpoint/crud', {
+    fetch('/crud', {
       method: 'put',
       headers: {
         'Content-Type': 'application/json',

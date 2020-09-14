@@ -16,8 +16,8 @@ import "./home.css";
 class Home extends Component {
 
   getItems() {
-    console.log(location.pathname)
-    let arrSearch = location.pathname.split('/')
+    console.log(document.location.pathname)
+    let arrSearch = document.location.pathname.split('/')
     console.log(arrSearch)
     if (arrSearch.length >= 5) {
       const body = {

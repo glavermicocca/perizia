@@ -12,7 +12,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
-var port = 3002;
+var port = 3000;
 
 // UPLOAD FILE
 const multer = require('multer')

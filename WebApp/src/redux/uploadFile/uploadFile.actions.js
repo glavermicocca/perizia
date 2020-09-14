@@ -44,7 +44,7 @@ export const uploadFile = (files, id) => dispatch => {
       try {
         await axios({
           baseURL: '/',
-          url: '/endpoint/file_immagini',
+          url: '/file_immagini',
           method: 'post',
           data: formPayload,
           headers,

@@ -14,11 +14,18 @@
             "program": "${file}",
             "env":{
                 "PGUSER": "postgres",
-                "PGHOST": "192.168.5.59",
+                "PGHOST": "localhost",
                 "PGPASSWORD": "example",
                 "PGDATABASE": "postgres",
-                "PGPORT": "5433"
+                "PGPORT": "5432"
             }
+            // "env":{
+            //     "PGUSER": "postgres",
+            //     "PGHOST": "192.168.5.59",
+            //     "PGPASSWORD": "example",
+            //     "PGDATABASE": "postgres",
+            //     "PGPORT": "5433"
+            // }
         }
     ]
 }

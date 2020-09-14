@@ -10,7 +10,7 @@ export default class carousel extends Component {
         data.forEach((element, index) => {
             items.push(
                 {
-                    src: '/endpoint/' + element.filename,
+                    src: '/' + element.filename,
                     altText: element.originalname,
                     caption: ''
                 }

@@ -15,7 +15,7 @@ export function dati(id) {
     };
 
     return callApi(
-        "/endpoint/crud_immagini?id=" + id,
+        "/crud_immagini?id=" + id,
         config,
         datiRequest,
         datiSuccess,

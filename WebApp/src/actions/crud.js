@@ -16,7 +16,7 @@ export function postPerizia(body) {
     };
 
     return callApi(
-        "/endpoint/perizia",
+        "/perizia",
         config,
         datiRequest,
         datiSuccess,
@@ -35,7 +35,7 @@ export function postPeriziaItem(body) {
     };
 
     return callApi(
-        "/endpoint/perizia",
+        "/perizia",
         config,
         datiRequest,
         datiSuccessItem,
@@ -55,7 +55,7 @@ export function dati() {
     };
 
     return callApi(
-        "/endpoint/crud",
+        "/crud",
         config,
         datiRequest,
         datiSuccess,

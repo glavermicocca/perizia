@@ -12,7 +12,7 @@ class DataTable extends Component {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
       const idToken = loadIdToken();
-      fetch('/endpoint/crud', {
+      fetch('/crud', {
         method: 'delete',
         headers: {
           'Content-Type': 'application/json',

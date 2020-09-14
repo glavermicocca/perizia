@@ -59,7 +59,7 @@ export function login(user, password) {
   };
 
   return callApi(
-    "/endpoint/api/login",
+    "/api/login",
     config,
     loginRequest(user),
     loginSuccess,
@@ -105,7 +105,7 @@ export function logout(user) {
   };
 
   return callApi(
-    "/endpoint/api/logout",
+    "/api/logout",
     config,
     logoutRequest,
     logoutSuccess,
@@ -151,7 +151,7 @@ export function dati(user) {
   };
 
   return callApi(
-    "/endpoint/api/dati",
+    "/api/dati",
     config,
     datiRequest,
     datiSuccess,
