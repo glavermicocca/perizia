@@ -4,7 +4,7 @@ services:
     image: perizia_server_app:1.0.0
     restart: always
     depends_on:
-      - db
+      # - db
       - adminer
     build:
       context: ./
@@ -17,6 +17,8 @@ services:
       PGPASSWORD: example
       PGDATABASE: postgres
       PGPORT: 5432
+    volumes:
+      - ./ServerApp:/ServerApp
     ports:
       - 3002:3002
     networks:
@@ -26,7 +28,7 @@ services:
     image: perizia_web_app:1.0.0
     restart: always
     depends_on:
-      - db
+      # - db
       - adminer
       - perizia_server_app
     build:
@@ -41,16 +43,15 @@ services:
       - 3010:3000
     networks:
       - internal-network
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-    networks:
-      - internal-network
-    ports:
-      - 5433:5432
-
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: example
+  #   networks:
+  #     - internal-network
+  #   ports:
+  #     - 5433:5432
   adminer:
     image: adminer
     restart: always
