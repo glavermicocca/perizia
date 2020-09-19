@@ -8,6 +8,9 @@ import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import App from "./containers/app/App";
 
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+
 ///////////////////////////////////////////
 // jquery and tether for bootstrap to use
 // alternative is to link them in index.html
@@ -21,6 +24,8 @@ require("bootstrap/dist/js/bootstrap");
 
 const store = configureStore();
 connectToAlerts(store);
+
+
 
 ReactDOM.render(
   <Provider store={store}>

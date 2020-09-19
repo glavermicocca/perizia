@@ -32,7 +32,7 @@ class AddEditForm extends React.Component {
     conservazione: '',
     rarita: '',
     variante: '',
-    collegamento : '',
+    collegamento: '',
     note: '',
 
     qrcode: ''

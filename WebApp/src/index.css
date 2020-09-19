@@ -1,3 +1,11 @@
 body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
+
+td {
+  white-space: normal !important; 
+  word-wrap: break-word;  
+}
+table {
+  table-layout: fixed;
+}

@@ -39,6 +39,10 @@ app.use((req, res, next) => {
 // and support socket io
 var io = require("socket.io")(server);
 
+var cors = require('cors')
+
+app.use(cors())
+
 // Test server is working (GET http://localhost:3001/api)
 app.get("/api/", function (req, res) {
   res.json({ message: "Hi, welcome to the server api!" });
@@ -157,6 +161,9 @@ var db = require('knex')({
   }
 });
 
+const { attachPaginate } = require('knex-paginate');
+attachPaginate(db);
+
 const checkToken = (req, res, next) => {
   var jwtToken = extractToken(req);
   try {
@@ -174,6 +181,7 @@ const checkToken = (req, res, next) => {
 // App Routes - Perizia
 const perizia = require('./controllers/perizia')
 app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
+app.post('/crudQuery', checkToken, (req, res) => perizia.getTableDatap(req, res, db))
 app.post('/crud', checkToken, (req, res) => perizia.postTableData(req, res, db))
 app.put('/crud', checkToken, (req, res) => perizia.putTableData(req, res, db))
 app.delete('/crud', checkToken, (req, res) => perizia.deleteTableData(req, res, db))

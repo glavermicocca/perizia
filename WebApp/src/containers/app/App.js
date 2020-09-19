@@ -15,7 +15,7 @@ import Login from "../login/Login";
 import PrivateRoute from "../misc/PrivateRoute";
 import Home from "../home/Home";
 import UsersPage from "../user/UsersPage";
-import ReposPage from "../repo/ReposPage";
+import ReposPage from "../repo/ReposPage2.jsx";
 import About from "../about/About";
 import NotFound from "../misc/NotFound";
 
@@ -60,21 +60,19 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <div className="container">
-            {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
-            <div className="appContent">
-              <Switch>
-                <Route path="/login" component={Login} />
-                <PrivateRoute
-                  path="/app"
-                  isAuthenticated={isAuthenticated}
-                  component={Dati}
-                />
-                <Route path="/"
-                  component={Home} />
-                {/* <Route component={NotFound} /> */}
-              </Switch>
-            </div>
+          {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
+          <div className="appContent">
+            <Switch>
+              <Route path="/login" component={Login} />
+              <PrivateRoute
+                path="/app"
+                isAuthenticated={isAuthenticated}
+                component={ReposPage}
+              />
+              <Route path="/"
+                component={Home} />
+              {/* <Route component={NotFound} /> */}
+            </Switch>
           </div>
         </div>
       </Router>
