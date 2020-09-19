@@ -38,18 +38,18 @@ function genericPagination(req, res, db, tableName) {
   if (filters != null) {
     var first = true
     for (let key of Object.keys(filters)) {
-      if(first){
-        first =false
-        if(filters[key].caseSensitive == true) {
-          query.where(key, filters[key].comparator, '%'+filters[key].filterVal+'%')
+      if (first) {
+        first = false
+        if (filters[key].caseSensitive == true) {
+          query.where(key, filters[key].comparator, '%' + filters[key].filterVal + '%')
         } else {
-          query.where(key, "ILIKE", '%'+filters[key].filterVal+'%')
+          query.where(key, "ILIKE", '%' + filters[key].filterVal + '%')
         }
       } else {
-        if(filters[key].caseSensitive == true) {
-          query.orWhere(key, filters[key].comparator, '%'+filters[key].filterVal+'%')
+        if (filters[key].caseSensitive == true) {
+          query.orWhere(key, filters[key].comparator, '%' + filters[key].filterVal + '%')
         } else {
-          query.orWhere(key, "ILIKE", '%'+filters[key].filterVal+'%')
+          query.orWhere(key, "ILIKE", '%' + filters[key].filterVal + '%')
         }
       }
     }
@@ -75,8 +75,8 @@ function genericPagination(req, res, db, tableName) {
     //   res.json({ dataExists: 'false' })
     // }
   }).catch(err =>
-    res.status(400).json({ 
-      dbError: 'db error', err 
+    res.status(400).json({
+      dbError: 'db error', err
     }))
 }
 
@@ -111,13 +111,10 @@ const postTableData = (req, res, db) => {
       res.status(400).json({ dbError: 'db error' }))
 }
 
+
 const putTableData = (req, res, db) => {
-  const { id, stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
-  db('perizia').where({ id }).update({
-    stato, anno, uuid, valore, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note
-  })
+  const { rowId, dataField, newValue } = req.body
+  db('perizia').where({ id: rowId }).update({ [dataField]: newValue })
     .returning('*')
     .then(item => {
       res.json(item)

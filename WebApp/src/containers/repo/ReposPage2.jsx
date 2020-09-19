@@ -201,11 +201,11 @@ const RemotePagination = ({
           {...props.columnToggleProps}
           onColumnToggle={(field) => {
             console.log(field);
-            columns.forEach((item)=>{
-              if(item.dataField == field){
-                item.hidden = !item.hidden
+            columns.forEach((item) => {
+              if (item.dataField == field) {
+                item.hidden = !item.hidden;
               }
-            })
+            });
             props.columnToggleProps.onColumnToggle(field);
           }}
         />
@@ -221,31 +221,24 @@ const RemotePagination = ({
           })}
           onTableChange={onTableChange}
           expandRow={expandRow}
+          cellEdit={cellEditFactory({
+            mode: "click",
+            blurToSave: true,
+            beforeSaveCell(oldValue, newValue, row, column, done) {
+              setTimeout(() => {
+                if (window.confirm("Do you want to accep this change?")) {
+                  done(); // contine to save the changes
+                } else {
+                  done(false); // reject the changes
+                }
+              }, 0);
+              return { async: true };
+            },
+          })}
         />
       </div>
     )}
   </ToolkitProvider>
-);
-
-const RemotePagination1 = ({
-  data,
-  page,
-  sizePerPage,
-  onTableChange,
-  totalSize,
-}) => (
-  <div>
-    <BootstrapTable
-      remote
-      keyField="id"
-      data={data}
-      columns={columns}
-      filter={filterFactory()}
-      pagination={paginationFactory({ page, sizePerPage, totalSize })}
-      onTableChange={onTableChange}
-      expandRow={expandRow}
-    />
-  </div>
 );
 
 class Container extends React.Component {
@@ -288,7 +281,7 @@ class Container extends React.Component {
 
   handleTableChange = async (
     type,
-    { page, sizePerPage, sortField, sortOrder, filters }
+    { page, sizePerPage, sortField, sortOrder, filters, cellEdit }
   ) => {
     console.log(type);
 
@@ -299,6 +292,36 @@ class Container extends React.Component {
     };
 
     console.log(page, sizePerPage, sortField, sortOrder, filters);
+
+    if (type == "cellEdit") {
+      const { rowId, dataField, newValue } = cellEdit;
+      console.log(rowId, dataField, newValue);
+      try {
+        const response = await axios({
+          baseURL: "http://localhost:3000",
+          url: "/crud",
+          method: "put",
+          headers,
+          data: { rowId, dataField, newValue },
+        });
+        let data = response.data;
+        console.log(data[0]);
+        var copiedData = this.state.data.map((item) => {
+          if (item.id == rowId) {
+            return data[0];
+          } else {
+            return item;
+          }
+        });
+        this.setState({
+          data: copiedData,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      return;
+    }
 
     try {
       const response = await axios({
@@ -336,6 +359,7 @@ class Container extends React.Component {
         sizePerPage={sizePerPage}
         totalSize={total}
         onTableChange={this.handleTableChange}
+        cellEdit={cellEditFactory({ mode: "click" })}
       />
     );
   }
