@@ -1,4 +1,5 @@
 {
+  "prettier": ".prettierrc.yaml",
   "name": "react-redux-starter-kit",
   "homepage": "https://cloudmu.github.com/react-redux-starter-kit",
   "version": "1.0.0",
@@ -34,6 +35,8 @@
   "proxy": "http://127.0.0.1:3000/",
   "dependencies": {
     "@babel/core": "7.9.0",
+    "@react-pdf/renderer": "^1.6.11",
+    "@react-pdf/styled-components": "^1.4.0",
     "@svgr/webpack": "4.3.3",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",

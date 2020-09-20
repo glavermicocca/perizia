@@ -8,6 +8,8 @@ import axios from "axios";
 
 import { loadIdToken } from "../../utils/apiUtils";
 
+import QRCode from "qrcode.react";
+
 const columns = [
   {
     dataField: "id",
@@ -177,8 +179,6 @@ const RemotePagination = ({
   </div>
 );
 
-
-
 class RowExpanded extends React.Component {
   constructor(props) {
     super(props);
@@ -188,7 +188,12 @@ class RowExpanded extends React.Component {
 
   render() {
     const { row } = this.props;
-    return <div>{row.id}</div>
+    return (
+      <div>
+        {row.id}{" "}
+        <QRCode level="L" value={row.id + "/" + row.stato + "/" + row.anno} />
+      </div>
+    );
   }
 }
 

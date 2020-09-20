@@ -10,6 +10,10 @@ import axios from "axios";
 
 import { loadIdToken } from "../../utils/apiUtils";
 
+import { PDFViewer } from "@react-pdf/renderer";
+
+import MyDocument from "./cartellino";
+
 const { ToggleList } = ColumnToggle;
 
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
@@ -49,16 +53,31 @@ const columns = [
     text: "Added",
     sort: true,
     hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "stato",
     text: "Stato",
-    sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "anno",
     text: "Anno",
-    sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -66,17 +85,33 @@ const columns = [
   {
     dataField: "valore",
     text: "Valore",
-    sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "uuid",
     text: "UUID",
-    sort: true,
+    hidden: false,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "collegamento",
     text: "Collegamento",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -85,6 +120,10 @@ const columns = [
     dataField: "conservazione",
     text: "Conservazione",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -93,6 +132,10 @@ const columns = [
     dataField: "contorno",
     text: "Contorno",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -101,6 +144,11 @@ const columns = [
     dataField: "data_perizia",
     text: "Data perizia",
     sort: true,
+    sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -109,6 +157,11 @@ const columns = [
     dataField: "descrizione",
     text: "Descrizione",
     sort: true,
+    sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
     editor: {
       type: Type.TEXTAREA,
     },
@@ -117,67 +170,145 @@ const columns = [
     dataField: "diametro",
     text: "Diametro",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "lega_metallica",
     text: "Lega metallica",
     sort: true,
+    hidden: true,
     filter: textFilter({
       caseSensitive: false, // default is false, and true will only work when comparator is LIKE
     }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "note",
     text: "Note",
     sort: true,
+    hidden: true,
     filter: textFilter({
       caseSensitive: false, // default is false, and true will only work when comparator is LIKE
     }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "orientamento_asse",
     text: "Orientamento asse",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "periodo",
     text: "Periodo",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "peso",
     text: "Peso",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "rarita",
     text: "Rarita",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "riferimento",
     text: "Riferimento",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "spessore",
     text: "Spessore",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "valuta",
     text: "Valuta",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "variante",
     text: "Variante",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
   {
     dataField: "zecca",
     text: "Zecca",
     sort: true,
+    hidden: true,
+    filter: textFilter({
+      caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+    }),
+    editor: {
+      type: Type.TEXTAREA,
+    },
   },
 ];
 
@@ -185,6 +316,23 @@ const expandRow = {
   renderer: (row) => <RowExpanded row={row} />,
   showExpandColumn: true,
   expandByColumnOnly: true,
+};
+
+var rowSelected = [];
+const selectRowProps = {
+  mode: "checkbox",
+  onSelect: (row, isSelect, rowIndex, e) => {
+    if (isSelect == true) {
+      rowSelected.push(row);
+    } else {
+      rowSelected = rowSelected.filter((value, index, arr) => {
+        if (value.id != row.id) {
+          return value;
+        }
+      });
+    }
+    console.log(rowSelected);
+  },
 };
 
 const RemotePagination = ({
@@ -211,6 +359,9 @@ const RemotePagination = ({
         />
         <hr />
         <BootstrapTable
+          striped={true}
+          hover={true}
+          condensed={true}
           remote
           {...props.baseProps}
           filter={filterFactory()}
@@ -221,6 +372,7 @@ const RemotePagination = ({
           })}
           onTableChange={onTableChange}
           expandRow={expandRow}
+          selectRow={selectRowProps}
           cellEdit={cellEditFactory({
             mode: "click",
             blurToSave: true,
@@ -261,9 +413,9 @@ class Container extends React.Component {
         headers,
         data: {
           page: 1,
-          sizePerPage: 3,
+          sizePerPage: 10,
           sortField: "id",
-          sortOrder: "asc",
+          sortOrder: "desc",
         },
       });
       let data = response.data;
@@ -319,48 +471,62 @@ class Container extends React.Component {
       } catch (error) {
         console.error(error);
       }
-
-      return;
     }
 
-    try {
-      const response = await axios({
-        baseURL: "http://localhost:3000",
-        url: "/crudQuery",
-        method: "post",
-        headers,
-        data: {
-          page,
-          sizePerPage,
-          sortField: sortField || "id",
-          sortOrder: sortOrder || "asc",
-          filters,
-        },
-      });
-      let data = response.data;
-      this.setState({
-        page: Number(data.current_page),
-        data: data.data,
-        sizePerPage: Number(data.per_page),
-        total: Number(data.total),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    if (type == "filter" || type == "pagination" || type == "sort")
+      try {
+        const response = await axios({
+          baseURL: "http://localhost:3000",
+          url: "/crudQuery",
+          method: "post",
+          headers,
+          data: {
+            page,
+            sizePerPage,
+            sortField: sortField || "id",
+            sortOrder: sortOrder || "desc",
+            filters,
+          },
+        });
+        let data = response.data;
+        this.setState({
+          page: Number(data.current_page),
+          data: data.data,
+          sizePerPage: Number(data.per_page),
+          total: Number(data.total),
+        });
+      } catch (error) {
+        console.error(error);
+      }
   };
+
+  MyComponent = MyDocument(rowSelected);
 
   render() {
     if (this.state == null) return null;
     const { data, sizePerPage, page, total } = this.state;
     return (
-      <RemotePagination
-        data={data}
-        page={page}
-        sizePerPage={sizePerPage}
-        totalSize={total}
-        onTableChange={this.handleTableChange}
-        cellEdit={cellEditFactory({ mode: "click" })}
-      />
+      <div>
+        <RemotePagination
+          data={data}
+          page={page}
+          sizePerPage={sizePerPage}
+          totalSize={total}
+          onTableChange={this.handleTableChange}
+          cellEdit={cellEditFactory({ mode: "click" })}
+        />
+        <button
+          type="button"
+          className={`btn btn-primary`}
+          data-toggle="button"
+          onClick={(e) => {
+            this.setState({ rows: true });
+          }}
+        >
+          Genera PDF
+        </button>
+        {this.state.rows && <PDFViewer style={{width:"100%", height:"800px"}}>{MyDocument(rowSelected)}</PDFViewer>}
+      </div>
     );
   }
 }
