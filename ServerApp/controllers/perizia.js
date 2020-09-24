@@ -106,6 +106,19 @@ const postPerizia = (req, res, db) => {
 };
 
 const postTableData = (req, res, db) => {
+  const added = new Date();
+  db("perizia")
+    .insert({
+      added,
+    })
+    .returning("*")
+    .then((item) => {
+      res.json(item);
+    })
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
+
+const postTableDataOld = (req, res, db) => {
   const {
     stato,
     anno,
@@ -180,7 +193,7 @@ const deleteTableData = (req, res, db) => {
     .where({ id })
     .del()
     .then(() => {
-      res.json({ delete: "true" });
+      res.json({ delete: true });
     })
     .catch((err) => res.status(400).json({ dbError: "db error" }));
 };

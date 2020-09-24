@@ -165,26 +165,26 @@ const RemotePagination = ({
   onTableChange,
   totalSize,
 }) => (
-  <div>
-    <BootstrapTable
-      remote
-      keyField="id"
-      data={data}
-      columns={columns}
-      filter={filterFactory()}
-      pagination={paginationFactory({ page, sizePerPage, totalSize })}
-      onTableChange={onTableChange}
-      expandRow={expandRow}
-    />
-  </div>
-);
+    <div>
+      <BootstrapTable
+        remote
+        keyField="id"
+        data={data}
+        columns={columns}
+        filter={filterFactory()}
+        pagination={paginationFactory({ page, sizePerPage, totalSize })}
+        onTableChange={onTableChange}
+        expandRow={expandRow}
+      />
+    </div>
+  );
 
 class RowExpanded extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  async componentDidMount() {}
+  async componentDidMount() { }
 
   render() {
     const { row } = this.props;
@@ -192,6 +192,9 @@ class RowExpanded extends React.Component {
       <div>
         {row.id}{" "}
         <QRCode level="L" value={row.id + "/" + row.stato + "/" + row.anno} />
+        <button onClick={(e) => {
+          this.props.clickElimina(row.id)
+        }}>Elimina</button>
       </div>
     );
   }
