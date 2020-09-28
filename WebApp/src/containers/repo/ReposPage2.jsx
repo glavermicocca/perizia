@@ -2,8 +2,8 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import ToolkitProvider, { ColumnToggle } from "react-bootstrap-table2-toolkit";
-import RowExpanded from "./rowExpanded";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import { RowExpanded } from "./rowExpanded";
 
 import React from "react";
 import axios from "axios";
@@ -12,9 +12,9 @@ import { loadIdToken } from "../../utils/apiUtils";
 
 import { PDFViewer } from "@react-pdf/renderer";
 
-import MyDocument from "./cartellino";
+import Cartellini from "./Cartellini";
 
-const { ToggleList } = ColumnToggle;
+import QRCode from "qrcode.react";
 
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   <div
@@ -41,13 +41,45 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   </div>
 );
 
-const expandRow = {
-  renderer: (row) => <RowExpanded row={row} />,
-  showExpandColumn: true,
-  expandByColumnOnly: true,
-};
-
 class Container extends React.Component {
+
+  expandRow = {
+    renderer: (row) => <RowExpanded row={row} clickElimina={async (id) => {
+      const idToken = loadIdToken();
+
+      const headers = {
+        Authorization: `Bearer ${idToken}`,
+      };
+      try {
+        const response = await axios({
+          baseURL: "http://localhost:3000",
+          url: "/crud",
+          method: "delete",
+          headers,
+          data: { id },
+        });
+        let data = response.data;
+        console.log(data);
+        if (data.delete == true) {
+          var copiedData = this.state.data.filter((item) => {
+            if (item.id == id) { return false }
+            else { return true } //aggingi quelli non eliminati
+          })
+
+          this.setState({
+            data: copiedData,
+          });
+          window.alert(`Riga ${id} eliminata correttamente`)
+        } else {
+          window.alert('Nessuna riga eliminata...', data)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }} />,
+    showExpandColumn: true,
+    expandByColumnOnly: true,
+  };
 
   rowSelected = [];
   selectRowProps = {
@@ -104,7 +136,7 @@ class Container extends React.Component {
                 totalSize,
               })}
               onTableChange={onTableChange}
-              expandRow={expandRow}
+              expandRow={this.expandRow}
               selectRow={this.selectRowProps}
               cellEdit={cellEditFactory({
                 mode: "click",
@@ -126,16 +158,21 @@ class Container extends React.Component {
       </ToolkitProvider>
     );
 
+  columnGeneratorQrCode(cell, row) {
+    return <QRCode size="330" bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
+  }
 
   columns = [
     {
-      dataField: "delete",
+      dataField: "qrcode",
       isDummyField: true,
-      text: "Delete",
-      events: {
-        onClick: (e, column, columnIndex, row, rowIndex) => { console.log(row) },
-      },
-      editable: false
+      text: "qrcode",
+      editable: false,
+      hidden: false,
+      // events: {
+      //   onClick: (e, column, columnIndex, row, rowIndex) => { console.log(row) },
+      // },
+      formatter: this.columnGeneratorQrCode
     },
     {
       dataField: "id",
@@ -514,7 +551,7 @@ class Container extends React.Component {
       }
   };
 
-  MyComponent = MyDocument(this.rowSelected);
+  //MyComponent = MyDocument(this.rowSelected);
 
   render() {
     if (this.state == null) return null;
@@ -563,42 +600,6 @@ class Container extends React.Component {
         >
           Aggiungi riga
         </button>
-        <button type="button"
-          className={`btn btn-danger`}
-          data-toggle="button" onClick={async (e) => {
-            const idToken = loadIdToken();
-
-            const headers = {
-              Authorization: `Bearer ${idToken}`,
-            };
-            var id
-            try {
-              const response = await axios({
-                baseURL: "http://localhost:3000",
-                url: "/crud",
-                method: "delete",
-                headers,
-                data: { rowSelected: this.rowSelected },
-              });
-              let data = response.data;
-              console.log(data);
-              if (data.delete == true) {
-                var copiedData = this.state.data.filter((item) => {
-                  if (item.id == id) { return false }
-                  else { return true } //aggingi quelli non eliminati
-                })
-
-                this.setState({
-                  data: copiedData,
-                });
-                window.alert(`Riga ${id} eliminata correttamente`)
-              } else {
-                window.alert('Nessuna riga eliminata...', data)
-              }
-            } catch (error) {
-              console.error(error);
-            }
-          }}>delete</button>
         <button
           type="button"
           className={`btn btn-primary`}
@@ -609,7 +610,8 @@ class Container extends React.Component {
         >
           Genera PDF
         </button>
-        {this.state.rows && <PDFViewer style={{ width: "100%", height: "800px" }}>{MyDocument(this.rowSelected)}</PDFViewer>}
+        <br />
+        {this.state.rows && <PDFViewer className="center" style={{ width: "50%", height: "1024px" }}>{Cartellini(this.rowSelected, this.state.uri)}</PDFViewer>}
       </div>
     );
   }

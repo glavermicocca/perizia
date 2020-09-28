@@ -180,13 +180,19 @@ const checkToken = (req, res, next) => {
 
 // App Routes - Perizia
 const perizia = require('./controllers/perizia')
-app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
 app.post('/crudQuery', checkToken, (req, res) => perizia.getTableDatap(req, res, db))
+app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
 app.post('/crud', checkToken, (req, res) => perizia.postTableData(req, res, db))
 app.put('/crud', checkToken, (req, res) => perizia.putTableData(req, res, db))
 app.delete('/crud', checkToken, (req, res) => perizia.deleteTableData(req, res, db))
 // App Route - Singola Perizia
 app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db))
+// Errori di coniazione
+const errori = require('./controllers/errori')
+app.get('/crud_errori', checkToken, (req, res) => errori.getTableData(req, res, db))
+app.post('/crud_errori', checkToken, (req, res) => errori.postTableData(req, res, db))
+app.put('/crud_errori', checkToken, (req, res) => errori.putTableData(req, res, db))
+app.delete('/crud_errori', checkToken, (req, res) => errori.deleteTableData(req, res, db))
 
 // App Routes - Immagini
 const immagini = require('./controllers/immagini')
@@ -200,7 +206,7 @@ app.delete('/crud_immagini', checkToken, (req, res) => {
 // -------------------------------------------------------------------------------------
 
 // creating POST endpoint /file
-app.post('/file_immagini', checkToken, upload.single('file'), (req, res) => {
+app.post('/upload_file', checkToken, upload.single('file'), (req, res) => {
   console.log('body', req.file.length, req.file)
   immagini.postTableData(req, res, db)
 })

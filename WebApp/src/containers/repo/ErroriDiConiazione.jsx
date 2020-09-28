@@ -107,7 +107,7 @@ export const RowExpanded = (props) => {
             return true
           }
         })
-        setListFiles(copiedList)
+        setListFiles(copiedList)n
       }
     } catch (error) {
       console.error(error);
