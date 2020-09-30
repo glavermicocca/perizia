@@ -1,18 +1,16 @@
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 
 import { loadIdToken } from "../../utils/apiUtils";
 
 import QRCode from "qrcode.react";
 
+import DataTableErroriDiConiazione from "./DataTableErroriDiConiazione"
+
 export const RowExpanded = (props) => {
 
-  const { row } = props
+  const { row, clickEliminaRow } = props
 
   const [file, selectFile] = useState(null)
   const [listFiles, setListFiles] = useState([])
@@ -26,6 +24,11 @@ export const RowExpanded = (props) => {
   }
 
   const onClickHandler = async () => {
+
+    if (file == null) {
+      window.alert('Errore caricamento immagina... Seleziona un file differente e riprova...')
+      return
+    }
 
     const idToken = loadIdToken();
 
@@ -46,14 +49,15 @@ export const RowExpanded = (props) => {
       });
       let dataResponse = response.data;
 
-      console.log("qui...", dataResponse);
       selectFile(null)
+
       if (dataResponse.length > 0) {
         setListFiles([...listFiles, dataResponse[0]])
       } else {
         window.alert('Nessun file caricato...', dataResponse)
       }
     } catch (error) {
+      selectFile(null)
       console.error(error);
     }
   }
@@ -72,9 +76,7 @@ export const RowExpanded = (props) => {
         headers,
       });
       let dataResponse = response.data;
-      console.log(dataResponse);
       if (dataResponse) {
-        //TODO
         setListFiles(dataResponse)
       }
     } catch (error) {
@@ -107,7 +109,7 @@ export const RowExpanded = (props) => {
             return true
           }
         })
-        setListFiles(copiedList)n
+        setListFiles(copiedList)
       }
     } catch (error) {
       console.error(error);
@@ -115,34 +117,58 @@ export const RowExpanded = (props) => {
   }
 
   useEffect(() => {
-    console.log("use")
+    console.log(row)
     getData(row)
   }, [])
 
+  const GeneratorQrCode = (row) => {
+    return <QRCode size={330} bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 120, height: 120 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
+  }
+
   return (
     <div>
-      {row.id}{" "}
-      <QRCode level="L" value={row.id + "/" + row.stato + "/" + row.anno} />
-      {listFiles.map((item, index) => {
-        return <div key={index}><p>{item.originalname}
+      <div className="card border-primary mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
+        <div className="card-header">QrCode</div>
+        <div className="card-body text-primary">
+          <h5 className="card-title"><a href={row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}>{row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}</a></h5>
+          <GeneratorQrCode />
+          <br />
           <button type="button"
             className={`btn btn-danger`}
             data-toggle="button" onClick={(e) => {
-              if (window.confirm("Do you want to delete?")) {
-                deleteFile(item.filename)
+              if (window.confirm("Sei sicuro di voler eliminare questa riga?")) {
+                clickEliminaRow(row.id)
               }
-            }}>Elimina</button>
-        </p></div>
-      })}
-      <button type="button"
-        className={`btn btn-danger`}
-        data-toggle="button" onClick={(e) => {
-          if (window.confirm("Do you want to delete?")) {
-            this.props.clickElimina(row.id)
-          }
-        }}>Elimina</button>
-      <input type="file" name="file" onChange={onChangeHandler} />
-      <button type="button" className="btn btn-success btn-block" onClick={onClickHandler}>Upload</button>
+            }}>Elimina Riga</button>
+        </div>
+      </div>
+      <div className="card border-primary mb-3 mx-auto" style={{}}>
+        <div className="card-header">Immagini</div>
+        <div className="card-body text-primary">
+          <div className="list-group">
+            {listFiles.map((immagine, index) => {
+              return <a key={index} className="list-group-item list-group-item-action flex-column align-items-start">
+                <img src={'http://localhost:3000/static/' + immagine.filename} style={{ width: "100px", height: "auto" }} />
+                <div className="d-flex w-100 justify-content-between">
+                  <h6 className="mb-1">{immagine.originalname}</h6>
+                  <button type="button"
+                    className={`btn btn-danger`}
+                    data-toggle="button" onClick={(e) => {
+                      if (window.confirm("Sei sicuro di voler eliminare questa immagine???")) {
+                        deleteFile(immagine.filename)
+                      }
+                    }}>Elimina Immagine</button>
+                </div>
+              </a>
+            })}
+          </div>
+          <div className="mx-auto m-2" style={{ maxWidth: "400px" }}>
+            <input type="file" name="file" onChange={onChangeHandler} />
+            <button type="button" className="btn btn-success" onClick={onClickHandler}>Carica</button>
+          </div>
+        </div>
+      </div>
+      <DataTableErroriDiConiazione row={props.row} />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
-import { RowExpanded } from "./rowExpanded";
+import { RowExpanded } from "./RowExpand";
 
 import React from "react";
 import axios from "axios";
@@ -18,8 +18,8 @@ import QRCode from "qrcode.react";
 
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   <div
-    className="btn-group btn-group-toggle btn-group-horizontal"
-    data-toggle="buttons"
+  // className="btn-group btn-group-toggle btn-group-horizontal"
+  // data-toggle="buttons"
   >
     {columns
       .map((column) => ({
@@ -30,7 +30,7 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
         <button
           type="button"
           key={column.dataField}
-          className={`btn btn-warning ${column.toggle ? "active" : ""}`}
+          className={`m-1 btn btn-warning ${column.toggle ? "active" : ""}`}
           data-toggle="button"
           aria-pressed={column.toggle ? "true" : "false"}
           onClick={() => onColumnToggle(column.dataField)}
@@ -41,10 +41,46 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   </div>
 );
 
-class Container extends React.Component {
+class DataTablePerizia extends React.Component {
+
+  AddButton = () => {
+    return <button
+      type="button"
+      className={`btn btn-primary m-1`}
+      data-toggle="button"
+      onClick={async (e) => {
+
+        const idToken = loadIdToken();
+
+        const headers = {
+          Authorization: `Bearer ${idToken}`,
+        };
+
+        try {
+          const response = await axios({
+            baseURL: "http://localhost:3000",
+            url: "/crud",
+            method: "post",
+            headers,
+            data: {},
+          });
+          let data = response.data;
+          console.log(data[0]);
+          var copiedData = [data[0], ...this.state.data]
+          this.setState({
+            data: copiedData,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }}
+    >
+      Aggiungi riga
+  </button>
+  }
 
   expandRow = {
-    renderer: (row) => <RowExpanded row={row} clickElimina={async (id) => {
+    renderer: (row) => <RowExpanded row={row} clickEliminaRow={async (id) => {
       const idToken = loadIdToken();
 
       const headers = {
@@ -121,7 +157,7 @@ class Container extends React.Component {
                 props.columnToggleProps.onColumnToggle(field);
               }}
             />
-            <hr />
+            <this.AddButton />
             <BootstrapTable
               onDataSizeChange={handleDataChange}
               striped={true}
@@ -159,7 +195,7 @@ class Container extends React.Component {
     );
 
   columnGeneratorQrCode(cell, row) {
-    return <QRCode size="330" bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
+    return <QRCode size={330} bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
   }
 
   columns = [
@@ -454,7 +490,7 @@ class Container extends React.Component {
     try {
       const response = await axios({
         baseURL: "http://localhost:3000",
-        url: "/crudQuery",
+        url: "/crud_query",
         method: "post",
         headers,
         data: {
@@ -528,7 +564,7 @@ class Container extends React.Component {
       try {
         const response = await axios({
           baseURL: "http://localhost:3000",
-          url: "/crudQuery",
+          url: "/crud_query",
           method: "post",
           headers,
           data: {
@@ -569,40 +605,7 @@ class Container extends React.Component {
         />
         <button
           type="button"
-          className={`btn btn-primary`}
-          data-toggle="button"
-          onClick={async (e) => {
-
-            const idToken = loadIdToken();
-
-            const headers = {
-              Authorization: `Bearer ${idToken}`,
-            };
-
-            try {
-              const response = await axios({
-                baseURL: "http://localhost:3000",
-                url: "/crud",
-                method: "post",
-                headers,
-                data: {},
-              });
-              let data = response.data;
-              console.log(data[0]);
-              var copiedData = [data[0], ...this.state.data]
-              this.setState({
-                data: copiedData,
-              });
-            } catch (error) {
-              console.error(error);
-            }
-          }}
-        >
-          Aggiungi riga
-        </button>
-        <button
-          type="button"
-          className={`btn btn-primary`}
+          className={`btn btn-primary m-1`}
           data-toggle="button"
           onClick={(e) => {
             this.setState({ rows: true });
@@ -611,10 +614,10 @@ class Container extends React.Component {
           Genera PDF
         </button>
         <br />
-        {this.state.rows && <PDFViewer className="center" style={{ width: "50%", height: "1024px" }}>{Cartellini(this.rowSelected, this.state.uri)}</PDFViewer>}
+        {this.state.rows && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.rowSelected, this.state.uri)}</PDFViewer>}
       </div>
     );
   }
 }
 
-export default Container = Container;
+export default DataTablePerizia = DataTablePerizia;

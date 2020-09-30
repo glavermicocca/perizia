@@ -15,14 +15,14 @@ import Login from "../login/Login";
 import PrivateRoute from "../misc/PrivateRoute";
 import Home from "../home/Home";
 import UsersPage from "../user/UsersPage";
-import ReposPage from "../repo/ReposPage2.jsx";
+import ReposPage from "../repo/DataTablePerizia";
 import About from "../about/About";
 import NotFound from "../misc/NotFound";
 
 import { logout, dati } from "../../actions/auth";
 //import { postPeriziaItem } from '../../actions/crud'
 
-import Dati from '../dati/Dati.js'
+import Dati from "../dati/Dati.js";
 
 import "./app.css";
 
@@ -51,16 +51,18 @@ class App extends Component {
     //   this.props.dispatch(postPeriziaItem(body))
     // }
 
-    var showHeader = true
+    var showHeader = true;
 
     if (item != null) {
-      showHeader = false
+      showHeader = false;
     }
 
     return (
       <Router>
         <div>
-          {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
+          {showHeader == true && (
+            <Header user={user} handleLogout={() => this.handleLogout()} />
+          )}
           <div className="appContent">
             <Switch>
               <Route path="/login" component={Login} />
@@ -69,8 +71,7 @@ class App extends Component {
                 isAuthenticated={isAuthenticated}
                 component={ReposPage}
               />
-              <Route path="/"
-                component={Home} />
+              <Route path="/" component={Home} />
               {/* <Route component={NotFound} /> */}
             </Switch>
           </div>
@@ -82,18 +83,18 @@ class App extends Component {
 
 App.propTypes = {
   user: PropTypes.string,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 App.contextTypes = {
-  store: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { auth, crud } = state;
   return {
     user: auth ? auth.user : null,
-    item: crud.item
+    item: crud.item,
   };
 };
 

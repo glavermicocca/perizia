@@ -20,7 +20,7 @@ export default class carousel extends Component {
         return (
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <UncontrolledCarousel items={items} />
+                    <UncontrolledCarousel data-interval="false" autoPlay={false} items={items} />
                 </div>
             </div>
 
