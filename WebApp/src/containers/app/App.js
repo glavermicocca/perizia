@@ -13,7 +13,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Login from "../login/Login";
 import PrivateRoute from "../misc/PrivateRoute";
-import Home from "../home/Home";
+//import Home from "../home/Home";
 import UsersPage from "../user/UsersPage";
 import ReposPage from "../repo/DataTablePerizia";
 import About from "../about/About";
@@ -71,7 +71,7 @@ class App extends Component {
                 isAuthenticated={isAuthenticated}
                 component={ReposPage}
               />
-              <Route path="/" component={Home} />
+              {/* <Route path="/" component={Home} /> */}
               {/* <Route component={NotFound} /> */}
             </Switch>
           </div>
