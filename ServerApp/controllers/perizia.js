@@ -12,9 +12,7 @@ const getTableData = (req, res, db) => {
     .catch((err) => res.status(400).json({ dbError: "db error", err }));
 };
 
-const getTableDatap = (req, res, db) => {
-  let page = req.query.page;
-  let sizePerPage = req.query.sizePerPage;
+const getTableDataQuery = (req, res, db) => {
   genericPagination(req, res, db, "perizia");
 };
 
@@ -95,22 +93,31 @@ const postPerizia = (req, res, db) => {
   db.select("*")
     .from("perizia")
     .where({ stato, anno, valore, uuid })
-    .then((items) => {
-      if (items.length) {
-        res.json(items);
+    .then(async (perizie) => {
+      if (perizie.length) {
+        var errori_di_coniazione = await db("errori_di_coniazione").where({
+          id_perizia: perizie[0].id,
+        });
+
+        res.json({ items: perizie, errori_di_coniazione });
       } else {
         res.json({ dataExists: "false" });
       }
     })
-    .catch((err) => res.status(400).json({ dbError: "db error" }));
+    .catch((err) => res.status(400).json({ dbError: err }));
 };
 
-const postTableData = (req, res, db) => {
+const postTableData = async (req, res, db) => {
   const added = new Date();
+
+  var resp = await db("perizia").max("id");
+
+  if (resp[0].max == null) {
+    resp[0].max = 0;
+  }
+
   db("perizia")
-    .insert({
-      added,
-    })
+    .insert({ added /*, id: resp[0].max*/ })
     .returning("*")
     .then((item) => {
       res.json(item);
@@ -184,7 +191,7 @@ const putTableData = (req, res, db) => {
     .then((item) => {
       res.json(item);
     })
-    .catch((err) => res.status(400).json({ dbError: "db error" }));
+    .catch((err) => res.status(400).json({ dbError: err }));
 };
 
 const deleteTableData = (req, res, db) => {
@@ -200,7 +207,7 @@ const deleteTableData = (req, res, db) => {
 
 module.exports = {
   getTableData,
-  getTableDatap,
+  getTableDataQuery,
   postTableData,
   putTableData,
   deleteTableData,

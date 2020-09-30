@@ -1,56 +1,145 @@
 const getTableData = (req, res, db) => {
-  db.select('*').from('errori_di_coniazione')
-    .then(items => {
+  const { id_perizia } = req.body;
+  db.select("*")
+    .from("errori_di_coniazione")
+    .where({ id_perizia })
+    .then((items) => {
       if (items.length) {
-        res.json(items)
+        res.json(items);
       } else {
-        res.json({ dataExists: 'false' })
+        res.json({ dataExists: "false" });
       }
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
-}
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
 
-const postTableData = (req, res, db) => {
-  const { stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
-  const added = new Date()
-  db('errori_di_coniazione').insert({
-    stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, added
-  })
-    .returning('*')
-    .then(item => {
-      res.json(item)
+const postTableData = async (req, res, db) => {
+  const { id_perizia } = req.body;
+
+  // var resp = await db("errori_di_coniazione").max("id");
+
+  // if(resp[0].max == null){
+  //   resp[0].max = 0
+  // }
+
+  db("errori_di_coniazione")
+    .insert({ id_perizia /*, id: resp[0].max*/ })
+    .returning("*")
+    .then((item) => {
+      res.json(item);
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
-}
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
 
 const putTableData = (req, res, db) => {
-  const { id, stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note } = req.body
-  db('errori_di_coniazione').where({ id }).update({
-    stato, anno, valore, periodo, valuta, lega_metallica, orientamento_asse, contorno, riferimento,
-    peso, diametro, spessore, conservazione, rarita, variante, collegamento, note
-  })
-    .returning('*')
-    .then(item => {
-      res.json(item)
+  const { rowId, dataField, newValue } = req.body;
+  db("errori_di_coniazione")
+    .where({ id: rowId })
+    .update({ [dataField]: newValue })
+    .returning("*")
+    .then((item) => {
+      res.json(item);
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
-}
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
 
 const deleteTableData = (req, res, db) => {
-  const { id } = req.body
-  db('errori_di_coniazione').where({ id }).del()
+  const { id } = req.body;
+  db("errori_di_coniazione")
+    .where({ id })
+    .del()
     .then(() => {
-      res.json({ delete: 'true' })
+      res.json({ delete: "true" });
     })
-    .catch(err => res.status(400).json({ dbError: 'db error' }))
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
+
+const getTableDataQuery = (req, res, db) => {
+  genericPagination(req, res, db, "errori_di_coniazione");
+};
+
+function genericPagination(req, res, db, tableName) {
+  var reqData = req.body;
+  var pagination = {};
+  var per_page = reqData.sizePerPage;
+  var page = reqData.page;
+  var sortField = reqData.sortField;
+  var sortOrder = reqData.sortOrder;
+  var filters = reqData.filters;
+  var id_perizia = reqData.id_perizia;
+
+  if (page < 1) page = 1;
+  var offset = (page - 1) * per_page;
+
+  var query = db
+    .select("*")
+    .from(tableName)
+    .where({ id_perizia })
+    .offset(offset)
+    .limit(per_page);
+
+  if (sortField != null) {
+    query.orderBy(sortField, sortOrder);
+  }
+
+  if (filters != null) {
+    var first = true;
+    for (let key of Object.keys(filters)) {
+      if (first) {
+        first = false;
+        if (filters[key].caseSensitive == true) {
+          query.where(
+            key,
+            filters[key].comparator,
+            "%" + filters[key].filterVal + "%"
+          );
+        } else {
+          query.where(key, "ILIKE", "%" + filters[key].filterVal + "%");
+        }
+      } else {
+        if (filters[key].caseSensitive == true) {
+          query.orWhere(
+            key,
+            filters[key].comparator,
+            "%" + filters[key].filterVal + "%"
+          );
+        } else {
+          query.orWhere(key, "ILIKE", "%" + filters[key].filterVal + "%");
+        }
+      }
+    }
+  }
+
+  return Promise.all([db.count("* as count").from(tableName).first(), query])
+    .then(([total, rows]) => {
+      var count = total.count;
+      var rows = rows;
+      pagination.total = count;
+      pagination.per_page = per_page;
+      pagination.offset = offset;
+      pagination.to = offset + rows.length;
+      pagination.last_page = Math.ceil(count / per_page);
+      pagination.current_page = page;
+      pagination.from = offset;
+      pagination.data = rows;
+      res.json(pagination);
+      // if (rows.length) {
+      // } else {
+      //   res.json({ dataExists: 'false' })
+      // }
+    })
+    .catch((err) =>
+      res.status(400).json({
+        dbError: "db error",
+        err,
+      })
+    );
 }
 
 module.exports = {
   getTableData,
+  getTableDataQuery,
   postTableData,
   putTableData,
-  deleteTableData
-}
+  deleteTableData,
+};

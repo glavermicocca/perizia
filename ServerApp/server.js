@@ -1,13 +1,13 @@
-/** 
+/**
  * This is a simple express server, to show basic authentication services (login and logout requests)
  * based JWT, and basic socket.io.
- * 
- * Once a user is authenticated, a jwt token will be returned as response to the client. 
+ *
+ * Once a user is authenticated, a jwt token will be returned as response to the client.
  * It's expected the jwt token will be included in the subsequent client requests. The server
  * can then protect the services by verifying the jwt token in the subsequent API requests.
- * 
+ *
  * The server will also broadcast the login/logout events to connected clients via socket.io.
- * 
+ *
  */
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -15,8 +15,8 @@ var jwt = require("jsonwebtoken");
 var port = 3000;
 
 // UPLOAD FILE
-const multer = require('multer')
-const upload = multer()
+const multer = require("multer");
+const upload = multer();
 
 // Configure app to use bodyParser to parse json data
 var app = express();
@@ -24,24 +24,27 @@ var server = require("http").createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const path = require('path');
-const imgDir = path.join(__dirname, 'img');
-app.use(express.static(imgDir));
+const path = require("path");
+const imgDir = path.join(__dirname, "img");
+app.use("/static", express.static(imgDir));
 
 //NO in PRODUZIONE
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*')
-  res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
   next();
 });
 
 // and support socket io
 var io = require("socket.io")(server);
 
-var cors = require('cors')
+var cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 // Test server is working (GET http://localhost:3001/api)
 app.get("/api/", function (req, res) {
@@ -65,7 +68,7 @@ app.post("/api/login", function (req, res) {
     const profile = { user: credentials.user, role: "ADMIN" };
     const jwtToken = jwt.sign(profile, JWT_SECRET, { expiresIn: 60 * 60 * 24 }); // expires in 300 seconds (5 min)
     res.status(200).json({
-      id_token: jwtToken
+      id_token: jwtToken,
     });
 
     alertClients("info", `User '${credentials.user}' just logged in`);
@@ -83,8 +86,12 @@ function alertClients(type, msg) {
 }
 
 setInterval(() => {
-  io.sockets.emit("alert", { message: "Interval", time: new Date(), type: "info" });
-}, 120000)
+  io.sockets.emit("alert", {
+    message: "Interval",
+    time: new Date(),
+    type: "info",
+  });
+}, 120000);
 
 /**
  * Util function to extract jwt token from the authorization header
@@ -150,66 +157,85 @@ app.post("/api/dati", function (req, res) {
 // });
 
 // db Connection w/ localhost
-var db = require('knex')({
-  client: 'pg',
+var db = require("knex")({
+  client: "pg",
   connection: {
     host: process.env.PGHOST,
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
-    port: process.env.PGPORT
-  }
+    port: process.env.PGPORT,
+  },
 });
 
-const { attachPaginate } = require('knex-paginate');
+const { attachPaginate } = require("knex-paginate");
 attachPaginate(db);
 
 const checkToken = (req, res, next) => {
   var jwtToken = extractToken(req);
   try {
     var profile = jwt.verify(jwtToken, JWT_SECRET);
-    console.log(profile)
-    next()
+    console.log(profile);
+    next();
   } catch (err) {
     console.log("jwt verify error", err);
     res.status(500).json({ message: "Invalid jwt token" });
 
     alertClients("error", `JWT verify error`);
   }
-}
+};
 
 // App Routes - Perizia
-const perizia = require('./controllers/perizia')
-app.post('/crudQuery', checkToken, (req, res) => perizia.getTableDatap(req, res, db))
-app.get('/crud', checkToken, (req, res) => perizia.getTableData(req, res, db))
-app.post('/crud', checkToken, (req, res) => perizia.postTableData(req, res, db))
-app.put('/crud', checkToken, (req, res) => perizia.putTableData(req, res, db))
-app.delete('/crud', checkToken, (req, res) => perizia.deleteTableData(req, res, db))
-// App Route - Singola Perizia
-app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db))
+const perizia = require("./controllers/perizia");
+app.post("/crud_query", checkToken, (req, res) =>
+  perizia.getTableDataQuery(req, res, db)
+);
+app.get("/crud", checkToken, (req, res) => perizia.getTableData(req, res, db));
+app.post("/crud", checkToken, (req, res) =>
+  perizia.postTableData(req, res, db)
+);
+app.put("/crud", checkToken, (req, res) => perizia.putTableData(req, res, db));
+app.delete("/crud", checkToken, (req, res) =>
+  perizia.deleteTableData(req, res, db)
+);
+
+// App Route - Singola Perizia - PUBLIC
+app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db));
+
 // Errori di coniazione
-const errori = require('./controllers/errori')
-app.get('/crud_errori', checkToken, (req, res) => errori.getTableData(req, res, db))
-app.post('/crud_errori', checkToken, (req, res) => errori.postTableData(req, res, db))
-app.put('/crud_errori', checkToken, (req, res) => errori.putTableData(req, res, db))
-app.delete('/crud_errori', checkToken, (req, res) => errori.deleteTableData(req, res, db))
+const errori = require("./controllers/errori");
+app.post("/crud_errori_query", checkToken, (req, res) =>
+  errori.getTableDataQuery(req, res, db)
+);
+app.get("/crud_errori", checkToken, (req, res) =>
+  errori.getTableData(req, res, db)
+);
+app.post("/crud_errori", checkToken, (req, res) =>
+  errori.postTableData(req, res, db)
+);
+app.put("/crud_errori", checkToken, (req, res) =>
+  errori.putTableData(req, res, db)
+);
+app.delete("/crud_errori", checkToken, (req, res) =>
+  errori.deleteTableData(req, res, db)
+);
 
 // App Routes - Immagini
-const immagini = require('./controllers/immagini')
-app.get('/crud_immagini', (req, res) => immagini.getTableData(req, res, db))
-app.delete('/crud_immagini', checkToken, (req, res) => {
-  immagini.deleteTableData(req, res, db)
-})
+const immagini = require("./controllers/immagini");
+app.get("/crud_immagini", (req, res) => immagini.getTableData(req, res, db));
+app.delete("/crud_immagini", checkToken, (req, res) => {
+  immagini.deleteTableData(req, res, db);
+});
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- UPLOAD FILE ---------------------------------------
 // -------------------------------------------------------------------------------------
 
 // creating POST endpoint /file
-app.post('/upload_file', checkToken, upload.single('file'), (req, res) => {
-  console.log('body', req.file.length, req.file)
-  immagini.postTableData(req, res, db)
-})
+app.post("/upload_file", checkToken, upload.single("file"), (req, res) => {
+  console.log("body", req.file.length, req.file);
+  immagini.postTableData(req, res, db);
+});
 
 // -------------------------------------------------------------------------------------
 // --------------------------------- START SERVER --------------------------------------
