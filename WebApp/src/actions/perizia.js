@@ -1,13 +1,11 @@
-import { DATA_POST_PERIZIA, DATA_ERROR } from "./action-types";
+import axios from "axios";
 
-export const postPeriziaItem = (document) => async (dispatch) => {
-  const idToken = loadIdToken();
+import { baseURL, DATA_POST_PERIZIA, DATA_ERROR } from "./action-types";
 
-  const headers = {
-    Authorization: `Bearer ${idToken}`,
-  };
-
-  let arrSearch = document.location.pathname.split("/");
+export const postPeriziaItem = (location) => async (dispatch) => {
+  let arrSearch = location.pathname.split("/");
+  
+  console.log(arrSearch.length);
 
   if (arrSearch.length >= 5) {
     const body = {
@@ -19,20 +17,18 @@ export const postPeriziaItem = (document) => async (dispatch) => {
 
     try {
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: "/perizia",
         method: "post",
-        headers,
         data: body,
       });
       let data = response.data;
-
-      console.log(data);
 
       dispatch({
         type: DATA_POST_PERIZIA,
         data,
       });
+      
     } catch (error) {
       console.error(error);
       dispatch({
@@ -41,11 +37,11 @@ export const postPeriziaItem = (document) => async (dispatch) => {
       });
     }
   } else {
-    
+    // NON FARE NIENTE!!!
     //formato path non valido
-    dispatch({
-      type: DATA_POST_PERIZIA,
-      data: {},
-    });
+    // dispatch({
+    //   type: DATA_POST_PERIZIA,
+    //   data: {},
+    // });
   }
 };

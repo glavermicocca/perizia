@@ -2,9 +2,26 @@ const getTableData = (req, res, db) => {
   db.select("*")
     .from("perizia")
     .orderBy("id")
-    .then((items) => {
-      if (items.length) {
-        res.json(items);
+    .then(async (perizie) => {
+      if (perizie.length) {
+        var id_perizia = perizie[0].id;
+        var errori_di_coniazione = await db
+          .select("*")
+          .from("errori_di_coniazione")
+          .where({ id_perizia })
+          .orderBy("id");
+
+        var immagini = await db
+          .select("*")
+          .from("immagini")
+          .where({ id: id_perizia })
+          .orderBy("id");
+
+        res.json({
+          perizia: perizie[0],
+          errori_di_coniazione: errori_di_coniazione,
+          immagini: immagini,
+        });
       } else {
         res.json({ dataExists: "false" });
       }
@@ -95,11 +112,28 @@ const postPerizia = (req, res, db) => {
     .where({ stato, anno, valore, uuid })
     .then(async (perizie) => {
       if (perizie.length) {
-        var errori_di_coniazione = await db("errori_di_coniazione").where({
-          id_perizia: perizie[0].id,
+        var id_perizia = perizie[0].id;
+        var errori_di_coniazione = await db
+          .select("*")
+          .from("errori_di_coniazione")
+          .where({ id_perizia })
+          .orderBy("id");
+
+        var immagini = await db
+          .select("*")
+          .from("immagini")
+          .where({ id: id_perizia })
+          .orderBy("id");
+
+        immagini.forEach((item) => {
+          item.filename = "static/" + item.filename;
         });
 
-        res.json({ items: perizie, errori_di_coniazione });
+        res.json({
+          perizia: perizie[0],
+          errori_di_coniazione: errori_di_coniazione,
+          immagini: immagini,
+        });
       } else {
         res.json({ dataExists: "false" });
       }

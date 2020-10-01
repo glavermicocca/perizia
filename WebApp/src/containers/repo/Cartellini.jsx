@@ -14,9 +14,6 @@ import moment from 'moment'
 import 'moment/locale/it'
 moment.locale('it');
 
-Font.register(KadwaRegular, { family: 'KadwaRegular' });
-Font.register(KadwaBold, { family: 'KadwaBold' });
-
 // Create styles
 const styles = StyleSheet.create({
   page: {
@@ -130,9 +127,12 @@ const getData = (row) => {
 }
 
 // Create Document Component
-const Cartellini = (rows) => (
+const Cartellini = (rows) => {
 
-  <Document>
+  Font.register(KadwaRegular, { family: 'KadwaRegular' });
+  Font.register(KadwaBold, { family: 'KadwaBold' });
+
+  return <Document>
     <Page size="A4" style={styles.page}>
       {rows.map((row) => {
         return (
@@ -173,6 +173,6 @@ const Cartellini = (rows) => (
       })}
     </Page>
   </Document >
-);
+};
 
 export default Cartellini;

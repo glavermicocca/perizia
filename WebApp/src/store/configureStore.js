@@ -4,22 +4,14 @@ import { createLogger } from "redux-logger";
 import auth from "../reducers/auth";
 import alerts from "../reducers/alerts";
 import crud from "../reducers/crud";
-import immagini from '../reducers/immagini'
-import { selectedUsersPage, usersByPage } from "../reducers/users";
-import { selectedReposPage, reposByPage } from "../reducers/repos";
-import UploadFile from '../redux/uploadFile/uploadFile.reducer'
+import data from '../reducers/data'
 
 const logger = createLogger();
 const rootReducer = combineReducers({
   auth,
   alerts,
-  selectedUsersPage,
-  usersByPage,
-  selectedReposPage,
-  reposByPage,
   crud,
-  immagini,
-  UploadFile
+  data
 });
 
 const initialState = {};
@@ -33,14 +25,14 @@ export default function configureStore() {
       initialState,
       compose(
         applyMiddleware(thunkMiddleware, logger),
-        window.devToolsExtension ? window.devToolsExtension() : f => f
+        window.devToolsExtension ? window.devToolsExtension() : (f) => f
       )
     );
   } else {
     store = createStore(
       rootReducer,
       initialState,
-      compose(applyMiddleware(thunkMiddleware), f => f)
+      compose(applyMiddleware(thunkMiddleware), (f) => f)
     );
   }
 

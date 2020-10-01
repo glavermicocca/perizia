@@ -13,7 +13,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import Login from "../login/Login";
 import PrivateRoute from "../misc/PrivateRoute";
-//import Home from "../home/Home";
+import Home from "../home/Home";
 import UsersPage from "../user/UsersPage";
 import ReposPage from "../repo/DataTablePerizia";
 import About from "../about/About";
@@ -22,7 +22,7 @@ import NotFound from "../misc/NotFound";
 import { logout, dati } from "../../actions/auth";
 //import { postPeriziaItem } from '../../actions/crud'
 
-import Dati from "../dati/Dati.js";
+//import Dati from "../dati/Dati.js";
 
 import "./app.css";
 
@@ -38,22 +38,12 @@ class App extends Component {
   }
 
   render() {
-    const { user, item } = this.props;
+    const { user, data } = this.props;
     const isAuthenticated = true && user;
-
-    // console.log(location.pathname)
-    // let arrSearch = location.pathname.split('/')
-    // console.log(arrSearch)
-    // if (arrSearch.length >= 5) {
-    //   const body = {
-    //     stato: arrSearch[0], anno: arrSearch[1], valore: parseFloat(arrSearch[2]), uuid: arrSearch[3]
-    //   }
-    //   this.props.dispatch(postPeriziaItem(body))
-    // }
 
     var showHeader = true;
 
-    if (item != null) {
+    if (data.perizia != null) {
       showHeader = false;
     }
 
@@ -71,30 +61,31 @@ class App extends Component {
                 isAuthenticated={isAuthenticated}
                 component={ReposPage}
               />
-              {/* <Route path="/" component={Home} /> */}
+              <Route path="/" component={Home} />
               {/* <Route component={NotFound} /> */}
             </Switch>
           </div>
+          <Footer />
         </div>
       </Router>
     );
   }
 }
 
-App.propTypes = {
-  user: PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-};
+// App.propTypes = {
+//   user: PropTypes.string,
+//   dispatch: PropTypes.func.isRequired,
+// };
 
-App.contextTypes = {
-  store: PropTypes.object.isRequired,
-};
+// App.contextTypes = {
+//   store: PropTypes.object.isRequired,
+// };
 
 const mapStateToProps = (state) => {
-  const { auth, crud } = state;
+  const { auth, data } = state;
   return {
     user: auth ? auth.user : null,
-    item: crud.item,
+    data
   };
 };
 

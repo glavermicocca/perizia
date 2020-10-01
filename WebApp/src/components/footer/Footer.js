@@ -6,23 +6,16 @@ const Footer = () => (
   <footer className="footer">
     <div className="container">
       <p className="text-xs-center text-muted">
-        Have questions or suggestions? Please file them on the
-        {" "}<a
-          href="https://github.com/cloudmu/react-redux-starter-kit/issues"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Github
-        </a>{" "}
-        or tweet
+        Visita anche il mio sito...{" "}
         <a
-          href="http://www.twitter.com/_cloudmu"
+          href="https://www.erroridiconiazione.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          {" "}me
-        </a>
-        .
+          ErroriDiConiazione.com
+        </a>{" "}
+        oppure scrivimi ad{" "}
+        <a href="mailto:andreadelpup@libero.it">andreadelpup@libero.it</a>
       </p>
     </div>
   </footer>

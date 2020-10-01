@@ -85,13 +85,13 @@ function alertClients(type, msg) {
   io.sockets.emit("alert", { message: msg, time: new Date(), type });
 }
 
-setInterval(() => {
-  io.sockets.emit("alert", {
-    message: "Interval",
-    time: new Date(),
-    type: "info",
-  });
-}, 120000);
+// setInterval(() => {
+//   io.sockets.emit("alert", {
+//     message: "Interval",
+//     time: new Date(),
+//     type: "info",
+//   });
+// }, 120000);
 
 /**
  * Util function to extract jwt token from the authorization header
