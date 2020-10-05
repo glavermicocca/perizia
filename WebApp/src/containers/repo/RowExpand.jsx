@@ -132,7 +132,7 @@ export const RowExpanded = (props) => {
       <div className="card border-primary mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
         <div className="card-header">QrCode</div>
         <div className="card-body text-primary">
-          <h5 className="card-title"><a href={row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}>{row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}</a></h5>
+          <h5 className="card-title"><a target="_blank" href={row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}>{row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}</a></h5>
           <GeneratorQrCode />
           <br />
           <button type="button"

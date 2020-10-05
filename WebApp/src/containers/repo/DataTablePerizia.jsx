@@ -638,7 +638,6 @@ class DataTablePerizia extends React.Component {
     const { data, sizePerPage, page, total } = this.state;
     return (
       <div>
-        <button width={1000} height={300} type="button" onClick={(event) => { this.clickHere() }}>click here</button>
         <this.AddButton />
         <this.RemotePagination
           data={data}

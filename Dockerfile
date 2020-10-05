@@ -12,7 +12,6 @@ WORKDIR /root/
 COPY ServerApp/package*.json /root/ServerApp/
 ## parte SERVER installa package.json
 RUN cd /root/ServerApp &&\
-    ##npm cache clean --force &&\
     npm install
 
 COPY --from=ui-build /app/WebApp/build /root/ServerApp/build
