@@ -9,6 +9,9 @@
  * The server will also broadcast the login/logout events to connected clients via socket.io.
  *
  */
+const path = require('path')
+console.log(require('dotenv').config({path: path.join(__dirname, '.env')}))
+
 var express = require("express");
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
@@ -24,9 +27,13 @@ var server = require("http").createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const path = require("path");
 const imgDir = path.join(__dirname, "img");
 app.use("/static", express.static(imgDir));
+
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/', (req,res) => {
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
 
 //NO in PRODUZIONE
 app.use((req, res, next) => {
@@ -46,8 +53,8 @@ var cors = require("cors");
 
 app.use(cors());
 
-// Test server is working (GET http://localhost:3001/api)
-app.get("/api/", function (req, res) {
+// Test server is working (GET http://localhost:3001)
+app.get("/welcome", function (req, res) {
   res.json({ message: "Hi, welcome to the server api!" });
 });
 
@@ -55,8 +62,8 @@ app.get("/api/", function (req, res) {
 var JWT_SECRET = "JWT Rocks!";
 
 // JWT based login service.
-app.post("/api/login", function (req, res) {
-  console.log("Requesting /api/login ...");
+app.post("/login", function (req, res) {
+  console.log("Requesting /login ...");
 
   const credentials = req.body;
 
@@ -109,8 +116,8 @@ function extractToken(req) {
 //  Logout api.  For illustration purpose we show how to check if the request is from an authorized user by
 //  verifying the jwt token included in the request header.  The same approach can be used to restrict access
 //  to other (more intersting) API calls.
-app.post("/api/logout", function (req, res) {
-  console.log("Requesting /api/logout ...");
+app.post("/logout", function (req, res) {
+  console.log("Requesting /logout ...");
 
   var jwtToken = extractToken(req);
   try {
@@ -126,8 +133,8 @@ app.post("/api/logout", function (req, res) {
   }
 });
 
-app.post("/api/dati", function (req, res) {
-  console.log("Requesting /api/dati ...");
+app.post("/dati", function (req, res) {
+  console.log("Requesting /dati ...");
 
   var jwtToken = extractToken(req);
   try {

@@ -8,6 +8,8 @@ import QRCode from "qrcode.react";
 
 import DataTableErroriDiConiazione from "./DataTableErroriDiConiazione"
 
+import { baseURL } from '../../actions/action-types'
+
 export const RowExpanded = (props) => {
 
   const { row, clickEliminaRow } = props
@@ -41,7 +43,7 @@ export const RowExpanded = (props) => {
       data.append('file', file.selectedFile)
 
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: "/upload_file",
         method: "post",
         headers,
@@ -70,7 +72,7 @@ export const RowExpanded = (props) => {
     };
     try {
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: `/crud_immagini?id=${row.id}`,
         method: "get",
         headers,
@@ -92,7 +94,7 @@ export const RowExpanded = (props) => {
     };
     try {
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: `/crud_immagini`,
         method: "delete",
         headers,
@@ -148,7 +150,7 @@ export const RowExpanded = (props) => {
           <div className="list-group">
             {listFiles.map((immagine, index) => {
               return <a key={index} className="list-group-item list-group-item-action flex-column align-items-start">
-                <img src={'http://localhost:3000/static/' + immagine.filename} style={{ width: "100px", height: "auto" }} />
+                <img src={'/static/' + immagine.filename} style={{ width: "100px", height: "auto" }} />
                 <div className="d-flex w-100 justify-content-between">
                   <h6 className="mb-1">{immagine.originalname}</h6>
                   <button type="button"

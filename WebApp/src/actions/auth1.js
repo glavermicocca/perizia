@@ -28,7 +28,7 @@ export const postPeriziaItem = (user, password) => async (dispatch) => {
   try {
     const response = await axios({
       baseURL,
-      url: "/api/login",
+      url: "/login",
       method: "post",
       headers,
       data: body,

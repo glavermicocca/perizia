@@ -3,6 +3,8 @@ import {
     loadIdToken
 } from "../utils/apiUtils";
 
+import { baseURL } from './action-types'
+
 export function dati(id) {
     const idToken = loadIdToken();
     const config = {
@@ -15,7 +17,7 @@ export function dati(id) {
     };
 
     return callApi(
-        "/crud_immagini?id=" + id,
+        baseURL + "/crud_immagini?id=" + id,
         config,
         datiRequest,
         datiSuccess,

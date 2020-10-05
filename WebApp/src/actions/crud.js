@@ -2,6 +2,7 @@ import {
     callApi,
     loadIdToken
 } from "../utils/apiUtils";
+import { baseURL } from "./action-types";
 
 import { dati as datiImmagini } from './immagini'
 
@@ -16,7 +17,7 @@ export function postPerizia(body) {
     };
 
     return callApi(
-        "/perizia",
+        baseURL + "/perizia",
         config,
         datiRequest,
         datiSuccess,

@@ -7,6 +7,8 @@ import {
   decodeUserProfile
 } from "../utils/apiUtils";
 
+import { baseURL } from './action-types'
+
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
@@ -59,7 +61,7 @@ export function login(user, password) {
   };
 
   return callApi(
-    "/api/login",
+    baseURL + "/login",
     config,
     loginRequest(user),
     loginSuccess,
@@ -105,7 +107,7 @@ export function logout(user) {
   };
 
   return callApi(
-    "/api/logout",
+    baseURL + "/logout",
     config,
     logoutRequest,
     logoutSuccess,
@@ -151,7 +153,7 @@ export function dati(user) {
   };
 
   return callApi(
-    "/api/dati",
+    baseURL + "/dati",
     config,
     datiRequest,
     datiSuccess,

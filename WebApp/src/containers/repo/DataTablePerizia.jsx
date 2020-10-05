@@ -16,11 +16,10 @@ import Cartellini from "./Cartellini";
 
 import QRCode from "qrcode.react";
 
+import { baseURL } from '../../actions/action-types'
+
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
-  <div
-  // className="btn-group btn-group-toggle btn-group-horizontal"
-  // data-toggle="buttons"
-  >
+  <>
     {columns
       .map((column) => ({
         ...column,
@@ -38,10 +37,23 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
           {column.text}
         </button>
       ))}
-  </div>
+  </>
 );
 
 class DataTablePerizia extends React.Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      page: 0,
+      data: [],
+      sizePerPage: 10,
+      total: 0,
+      rows: false,
+      rowCount: 0
+    }
+  }
 
   AddButton = () => {
     return <button
@@ -58,7 +70,7 @@ class DataTablePerizia extends React.Component {
 
         try {
           const response = await axios({
-            baseURL: "http://localhost:3000",
+            baseURL,
             url: "/crud",
             method: "post",
             headers,
@@ -88,7 +100,7 @@ class DataTablePerizia extends React.Component {
       };
       try {
         const response = await axios({
-          baseURL: "http://localhost:3000",
+          baseURL,
           url: "/crud",
           method: "delete",
           headers,
@@ -144,7 +156,7 @@ class DataTablePerizia extends React.Component {
   }) => (
       <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
         {(props) => (
-          <div>
+          <>
             <CustomToggleList
               {...props.columnToggleProps}
               onColumnToggle={(field) => {
@@ -157,7 +169,6 @@ class DataTablePerizia extends React.Component {
                 props.columnToggleProps.onColumnToggle(field);
               }}
             />
-            <this.AddButton />
             <BootstrapTable
               onDataSizeChange={handleDataChange}
               striped={true}
@@ -189,7 +200,7 @@ class DataTablePerizia extends React.Component {
                 },
               })}
             />
-          </div>
+          </>
         )}
       </ToolkitProvider>
     );
@@ -489,7 +500,7 @@ class DataTablePerizia extends React.Component {
 
     try {
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: "/crud_query",
         method: "post",
         headers,
@@ -501,13 +512,12 @@ class DataTablePerizia extends React.Component {
         },
       });
       let data = response.data;
-      console.log("QUI1", data);
       this.setState({
         page: Number(data.current_page),
         data: data.data,
         sizePerPage: Number(data.per_page),
         total: Number(data.total),
-      });
+      })
     } catch (error) {
       console.error(error);
     }
@@ -537,7 +547,7 @@ class DataTablePerizia extends React.Component {
       console.log(rowId, dataField, newValue);
       try {
         const response = await axios({
-          baseURL: "http://localhost:3000",
+          baseURL,
           url: "/crud",
           method: "put",
           headers,
@@ -561,39 +571,75 @@ class DataTablePerizia extends React.Component {
     }
 
     if (type == "filter" || type == "pagination" || type == "sort")
-      try {
-        const response = await axios({
-          baseURL: "http://localhost:3000",
-          url: "/crud_query",
-          method: "post",
-          headers,
-          data: {
-            page,
-            sizePerPage,
-            sortField: sortField || "id",
-            sortOrder: sortOrder || "desc",
-            filters,
-          },
-        });
-        let data = response.data;
-        this.setState({
-          page: Number(data.current_page),
-          data: data.data,
-          sizePerPage: Number(data.per_page),
-          total: Number(data.total),
-        });
-      } catch (error) {
-        console.error(error);
+      if (type == "pagination") {
+        this.rowSelected = []
       }
+    try {
+      const response = await axios({
+        baseURL,
+        url: "/crud_query",
+        method: "post",
+        headers,
+        data: {
+          page,
+          sizePerPage,
+          sortField: sortField || "id",
+          sortOrder: sortOrder || "desc",
+          filters,
+        },
+      });
+      let data = response.data;
+      this.setState({
+        page: Number(data.current_page),
+        data: data.data,
+        sizePerPage: Number(data.per_page),
+        total: Number(data.total),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  clickHere = async () => {
+    const idToken = loadIdToken();
+
+    const headers = {
+      Authorization: `Bearer ${idToken}`,
+    };
+
+    try {
+      const response = await axios({
+        baseURL,
+        url: "/crud_query",
+        method: "post",
+        headers,
+        data: {
+          page: 1,
+          sizePerPage: 10,
+          sortField: "id",
+          sortOrder: "desc",
+        },
+      });
+      let data = response.data;
+      await this.setState({
+        page: Number(data.current_page),
+        data: data.data,
+        sizePerPage: Number(data.per_page),
+        total: Number(data.total),
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   //MyComponent = MyDocument(this.rowSelected);
 
   render() {
-    if (this.state == null) return null;
     const { data, sizePerPage, page, total } = this.state;
     return (
       <div>
+        <button width={1000} height={300} type="button" onClick={(event) => { this.clickHere() }}>click here</button>
+        <this.AddButton />
         <this.RemotePagination
           data={data}
           page={page}

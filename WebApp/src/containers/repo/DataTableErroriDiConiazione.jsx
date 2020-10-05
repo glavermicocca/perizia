@@ -9,12 +9,10 @@ import axios from "axios";
 
 import { loadIdToken } from "../../utils/apiUtils";
 
-//import QualityRanger from './CellEdit'
+import { baseURL } from '../../actions/action-types'
 
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   <div
-  // className="btn-group btn-group-toggle btn-group-horizontal"
-  // data-toggle="buttons"
   >
     {columns
       .map((column) => ({
@@ -58,7 +56,7 @@ class DataTableErroriDiConiazione extends React.Component {
 
         try {
           const response = await axios({
-            baseURL: "http://localhost:3000",
+            baseURL,
             url: "/crud_errori",
             method: "post",
             headers,
@@ -92,7 +90,7 @@ class DataTableErroriDiConiazione extends React.Component {
   }) => (
       <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
         {(props) => (
-          <div>
+          <>
             <CustomToggleList
               {...props.columnToggleProps}
               onColumnToggle={(field) => {
@@ -105,7 +103,6 @@ class DataTableErroriDiConiazione extends React.Component {
                 props.columnToggleProps.onColumnToggle(field);
               }}
             />
-            <this.AddButton row={row} />
             <BootstrapTable
               onDataSizeChange={handleDataChange}
               striped={true}
@@ -135,7 +132,7 @@ class DataTableErroriDiConiazione extends React.Component {
                 },
               })}
             />
-          </div>
+          </>
         )}
       </ToolkitProvider>
     );
@@ -245,7 +242,7 @@ class DataTableErroriDiConiazione extends React.Component {
 
     try {
       const response = await axios({
-        baseURL: "http://localhost:3000",
+        baseURL,
         url: "/crud_errori_query",
         method: "post",
         headers,
@@ -294,7 +291,7 @@ class DataTableErroriDiConiazione extends React.Component {
       console.log(rowId, dataField, newValue);
       try {
         const response = await axios({
-          baseURL: "http://localhost:3000",
+          baseURL,
           url: "/crud_errori",
           method: "put",
           headers,
@@ -320,7 +317,7 @@ class DataTableErroriDiConiazione extends React.Component {
     if (type == "filter" || type == "pagination" || type == "sort")
       try {
         const response = await axios({
-          baseURL: "http://localhost:3000",
+          baseURL,
           url: "/crud_errori_query",
           method: "post",
           headers,
@@ -354,6 +351,7 @@ class DataTableErroriDiConiazione extends React.Component {
       <div className="card border-primary mb-3 mx-auto" style={{}}>
         <div className="card-header">Errori di coniazione</div>
         <div className="card-body text-primary">
+          <this.AddButton row={row} />
           <this.RemotePagination
             row={row}
             data={data}

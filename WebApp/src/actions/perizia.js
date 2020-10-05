@@ -18,7 +18,7 @@ export const postPeriziaItem = (location) => async (dispatch) => {
     try {
       const response = await axios({
         baseURL,
-        url: "/perizia",
+        url: baseURL + "/perizia",
         method: "post",
         data: body,
       });

@@ -1,57 +1,31 @@
 version: "3.8"
 services:
-  perizia_server_app:
-    image: perizia_server_app:1.0.0
+  perizia_web_server_app:
+    image: perizia_web_server_app:latest
     restart: always
     depends_on:
-      # - db
+      - db
       - adminer
     build:
       context: ./
-      dockerfile: DockerfileServerApp
-      args:
-        buildno: 1
-    environment:
-      PGUSER: postgres
-      PGHOST: db
-      PGPASSWORD: example
-      PGDATABASE: postgres
-      PGPORT: 5432
-    volumes:
-      - ./ServerApp:/ServerApp
-    ports:
-      - 3002:3002
-    networks:
-      - internal-network
-  perizia_web_app:
-    stdin_open: true
-    image: perizia_web_app:1.0.0
-    restart: always
-    depends_on:
-      # - db
-      - adminer
-      - perizia_server_app
-    build:
-      context: ./
-      dockerfile: DockerfileWebApp
+      dockerfile: Dockerfile
       args:
         buildno: 1
     volumes:
-      - ./WebApp/public:/WebApp/public
-      - ./WebApp/src:/WebApp/src
+      - ./ServerApp/img/:/root/ServerApp/img/
     ports:
       - 3010:3000
     networks:
       - internal-network
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   environment:
-  #     POSTGRES_PASSWORD: example
-  #   networks:
-  #     - internal-network
-  #   ports:
-  #     - 5433:5432
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    networks:
+      - internal-network
+    ports:
+      - 5432:5432
   adminer:
     image: adminer
     restart: always

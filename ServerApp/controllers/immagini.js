@@ -19,7 +19,14 @@ const postTableData = (req, res, db) => {
   const filename = uuid.v4() + ext;
   const id = req.headers["id"];
 
-  const serverLocation = path.join(__dirname, "..", "img", filename);
+
+
+  var serverLocation = path.join(__dirname, "..", "img");
+  if (!fs.existsSync(serverLocation)) {
+    fs.mkdirSync(serverLocation);
+  }
+
+  serverLocation = path.join(serverLocation, filename)
 
   db("immagini")
     .insert({ id, originalname, filename })
