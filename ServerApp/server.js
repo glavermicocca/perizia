@@ -75,7 +75,7 @@ app.post("/login", function (req, res) {
 
   // In real world credentials should be authenticated against database.
   // For our purpose it's hard-coded:
-  if (credentials.user === "admin" && credentials.password === "password") {
+  if (credentials.user === process.env.UT && credentials.password === process.env.PSW) {
     // Once authenticated, the user profiles is signed and the jwt token is returned as response to the client.
     // It's expected the jwt token will be included in the subsequent client requests.
     const profile = { user: credentials.user, role: "ADMIN" };

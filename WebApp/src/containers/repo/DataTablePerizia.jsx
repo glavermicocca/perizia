@@ -208,7 +208,7 @@ class DataTablePerizia extends React.Component {
     );
 
   columnGeneratorQrCode(cell, row) {
-    return <QRCode size={330} bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
+    return <QRCode size={330} bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'https://p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
   }
 
   columns = [

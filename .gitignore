@@ -117,3 +117,6 @@ dist
 
 # immagini
 ServerApp/img/
+
+# env
+./ServerApp/.env
