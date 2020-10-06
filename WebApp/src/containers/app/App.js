@@ -43,7 +43,7 @@ class App extends Component {
           {showHeader == true && (
             <Header user={user} handleLogout={() => this.handleLogout()} />
           )}
-          <div className="appContent">
+          <div style={{marginTop:"60px"}}>
             <Switch>
               <Route path="/login" component={Login} />
               <PrivateRoute
@@ -54,7 +54,7 @@ class App extends Component {
               <Route path="/" component={Home} />
             </Switch>
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </Router>
     );

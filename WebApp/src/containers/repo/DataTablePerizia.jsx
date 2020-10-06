@@ -51,7 +51,9 @@ class DataTablePerizia extends React.Component {
       sizePerPage: 10,
       total: 0,
       rows: false,
-      rowCount: 0
+      rowCount: 0,
+      // selezione
+      rowSelected: []
     }
   }
 
@@ -129,20 +131,19 @@ class DataTablePerizia extends React.Component {
     expandByColumnOnly: true,
   };
 
-  rowSelected = [];
   selectRowProps = {
     mode: "checkbox",
     onSelect: (row, isSelect, rowIndex, e) => {
       if (isSelect == true) {
-        this.rowSelected.push(row);
+        this.setState({ rowSelected: [...this.state.rowSelected, row] })
       } else {
-        this.rowSelected = this.rowSelected.filter((value, index, arr) => {
+        var rr = this.state.rowSelected.filter((value, index, arr) => {
           if (value.id != row.id) {
             return value;
           }
         });
+        this.setState({ rowSelected: rr })
       }
-      console.log(this.rowSelected);
     },
   };
 
@@ -170,6 +171,7 @@ class DataTablePerizia extends React.Component {
               }}
             />
             <BootstrapTable
+              headerClasses="btn-warning active"
               onDataSizeChange={handleDataChange}
               striped={true}
               hover={true}
@@ -242,7 +244,8 @@ class DataTablePerizia extends React.Component {
     {
       dataField: "stato",
       text: "Stato",
-      hidden: true,
+      sort: true,
+      hidden: false,
       filter: textFilter({
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
       }),
@@ -253,7 +256,8 @@ class DataTablePerizia extends React.Component {
     {
       dataField: "anno",
       text: "Anno",
-      hidden: true,
+      sort: true,
+      hidden: false,
       filter: textFilter({
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
       }),
@@ -264,7 +268,8 @@ class DataTablePerizia extends React.Component {
     {
       dataField: "valore",
       text: "Valore",
-      hidden: true,
+      sort: true,
+      hidden: false,
       filter: textFilter({
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
       }),
@@ -275,6 +280,7 @@ class DataTablePerizia extends React.Component {
     {
       dataField: "uuid",
       text: "UUID",
+      sort: true,
       hidden: false,
       filter: textFilter({
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
@@ -431,7 +437,7 @@ class DataTablePerizia extends React.Component {
     },
     {
       dataField: "riferimento",
-      text: "Riferimento",
+      text: "Riferimento Errore",
       sort: true,
       hidden: true,
       filter: textFilter({
@@ -572,7 +578,7 @@ class DataTablePerizia extends React.Component {
 
     if (type == "filter" || type == "pagination" || type == "sort")
       if (type == "pagination") {
-        this.rowSelected = []
+        this.setState({ rowSelected: [] })
       }
     try {
       const response = await axios({
@@ -600,44 +606,10 @@ class DataTablePerizia extends React.Component {
     }
   };
 
-  clickHere = async () => {
-    const idToken = loadIdToken();
-
-    const headers = {
-      Authorization: `Bearer ${idToken}`,
-    };
-
-    try {
-      const response = await axios({
-        baseURL,
-        url: "/crud_query",
-        method: "post",
-        headers,
-        data: {
-          page: 1,
-          sizePerPage: 10,
-          sortField: "id",
-          sortOrder: "desc",
-        },
-      });
-      let data = response.data;
-      await this.setState({
-        page: Number(data.current_page),
-        data: data.data,
-        sizePerPage: Number(data.per_page),
-        total: Number(data.total),
-      })
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  //MyComponent = MyDocument(this.rowSelected);
-
   render() {
     const { data, sizePerPage, page, total } = this.state;
     return (
-      <div>
+      <div className="m-3">
         <this.AddButton />
         <this.RemotePagination
           data={data}
@@ -648,18 +620,7 @@ class DataTablePerizia extends React.Component {
           cellEdit={cellEditFactory({ mode: "click" })}
           onDataSizeChange={this.onDataSizeChange}
         />
-        <button
-          type="button"
-          className={`btn btn-primary m-1`}
-          data-toggle="button"
-          onClick={(e) => {
-            this.setState({ rows: true });
-          }}
-        >
-          Genera PDF
-        </button>
-        <br />
-        {this.state.rows && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.rowSelected, this.state.uri)}</PDFViewer>}
+        {this.state.rowSelected.length > 0 && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.state.rowSelected, this.state.uri)}</PDFViewer>}
       </div>
     );
   }

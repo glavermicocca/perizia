@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import { Page, Document, StyleSheet, View, Font, Image } from "@react-pdf/renderer";
 import styled from "@react-pdf/styled-components";
@@ -14,14 +11,21 @@ import moment from 'moment'
 import 'moment/locale/it'
 moment.locale('it');
 
+Font.register(KadwaRegular, { family: 'KadwaRegular' });
+Font.register(KadwaBold, { family: 'KadwaBold' });
+
 // Create styles
 const styles = StyleSheet.create({
   page: {
+    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: "1cm",
   },
 });
+
+const ViewEdgeAreaSeparator = styled.View`
+  margin: 4cm;
+`;
 
 const ViewEdgeArea = styled.View`
   maxWidth: 4cm;
@@ -55,10 +59,19 @@ const TextViewLabel = styled.Text`
 `;
 
 const TextViewLabelCaratteristiche = styled.Text`
-  marginBottom: '4pt';
+  marginBottom: '3pt';
   marginLeft: 3pt;
   marginRight: 3pt;
   fontSize: 4pt;
+  fontFamily: 'KadwaBold';
+  lineHeight: 1.0pt;
+`
+
+const TextViewLabelCaratteristicheBig = styled.Text`
+  marginBottom: '4pt';
+  marginLeft: 3pt;
+  marginRight: 3pt;
+  fontSize: 6pt;
   fontFamily: 'KadwaBold';
   lineHeight: 1.3pt;
 `
@@ -98,6 +111,23 @@ const TextViewTm = styled.Text`
   textAlign: center;
 `;
 
+// ---------------------------
+
+const TextViewTmSmall = styled.Text`
+  letterSpacing:-0.5pt;
+  fontSize: 8pt;
+  fontFamily: 'KadwaRegular';
+  textAlign: center;
+`;
+
+const TextViewTsmall = styled.Text`
+  fontSize: 6pt;
+  fontFamily: 'KadwaRegular';
+  text-align: center;
+  lineHeight: 0.8pt;
+`;
+
+
 const getData = (row) => {
   const scaleFactor = 1
   const canvas = document.getElementById(`qr_${row.id}`)
@@ -129,14 +159,17 @@ const getData = (row) => {
 // Create Document Component
 const Cartellini = (rows) => {
 
-  Font.register(KadwaRegular, { family: 'KadwaRegular' });
-  Font.register(KadwaBold, { family: 'KadwaBold' });
-
   return <Document>
     <Page size="A4" style={styles.page}>
-      {rows.map((row) => {
+      {rows.map((row, index) => {
         return (
-          <View key={row.id}>
+          <View key={row.id} style={{
+            alignItems: "center",
+            flexDirection: "row",
+            flexWrap: "nowrap",
+            paddingLeft: "8mm",
+            paddingTop: "8mm"
+          }}>
             <ViewEdgeArea>
               <ViewEdgeAreaInterna>
                 <TextViewT>DR. <TextViewTm>A </TextViewTm><TextViewT>NDREA <TextViewTm>D </TextViewTm>EL <TextViewTm>P </TextViewTm>UP</TextViewT></TextViewT>
@@ -154,10 +187,10 @@ const Cartellini = (rows) => {
             </ViewEdgeArea>
             <ViewEdgeArea>
               <ViewEdgeAreaInterna>
-                <TextViewT>DR. <TextViewTm>A </TextViewTm><TextViewT>NDREA <TextViewTm>D </TextViewTm>EL <TextViewTm>P </TextViewTm>UP</TextViewT></TextViewT>
+                <TextViewTsmall>DR. <TextViewTmSmall>A </TextViewTmSmall><TextViewTsmall>NDREA <TextViewTmSmall>D </TextViewTmSmall>EL <TextViewTmSmall>P </TextViewTmSmall>UP</TextViewTsmall></TextViewTsmall>
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
                 <TextViewLabelCaratteristiche >{'Perizia n°\t'}<TextViewValue>{row.stato}/{row.anno}/{row.valore}/{row.uuid}</TextViewValue></TextViewLabelCaratteristiche>
-                <TextViewLabelCaratteristiche style={{ textAlign: 'center' }}>{row.descrizione}</TextViewLabelCaratteristiche>
+                <TextViewLabelCaratteristicheBig style={{ textAlign: 'center' }}>{row.descrizione}</TextViewLabelCaratteristicheBig>
                 <TextViewLabelCaratteristiche style={{ textAlign: 'center' }}>{row.periodo}</TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Contorno: <TextViewValue>{row.contorno}</TextViewValue></TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Peso: <TextViewValue>{row.peso}</TextViewValue><TextViewLabelCaratteristiche>   Diametro: <TextViewValue>{row.diametro}</TextViewValue></TextViewLabelCaratteristiche></TextViewLabelCaratteristiche>
@@ -168,6 +201,7 @@ const Cartellini = (rows) => {
                 </View>
               </ViewEdgeAreaInterna>
             </ViewEdgeArea>
+            {/* {index % 7 == 0 && (<ViewEdgeAreaSeparator></ViewEdgeAreaSeparator>)} */}
           </View>
         );
       })}

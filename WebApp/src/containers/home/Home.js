@@ -12,7 +12,6 @@ import "./home.css";
 
 class Home extends Component {
   componentDidMount() {
-    console.log(window.location);
     this.props.postPeriziaItem(window.location);
   }
 
