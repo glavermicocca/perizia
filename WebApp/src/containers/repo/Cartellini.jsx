@@ -53,7 +53,7 @@ const ViewEdgeAreaInterna = styled.View`
 `;
 
 const TextViewLabel = styled.Text`
-  fontSize: 4pt;
+  fontSize: 5pt;
   fontFamily: 'KadwaBold';
   lineHeight: 1.3pt;
 `;
@@ -62,9 +62,9 @@ const TextViewLabelCaratteristiche = styled.Text`
   marginBottom: '3pt';
   marginLeft: 3pt;
   marginRight: 3pt;
-  fontSize: 4pt;
+  fontSize: 4.5pt;
   fontFamily: 'KadwaBold';
-  lineHeight: 1.0pt;
+  lineHeight: 1.3pt;
 `
 
 const TextViewLabelCaratteristicheBig = styled.Text`
@@ -84,7 +84,7 @@ const TextViewValueCenter = styled.Text`
 `;
 
 const TextViewValue = styled.Text`
-  fontSize: 4pt;
+  fontSize: 5pt;
   fontFamily: 'KadwaRegular';
   lineHeight: 1.3pt;
 `;
