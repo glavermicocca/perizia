@@ -187,8 +187,7 @@ class DataTableErroriDiConiazione extends React.Component {
       hidden: false,
       sort: true,
       editor: {
-        type: Type.CHECKBOX,
-        value: 'Y:N'
+        type: Type.CHECKBOX
       },
     },
     {
