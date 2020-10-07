@@ -124,7 +124,7 @@ export const RowExpanded = (props) => {
   }, [])
 
   const GeneratorQrCode = (row) => {
-    return <QRCode size={330} bgColor={"#fffbf5"} id={`qr_${row.id}`} style={{ width: 120, height: 120 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
+    return <QRCode size={330} bgColor={"#FFEFD5"} id={`qr_${row.id}`} style={{ width: 120, height: 120 }} value={'p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
   }
 
   return (

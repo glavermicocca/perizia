@@ -28,6 +28,18 @@ const ViewEdgeAreaSeparator = styled.View`
 `;
 
 const ViewEdgeArea = styled.View`
+  maxWidth: 4.2cm;
+  width: 4.2cm;
+  maxHeight: 4.2cm;
+  height: 4.2cm;
+
+  padding: 1pt;
+  margin: 1pt;
+  border: solid 0.2pt #B71C1C;
+  background: #FFEFD5;
+`;
+
+const ViewEdgeAreaInterna = styled.View`
   maxWidth: 4cm;
   width: 4cm;
   maxHeight: 4cm;
@@ -35,21 +47,9 @@ const ViewEdgeArea = styled.View`
 
   padding: 1pt;
   margin: 1pt;
-  border: solid 0.2pt #B71C1C;
-  background: #fffbf5;
-`;
-
-const ViewEdgeAreaInterna = styled.View`
-  maxWidth: 3.8cm;
-  width: 3.8cm;
-  maxHeight: 3.8cm;
-  height: 3.8cm;
-
-  padding: 1pt;
-  margin: 1pt;
   border: solid 0.2pt;
   borderColor: #B71C1C;
-  background: #fffbf5;
+  background: #FFEFD5;
 `;
 
 const TextViewLabel = styled.Text`
@@ -77,7 +77,7 @@ const TextViewLabelCaratteristicheBig = styled.Text`
 `
 
 const TextViewValueCenter = styled.Text`
-  fontSize: 4pt;
+  fontSize: 5pt;
   fontFamily: 'KadwaRegular';
   lineHeight: 1.3pt;
   textAlign: center;
@@ -177,10 +177,10 @@ const Cartellini = (rows) => {
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenter>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>CCIAA di Trieste sigillo n.725</TextViewValueCenter>
                 <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter>
-                <Image style={{ marginTop: "4.5pt", marginBottom: "4.5pt" }} source={separator}></Image>
-                <Image style={{ width: "50pt" }} source={{ uri: getData(row) }} />
+                <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
+                <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} />
                 <TextViewValue style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {moment(new Date()).format("DD MMMM YYYY")}</TextViewValue>
-                <Image style={{ position: 'absolute', bottom: 25, left: '55pt', right: '0pt' }} source={separator}></Image>
+                <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>
                 <TextViewValue style={{ position: 'absolute', bottom: 15, right: 3 }}>erroridiconiazione.com</TextViewValue>
                 <TextViewValue style={{ position: 'absolute', bottom: 5, right: 3 }}>andreadelpup@libero.it</TextViewValue>
               </ViewEdgeAreaInterna>

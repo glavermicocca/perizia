@@ -33,6 +33,7 @@
     "socket.io": "^2.3.0"
   },
   "homepage": "https://p.erroridiconiazione.com",
+  "proxy":"http://192.168.5.72:3000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
