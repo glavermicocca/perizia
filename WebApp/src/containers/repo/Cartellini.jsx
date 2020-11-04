@@ -90,7 +90,7 @@ const TextViewValue = styled.Text`
 `;
 
 const TextViewValueData = styled.Text`
-  fontSize: 3.5pt;
+  fontSize: 4pt;
   fontFamily: 'KadwaRegular';
   lineHeight: 1.3pt;
 `;
