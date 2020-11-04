@@ -89,6 +89,12 @@ const TextViewValue = styled.Text`
   lineHeight: 1.3pt;
 `;
 
+const TextViewValueData = styled.Text`
+  fontSize: 3.5pt;
+  fontFamily: 'KadwaRegular';
+  lineHeight: 1.3pt;
+`;
+
 const TextViewT = styled.Text`
   fontSize: 10pt;
   fontFamily: 'KadwaRegular';
@@ -179,7 +185,7 @@ const Cartellini = (rows) => {
                 <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter>
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
                 <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} />
-                <TextViewValueCaratteristiche style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {moment(new Date()).format("DD MMMM YYYY")}</TextViewValueCaratteristiche>
+                <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {moment(new Date()).format("DD MMMM YYYY")}</TextViewValueData>
                 <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>
                 <TextViewValue style={{ position: 'absolute', bottom: 15, right: 3 }}>erroridiconiazione.com</TextViewValue>
                 <TextViewValue style={{ position: 'absolute', bottom: 5, right: 3 }}>andreadelpup@libero.it</TextViewValue>
