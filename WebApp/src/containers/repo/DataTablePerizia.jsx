@@ -5,6 +5,8 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { RowExpanded } from "./RowExpand";
 
+import { ModalAreaCopy } from './AreaCopy'
+
 import React from "react";
 import axios from "axios";
 
@@ -89,8 +91,45 @@ class DataTablePerizia extends React.Component {
         }
       }}
     >
-      Aggiungi riga
+      Aggiungi riga vuota
   </button>
+  }
+
+  CloneConfirmedColumns = async (columns) => {
+
+    if (this.state.rowSelected.length > 0) {
+      const idToken = loadIdToken();
+
+      let data = {}
+      columns.forEach(item => {
+        data[item.dataField] = this.state.rowSelected[0][item.dataField]
+      })
+
+      console.log(data)
+
+      const headers = {
+        Authorization: `Bearer ${idToken}`,
+      };
+
+      try {
+
+        const response = await axios({
+          baseURL,
+          url: "/crudClone",
+          method: "post",
+          headers,
+          data,
+        });
+        let dataResponse = response.data;
+        console.log(dataResponse[0]);
+        var copiedData = [dataResponse[0], ...this.state.data]
+        this.setState({
+          data: copiedData,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
   expandRow = {
@@ -191,13 +230,14 @@ class DataTablePerizia extends React.Component {
                 mode: "click",
                 blurToSave: true,
                 beforeSaveCell(oldValue, newValue, row, column, done) {
-                  setTimeout(() => {
-                    if (window.confirm("Do you want to accep this change?")) {
-                      done(); // contine to save the changes
-                    } else {
-                      done(false); // reject the changes
-                    }
-                  }, 0);
+                  done(); // contine to save the changes
+                  // setTimeout(() => {
+                  //   if (window.confirm("Do you want to accep this change?")) {
+                  //     done(); // contine to save the changes
+                  //   } else {
+                  //     done(false); // reject the changes
+                  //   }
+                  // }, 0);
                   return { async: true };
                 },
               })}
@@ -473,7 +513,7 @@ class DataTablePerizia extends React.Component {
     },
     {
       dataField: "variante",
-      text: "Variante",
+      text: "Errore/Variante",
       sort: true,
       hidden: true,
       filter: textFilter({
@@ -610,6 +650,7 @@ class DataTablePerizia extends React.Component {
     const { data, sizePerPage, page, total } = this.state;
     return (
       <div className="m-3">
+        <ModalAreaCopy columns={this.columns} confirmedColumns={this.CloneConfirmedColumns} />
         <this.AddButton />
         <this.RemotePagination
           data={data}

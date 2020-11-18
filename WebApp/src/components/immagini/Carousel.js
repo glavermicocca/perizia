@@ -1,28 +1,31 @@
 import React, { Component } from "react";
-import { UncontrolledCarousel } from "reactstrap";
+import { Carousel, Container, Row, Col } from "react-bootstrap";
 
 export default class carousel extends Component {
   render() {
     const { data } = this.props;
-    if (data == null) return null;
-    let items = [];
-    data.forEach((element, index) => {
-      items.push({
-        src: "/" + element.filename,
-        altText: element.originalname,
-        caption: "",
-      });
+
+    let itemsCarusel = data.map((element, index) => {
+      console.log(element);
+      return (
+        <Carousel.Item key={`${index}`}>
+          <img
+            className="d-block w-100"
+            src={"/" + element.filename}
+            alt={element.originalname}
+          />
+        </Carousel.Item>
+      );
     });
 
     return (
-      <div className="row">
-        <div className="col-md-8 offset-md-2">
-          <UncontrolledCarousel
-            autoPlay={false}
-            items={items}
-          />
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Carousel interval={null}>{itemsCarusel}</Carousel>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

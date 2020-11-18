@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { FormGroup, Label, Card, CardBody, CardTitle } from "reactstrap";
+import { FormGroup, FormLabel, Card } from "react-bootstrap";
 
 import { postPeriziaItem } from "../../actions/perizia";
 
@@ -20,42 +20,42 @@ class Home extends Component {
     const errori = errori_di_coniazione.map((errore) => {
       return (
         <Card key={errore.id} className="shadow p-3 mb-5 bg-white rounded">
-          <CardBody>
+          <Card.Body>
             <FormGroup>
-              <Label for="peso">Macro categoria</Label>
+              <FormLabel htmlFor="peso">Macro categoria</FormLabel>
               <h5 name="peso" id="peso">
                 {errore.macro_categoria}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="diametro">Categoria</Label>
+              <FormLabel htmlFor="diametro">Categoria</FormLabel>
               <h5 name="diametro" id="diametro">
                 {errore.macrocategoria}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="spessore">Ripetitivita</Label>
+              <FormLabel htmlFor="spessore">Ripetitivita</FormLabel>
               <h5 name="spessore" id="spessore">
                 {errore.ripetitivita}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="codice">Codice</Label>
+              <FormLabel htmlFor="codice">Codice</FormLabel>
               <h5 name="codice">{errore.codice}</h5>
             </FormGroup>
             <FormGroup>
-              <Label for="rarita">Descrizione</Label>
+              <FormLabel htmlFor="rarita">Descrizione</FormLabel>
               <h5 name="descrizione" id="descrizione">
                 {errore.descrizione}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="riferiemento_esterno">Riferiemento esterno</Label>
+              <FormLabel htmlFor="riferiemento_esterno">Riferiemento esterno</FormLabel>
               <h5 name="riferiemento_esterno" id="riferiemento_esterno">
                 {errore.riferiemento_esterno}
               </h5>
             </FormGroup>
-          </CardBody>
+          </Card.Body>
         </Card>
       );
     });
@@ -63,11 +63,11 @@ class Home extends Component {
     if (errori_di_coniazione.length > 0) {
       return (
         <Card className="shadow p-3 mb-5 bg-white rounded">
-          <CardTitle>
+          <Card.Title>
             <h4>&nbsp;&nbsp;&nbsp;Errori</h4>
             <br></br>
-          </CardTitle>
-          <CardBody>{errori}</CardBody>
+          </Card.Title>
+          <Card.Body>{errori}</Card.Body>
         </Card>
       );
     } else {
@@ -83,114 +83,114 @@ class Home extends Component {
       <div className="m-3">
         <h4>Perizia di Andrea Del Pup</h4>
         <Card className="shadow p-3 mb-5 bg-white rounded">
-          <CardBody>
+          <Card.Body>
             <Carousel data={immagini} />
-          </CardBody>
-          <CardBody>
-            <CardTitle>
+          </Card.Body>
+          <Card.Body>
+            <Card.Title>
               <h4>&nbsp;&nbsp;&nbsp;Informazioni generiche</h4>
               <br></br>
-            </CardTitle>
+            </Card.Title>
             <FormGroup>
-              <Label for="descrizione">Tipo moneta</Label>
+              <FormLabel htmlFor="descrizione">Tipo moneta</FormLabel>
               <h5 name="descrizione" id="descrizione">
                 {perizia.descrizione}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="periodo">Periodo</Label>
+              <FormLabel htmlFor="periodo">Periodo</FormLabel>
               <h5 name="periodo" id="periodo">
                 {perizia.periodo}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="valuta">Valuta</Label>
+              <FormLabel htmlFor="valuta">Valuta</FormLabel>
               <h5 name="valuta" id="valuta">
                 {perizia.valuta}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="zecca">Zecca</Label>
+              <FormLabel htmlFor="zecca">Zecca</FormLabel>
               <h5 name="zecca" id="zecca">
                 {perizia.zecca}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="lega_metallica">Lega metallica</Label>
+              <FormLabel htmlFor="lega_metallica">Lega metallica</FormLabel>
               <h5 name="lega_metallica" id="lega_metallica">
                 {perizia.lega_metallica}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="orientamento_asse">Orientamento asse</Label>
+              <FormLabel htmlFor="orientamento_asse">Orientamento asse</FormLabel>
               <h5 name="orientamento_asse" id="orientamento_asse">
                 {perizia.orientamento_asse}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="contorno">Contorno</Label>
+              <FormLabel htmlFor="contorno">Contorno</FormLabel>
               <h5 name="contorno" id="contorno">
                 {perizia.contorno}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="riferimento">Riferimento</Label>
+              <FormLabel htmlFor="riferimento">Riferimento</FormLabel>
               <h5 name="riferimento" id="riferimento">
                 {perizia.riferimento}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="data_perizia">Data perizia</Label>
+              <FormLabel htmlFor="data_perizia">Data perizia</FormLabel>
               <h5 name="data_perizia" id="data_perizia">
                 {perizia.data_perizia}
               </h5>
             </FormGroup>
-          </CardBody>
+          </Card.Body>
         </Card>
         <Card className="shadow p-3 mb-5 bg-white rounded">
-          <CardBody>
-            <CardTitle>
+          <Card.Body>
+            <Card.Title>
               <h4>&nbsp;&nbsp;&nbsp;Informazioni specifiche</h4>
               <br></br>
-            </CardTitle>
+            </Card.Title>
             <FormGroup>
-              <Label for="peso">Peso</Label>
+              <FormLabel htmlFor="peso">Peso</FormLabel>
               <h5 name="peso" id="peso">
                 {perizia.peso}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="diametro">Diametro</Label>
+              <FormLabel htmlFor="diametro">Diametro</FormLabel>
               <h5 name="diametro" id="diametro">
                 {perizia.diametro}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="spessore">Spessore</Label>
+              <FormLabel htmlFor="spessore">Spessore</FormLabel>
               <h5 name="spessore" id="spessore">
                 {perizia.spessore}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="conservazione">Conservazione</Label>
+              <FormLabel htmlFor="conservazione">Conservazione</FormLabel>
               <h5 name="conservazione">{perizia.conservazione}</h5>
             </FormGroup>
             <FormGroup>
-              <Label for="rarita">Rarità</Label>
+              <FormLabel htmlFor="rarita">Rarità</FormLabel>
               <h5 name="rarita" id="rarita">
                 {perizia.rarita}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="variante">Errore/Variante</Label>
+              <FormLabel htmlFor="variante">Errore/Variante</FormLabel>
               <h5 name="variante" id="variante">
                 {perizia.variante}
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="collegamento">
+              <FormLabel htmlFor="collegamento">
                 Collegamento a descrizione errore
-              </Label>
+              </FormLabel>
               <h5 name="collegamento" id="collegamento">
                 <a href={perizia.collegamento} target="_blank">
                   {perizia.collegamento} 🔗
@@ -198,12 +198,12 @@ class Home extends Component {
               </h5>
             </FormGroup>
             <FormGroup>
-              <Label for="note">Note</Label>
+              <FormLabel htmlFor="note">Note</FormLabel>
               <h5 name="note" id="note">
                 {perizia.note}
               </h5>
             </FormGroup>
-          </CardBody>
+          </Card.Body>
         </Card>
         <this.Errori />
       </div>

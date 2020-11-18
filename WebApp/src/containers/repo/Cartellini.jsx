@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
+    margin: "25pt",
   },
 });
 
@@ -164,7 +165,9 @@ const getData = (row) => {
 
 // Create Document Component
 const Cartellini = (rows) => {
-
+  
+  // {moment(new Date()).format("DD MMMM YYYY")}
+  
   return <Document>
     <Page size="A4" style={styles.page}>
       {rows.map((row, index) => {
@@ -173,8 +176,6 @@ const Cartellini = (rows) => {
             alignItems: "center",
             flexDirection: "row",
             flexWrap: "nowrap",
-            paddingLeft: "8mm",
-            paddingTop: "8mm"
           }}>
             <ViewEdgeArea>
               <ViewEdgeAreaInterna>
@@ -185,7 +186,7 @@ const Cartellini = (rows) => {
                 <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter>
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
                 <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} />
-                <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {moment(new Date()).format("DD MMMM YYYY")}</TextViewValueData>
+                <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {row.data_perizia}</TextViewValueData>
                 <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>
                 <TextViewValue style={{ position: 'absolute', bottom: 15, right: 3 }}>erroridiconiazione.com</TextViewValue>
                 <TextViewValue style={{ position: 'absolute', bottom: 5, right: 3 }}>andreadelpup@libero.it</TextViewValue>

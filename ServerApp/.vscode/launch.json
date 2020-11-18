@@ -12,12 +12,14 @@
                 "<node_internals>/**"
             ],
             "program": "${file}",
-            "env":{
+            "env": {
                 "PGUSER": "postgres",
                 "PGHOST": "localhost",
                 "PGPASSWORD": "example",
                 "PGDATABASE": "postgres",
-                "PGPORT": "5432"
+                "PGPORT": "5432",
+                "UT": "andrea.delpup",
+                "PSW": "Thomas01"
             }
             // "env":{
             //     "PGUSER": "postgres",

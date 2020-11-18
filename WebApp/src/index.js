@@ -15,7 +15,6 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 // jquery and tether for bootstrap to use
 // alternative is to link them in index.html
 import "bootstrap/dist/css/bootstrap.css";
-import "font-awesome/css/font-awesome.css";
 // import jquery from "jquery";
 // window.$ = window.jQuery = jquery;
 // window.Popper = require("popper.js");

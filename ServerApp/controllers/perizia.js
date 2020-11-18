@@ -159,6 +159,24 @@ const postTableData = async (req, res, db) => {
     .catch((err) => res.status(400).json({ dbError: err }));
 };
 
+const postCloneTableData = async (req, res, db) => {
+  const added = new Date();
+
+  var resp = await db("perizia").max("id");
+
+  if (resp[0].max == null) {
+    resp[0].max = 0;
+  }
+
+  db("perizia")
+    .insert({ added, ...req.body })
+    .returning("*")
+    .then((item) => {
+      res.json(item);
+    })
+    .catch((err) => res.status(400).json({ dbError: err }));
+};
+
 const postTableDataOld = (req, res, db) => {
   const {
     stato,
@@ -243,6 +261,7 @@ module.exports = {
   getTableData,
   getTableDataQuery,
   postTableData,
+  postCloneTableData,
   putTableData,
   deleteTableData,
   postPerizia,

@@ -121,13 +121,14 @@ class DataTableErroriDiConiazione extends React.Component {
                 mode: "click",
                 blurToSave: true,
                 beforeSaveCell(oldValue, newValue, row, column, done) {
-                  setTimeout(() => {
-                    if (window.confirm("Do you want to accep this change?")) {
-                      done(); // contine to save the changes
-                    } else {
-                      done(false); // reject the changes
-                    }
-                  }, 0);
+                  done(); // contine to save the changes
+                  // setTimeout(() => {
+                  //   if (window.confirm("Do you want to accep this change?")) {
+                  //     done(); // contine to save the changes
+                  //   } else {
+                  //     done(false); // reject the changes
+                  //   }
+                  // }, 0);
                   return { async: true };
                 },
               })}

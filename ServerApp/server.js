@@ -211,6 +211,9 @@ app.put("/crud", checkToken, (req, res) => perizia.putTableData(req, res, db));
 app.delete("/crud", checkToken, (req, res) =>
   perizia.deleteTableData(req, res, db)
 );
+app.post("/crudClone", checkToken, (req, res) =>
+  perizia.postCloneTableData(req, res, db)
+);
 
 // App Route - Singola Perizia - PUBLIC
 app.post("/perizia", (req, res) => perizia.postPerizia(req, res, db));
