@@ -1,23 +1,23 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
-import { FormGroup, FormLabel, Card } from "react-bootstrap";
+import { FormGroup, FormLabel, Card } from 'react-bootstrap'
 
-import { postPeriziaItem } from "../../actions/perizia";
+import { postPeriziaItem } from '../../actions/perizia'
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux'
 
-import Carousel from "../../components/immagini/Carousel";
+import Carousel from '../../components/immagini/Carousel'
 
-import "./home.css";
+import './home.css'
 
 class Home extends Component {
   componentDidMount() {
-    this.props.postPeriziaItem(window.location);
+    this.props.postPeriziaItem(window.location)
   }
 
   Errori = () => {
-    const { errori_di_coniazione } = this.props;
-    const errori = errori_di_coniazione.map((errore) => {
+    const { errori_di_coniazione } = this.props
+    const errori = errori_di_coniazione.map(errore => {
       return (
         <Card key={errore.id} className="shadow p-3 mb-5 bg-white rounded">
           <Card.Body>
@@ -57,8 +57,8 @@ class Home extends Component {
             </FormGroup>
           </Card.Body>
         </Card>
-      );
-    });
+      )
+    })
 
     if (errori_di_coniazione.length > 0) {
       return (
@@ -69,15 +69,15 @@ class Home extends Component {
           </Card.Title>
           <Card.Body>{errori}</Card.Body>
         </Card>
-      );
+      )
     } else {
-      return null;
+      return null
     }
-  };
+  }
 
   render() {
-    const { perizia, immagini } = this.props;
-    if (perizia == null) return null;
+    const { perizia, immagini } = this.props
+    if (perizia == null) return null
 
     return (
       <div className="m-3">
@@ -188,14 +188,11 @@ class Home extends Component {
               </h5>
             </FormGroup>
             <FormGroup>
-              <FormLabel htmlFor="collegamento">
-                Collegamento a descrizione errore
-              </FormLabel>
-              <h5 name="collegamento" id="collegamento">
-                <a href={perizia.collegamento} target="_blank">
-                  {perizia.collegamento} 🔗
-                </a>
-              </h5>
+              <FormLabel htmlFor="collegamento">Collegamento a descrizione errore</FormLabel>
+              <br />
+              <a rel="noreferrer" className="m-3 btn btn-outline-primary" role="button" href={perizia.collegamento} target="_blank">
+                {perizia.collegamento}
+              </a>
             </FormGroup>
             <FormGroup>
               <FormLabel htmlFor="note">Note</FormLabel>
@@ -207,17 +204,17 @@ class Home extends Component {
         </Card>
         <this.Errori />
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => {
-  const { immagini, perizia, errori_di_coniazione } = state.data;
+const mapStateToProps = state => {
+  const { immagini, perizia, errori_di_coniazione } = state.data
   return {
     perizia,
     errori_di_coniazione,
-    immagini,
-  };
-};
+    immagini
+  }
+}
 
-export default connect(mapStateToProps, { postPeriziaItem })(Home);
+export default connect(mapStateToProps, { postPeriziaItem })(Home)

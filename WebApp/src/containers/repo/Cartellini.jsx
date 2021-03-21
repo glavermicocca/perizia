@@ -28,8 +28,6 @@ const ViewEdgeAreaSeparator = styled.View`
   margin: 4cm;
 `;
 
-
-
 const TextViewLabel = styled.Text`
   fontSize: 5pt;
   fontFamily: 'KadwaBold';
@@ -123,7 +121,7 @@ const TextViewTsmall = styled.Text`
 const getData = (row) => {
   const scaleFactor = 1
   const canvas = document.getElementById(`qr_${row.id}`)
-  console.log(row.id, canvas);
+  //console.log(row.id, canvas);
   //canvas.scale(scaleFactor, scaleFactor);
   // var oCtx = canvas.getContext('2d', { alpha: true });
   // oCtx.webkitImageSmoothingEnabled = false;
@@ -176,7 +174,7 @@ const Cartellini = (rows, url, checkedQrCode) => {
 `;
 
   // {moment(new Date()).format("DD MMMM YYYY")}
-  console.log("PIPPO", checkedQrCode);
+  //console.log("PIPPO", checkedQrCode);
   return <Document>
     <Page size="A4" style={styles.page}>
       {rows.map((row, index) => {

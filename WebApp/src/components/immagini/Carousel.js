@@ -1,22 +1,18 @@
-import React, { Component } from "react";
-import { Carousel, Container, Row, Col } from "react-bootstrap";
+import React, { Component } from 'react'
+import { Carousel, Container, Row, Col } from 'react-bootstrap'
 
 export default class carousel extends Component {
   render() {
-    const { data } = this.props;
+    const { data } = this.props
 
     let itemsCarusel = data.map((element, index) => {
-      console.log(element);
+      //console.log(element);
       return (
         <Carousel.Item key={`${index}`}>
-          <img
-            className="d-block w-100"
-            src={"/" + element.filename}
-            alt={element.originalname}
-          />
+          <img className="d-block w-100" src={'/' + element.filename} alt={element.originalname} />
         </Carousel.Item>
-      );
-    });
+      )
+    })
 
     return (
       <Container>
@@ -26,6 +22,6 @@ export default class carousel extends Component {
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }

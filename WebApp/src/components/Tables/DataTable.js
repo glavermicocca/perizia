@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
-import { Table, Button } from 'reactstrap';
+import { Table, Button } from 'reactstrap'
 import ModalForm from '../Modals/Modal'
 
-import {
-  loadIdToken,
-} from "../../utils/apiUtils";
+import { loadIdToken } from '../../utils/apiUtils'
 
 class DataTable extends Component {
-
   deleteItem = id => {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
-      const idToken = loadIdToken();
+      const idToken = loadIdToken()
       fetch('/crud', {
         method: 'delete',
         headers: {
@@ -26,14 +23,12 @@ class DataTable extends Component {
         })
         .catch(err => {
           this.props.onFailure(err)
-          console.log(err)
+          //console.log(err)
         })
     }
-
   }
 
   render() {
-
     const items = this.props.items.map(item => {
       return (
         <tr key={item.id}>
@@ -42,18 +37,22 @@ class DataTable extends Component {
           <td>{item.anno}</td>
           <td>{item.valore}</td>
           <td>{item.uuid}</td>
-          <td style={{ width: "240px" }}>
+          <td style={{ width: '240px' }}>
             <div>
-              <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState} onFailure={this.props.onFailure} />
-              {' '}
-              <Button color="danger" onClick={() => this.deleteItem(item.id)}>Del</Button>
-              {' '}
-              <Button color="primary" onClick={() => {
-                window.open(item.stato + '/' + item.anno + '/' + item.valore + '/' + item.uuid, '', "width=450,height=auto")
-              }}>link 🔗</Button>
+              <ModalForm buttonLabel="Edit" item={item} updateState={this.props.updateState} onFailure={this.props.onFailure} />{' '}
+              <Button color="danger" onClick={() => this.deleteItem(item.id)}>
+                Del
+              </Button>{' '}
+              <Button
+                color="primary"
+                onClick={() => {
+                  window.open(item.stato + '/' + item.anno + '/' + item.valore + '/' + item.uuid, '', 'width=450,height=auto')
+                }}>
+                link 🔗
+              </Button>
             </div>
           </td>
-        </tr >
+        </tr>
       )
     })
 
@@ -68,10 +67,8 @@ class DataTable extends Component {
             <th>uuid</th>
           </tr>
         </thead>
-        <tbody>
-          {items}
-        </tbody>
-      </Table >
+        <tbody>{items}</tbody>
+      </Table>
     )
   }
 }

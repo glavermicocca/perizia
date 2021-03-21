@@ -33,7 +33,7 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
         <button
           type="button"
           key={column.dataField}
-          className={`m-1 btn btn-warning ${column.toggle ? "active" : ""}`}
+          className={`ms-1 btn btn-warning ${column.toggle ? "active" : ""}`}
           data-toggle="button"
           aria-pressed={column.toggle ? "true" : "false"}
           onClick={() => onColumnToggle(column.dataField)}
@@ -44,7 +44,7 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   </>
 );
 
-class DataTablePerizia extends React.Component {
+export default class DataTablePerizia extends React.Component {
 
   constructor(props) {
     super(props)
@@ -84,7 +84,7 @@ class DataTablePerizia extends React.Component {
             data: {},
           });
           let data = response.data;
-          console.log(data[0]);
+          //console.log(data[0]);
           var copiedData = [data[0], ...this.state.data]
           this.setState({
             data: copiedData,
@@ -108,7 +108,7 @@ class DataTablePerizia extends React.Component {
         data[item.dataField] = this.state.rowSelected[0][item.dataField]
       })
 
-      console.log(data)
+      //console.log(data)
 
       const headers = {
         Authorization: `Bearer ${idToken}`,
@@ -124,7 +124,7 @@ class DataTablePerizia extends React.Component {
           data,
         });
         let dataResponse = response.data;
-        console.log(dataResponse[0]);
+        //console.log(dataResponse[0]);
         var copiedData = [dataResponse[0], ...this.state.data]
         this.setState({
           data: copiedData,
@@ -151,7 +151,7 @@ class DataTablePerizia extends React.Component {
           data: { id },
         });
         let data = response.data;
-        console.log(data);
+        //console.log(data);
         if (data.delete == true) {
           var copiedData = this.state.data.filter((item) => {
             if (item.id == id) { return false }
@@ -203,7 +203,7 @@ class DataTablePerizia extends React.Component {
           <CustomToggleList
             {...props.columnToggleProps}
             onColumnToggle={(field) => {
-              console.log(field);
+              //console.log(field);
               this.columns.forEach((item) => {
                 if (item.dataField == field) {
                   item.hidden = !item.hidden;
@@ -262,7 +262,7 @@ class DataTablePerizia extends React.Component {
       editable: false,
       hidden: false,
       // events: {
-      //   onClick: (e, column, columnIndex, row, rowIndex) => { console.log(row) },
+      //   onClick: (e, column, columnIndex, row, rowIndex) => { //console.log(row) },
       // },
       formatter: this.columnGeneratorQrCode
     },
@@ -372,7 +372,6 @@ class DataTablePerizia extends React.Component {
       dataField: "data_perizia",
       text: "Data perizia",
       sort: true,
-      sort: true,
       hidden: true,
       filter: textFilter({
         caseSensitive: false, // default is false, and true will only work when comparator is LIKE
@@ -384,7 +383,6 @@ class DataTablePerizia extends React.Component {
     {
       dataField: "descrizione",
       text: "Descrizione",
-      sort: true,
       sort: true,
       hidden: true,
       filter: textFilter({
@@ -589,14 +587,14 @@ class DataTablePerizia extends React.Component {
 
   handleDataChange = ({ dataSize }) => {
     this.setState({ rowCount: dataSize });
-    console.log("dataSize", dataSize)
+    //console.log("dataSize", dataSize)
   }
 
   handleTableChange = async (
     type,
     { page, sizePerPage, sortField, sortOrder, filters, cellEdit }
   ) => {
-    console.log(type);
+    //console.log(type);
 
     const idToken = loadIdToken();
 
@@ -604,11 +602,11 @@ class DataTablePerizia extends React.Component {
       Authorization: `Bearer ${idToken}`,
     };
 
-    console.log(page, sizePerPage, sortField, sortOrder, filters);
+    //console.log(page, sizePerPage, sortField, sortOrder, filters);
 
     if (type == "cellEdit") {
       const { rowId, dataField, newValue } = cellEdit;
-      console.log(rowId, dataField, newValue);
+      //console.log(rowId, dataField, newValue);
       try {
         const response = await axios({
           baseURL,
@@ -618,7 +616,7 @@ class DataTablePerizia extends React.Component {
           data: { rowId, dataField, newValue },
         });
         let data = response.data;
-        console.log(data[0]);
+        //console.log(data[0]);
         var copiedData = this.state.data.map((item) => {
           if (item.id == rowId) {
             return data[0];
@@ -665,7 +663,7 @@ class DataTablePerizia extends React.Component {
   };
 
   onClickToggle = (e) => {
-    console.log(this.state);
+    //console.log(this.state);
     this.setState(Object.assign({}, this.state, { checkedQrCode: !this.state.checkedQrCode }))
   }
 
@@ -677,7 +675,7 @@ class DataTablePerizia extends React.Component {
     const { data, sizePerPage, page, total } = this.state;
 
     return (
-      <div className="m-3">
+      <>
         <ModalAreaCopy columns={this.columns} confirmedColumns={this.CloneConfirmedColumns} />
         <this.AddButton />
         <this.RemotePagination
@@ -694,9 +692,7 @@ class DataTablePerizia extends React.Component {
           <Form.Check onClick={this.onClickToggle} value={this.state.checkedQrCode} type="checkbox" label="Qr.code statico" />
         </Form.Group>
         {this.state.rowSelected.length > 0 && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.state.rowSelected, this.state.uri, this.state.checkedQrCode)}</PDFViewer>}
-      </div>
+      </>
     );
   }
 }
-
-export default DataTablePerizia = DataTablePerizia;

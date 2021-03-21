@@ -5,12 +5,9 @@ import { dati, datiSuccess } from '../../actions/immagini'
 
 import UploadProgress from '../UploadProgress/UploadProgress'
 
-import {
-  loadIdToken,
-} from "../../utils/apiUtils";
+import { loadIdToken } from '../../utils/apiUtils'
 
 class DatiImmagini extends Component {
-
   getItems() {
     this.props.datiLoad(this.props.id)
   }
@@ -18,7 +15,7 @@ class DatiImmagini extends Component {
   deleteItem = filename => {
     let confirmDelete = window.confirm('Delete item forever?')
     if (confirmDelete) {
-      const idToken = loadIdToken();
+      const idToken = loadIdToken()
       fetch('/crud_immagini', {
         method: 'delete',
         headers: {
@@ -33,7 +30,7 @@ class DatiImmagini extends Component {
           this.props.datiSuccess(newArray)
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
     }
   }
@@ -47,9 +44,11 @@ class DatiImmagini extends Component {
       return (
         <tr key={item.filename}>
           <td>{item.originalname}</td>
-          <td style={{ width: "75px" }}>
+          <td style={{ width: '75px' }}>
             <div>
-              <Button color="danger" onClick={() => this.deleteItem(item.filename)}>Del</Button>
+              <Button color="danger" onClick={() => this.deleteItem(item.filename)}>
+                Del
+              </Button>
             </div>
           </td>
         </tr>
@@ -58,18 +57,19 @@ class DatiImmagini extends Component {
 
     return (
       <>
-        <UploadProgress id={this.props.id} notify={() => {
-          this.getItems()
-        }} />
+        <UploadProgress
+          id={this.props.id}
+          notify={() => {
+            this.getItems()
+          }}
+        />
         <Table responsive hover>
           <thead>
             <tr>
               <th>filename</th>
             </tr>
           </thead>
-          <tbody>
-            {itemComponent}
-          </tbody>
+          <tbody>{itemComponent}</tbody>
         </Table>
       </>
     )
@@ -77,19 +77,23 @@ class DatiImmagini extends Component {
 }
 
 const mapStateToProps = state => {
-  const { immagini } = state;
+  const { immagini } = state
   const { UploadFile } = state
-  console.log(state)
+  //console.log(state)
   return {
     items: immagini.items
-  };
+  }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    datiSuccess: (items) => { dispatch(datiSuccess(items)) },
-    datiLoad: (id) => { dispatch(dati(id)) }
+    datiSuccess: items => {
+      dispatch(datiSuccess(items))
+    },
+    datiLoad: id => {
+      dispatch(dati(id))
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DatiImmagini);
+export default connect(mapStateToProps, mapDispatchToProps)(DatiImmagini)

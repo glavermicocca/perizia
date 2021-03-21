@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import BootstrapTable from 'react-bootstrap-table-next'
 /////////////////////////////////////////////////////////////////////////
 // BrowserRouter would be preferred over HashRouter, but BrowserRouter
 // would require configuring the server. So we will use HashRouter here.
@@ -10,13 +8,12 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import Header from '../../components/header/Header'
-import Footer from '../../components/footer/Footer'
 import Login from '../login/Login'
 import PrivateRoute from '../misc/PrivateRoute'
 import Home from '../home/Home'
 import DataTablePerizia from '../repo/DataTablePerizia'
 
-import { logout, dati } from '../../actions/auth'
+import { logout } from '../../actions/auth'
 
 import './app.css'
 
@@ -38,17 +35,12 @@ class App extends Component {
 
     return (
       <Router>
-        <div>
-          {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
-          <div style={{ marginTop: '60px' }}>
-            <Switch>
-              <PrivateRoute path="/app" isAuthenticated={isAuthenticated} component={DataTablePerizia} />
-              <Route path="/login" component={Login} />
-              <Route path="/" component={Home} />
-            </Switch>
-          </div>
-          {/* <Footer /> */}
-        </div>
+        <Switch>
+          <PrivateRoute path="/app" isAuthenticated={isAuthenticated} component={DataTablePerizia} />
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Home} />
+        </Switch>
+        {showHeader === true && <Header user={user} handleLogout={() => this.handleLogout()} />}
       </Router>
     )
   }

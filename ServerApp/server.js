@@ -15,7 +15,7 @@ console.log(require('dotenv').config({ path: path.join(__dirname, '.env') }))
 var express = require('express')
 var bodyParser = require('body-parser')
 var jwt = require('jsonwebtoken')
-var port = 3000
+var port = process.env.PORT || 3000
 
 // UPLOAD FILE
 const multer = require('multer')
@@ -27,20 +27,20 @@ var server = require('http').createServer(app)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+const imgDir = path.join(__dirname, '/img')
+console.log(imgDir)
+app.use('/static', express.static(imgDir))
+
 app.use(express.static(path.join(__dirname, '../ServerApp/build')))
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
-})
-app.get('/', (req, res) => {
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
+// })
+app.get('/app', (req, res) => {
     res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
 })
 app.get('/:stato/:anno/:valore/:uuid', (req, res) => {
     res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
 })
-
-const imgDir = path.join(__dirname, '/img')
-console.log(imgDir)
-app.use('/static', express.static(imgDir))
 
 //NO in PRODUZIONE
 app.use((req, res, next) => {
@@ -66,7 +66,7 @@ app.get('/welcome', function (req, res) {
 })
 
 // This should be well-guarded secret on the server (in a file or database).
-var JWT_SECRET = 'JWT Rocks!'
+var JWT_SECRET = process.env.JWT_SECRET
 
 // JWT based login service.
 app.post('/login', function (req, res) {

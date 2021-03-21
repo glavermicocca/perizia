@@ -104,17 +104,17 @@ class AddEditForm extends React.Component {
     })
       .then(response => response.json())
       .then(item => {
-        console.log(item)
+        //console.log(item)
         if (Array.isArray(item)) {
           this.props.addItemToState(item[0])
           this.props.setItemId(item[0].id)
         } else {
-          console.log('failure')
+          //console.log('failure')
           this.props.onFailure('Nessuna riga inserita...')
         }
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
         this.props.onFailure(err)
       })
   }
@@ -165,10 +165,10 @@ class AddEditForm extends React.Component {
           this.props.updateState(item[0])
           //this.props.toggle()
         } else {
-          console.log('failure')
+          //console.log('failure')
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => //console.log(err))
   }
 
   componentDidMount() {

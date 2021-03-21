@@ -12,36 +12,34 @@ import { loadIdToken } from "../../utils/apiUtils";
 import { baseURL } from '../../actions/action-types'
 
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
-  <div
-  >
-    {columns
-      .map((column) => ({
-        ...column,
-        toggle: toggles[column.dataField],
-      }))
-      .map((column) => {
-        if (column.dataField != 'id' && column.dataField != 'id_perizia') {
-          return (<button
-            type="button"
-            key={column.dataField}
-            className={`m-1 btn btn-warning ${column.toggle ? "active" : ""}`}
-            data-toggle="button"
-            aria-pressed={column.toggle ? "true" : "false"}
-            onClick={() => onColumnToggle(column.dataField)}
-          >
-            {column.text}
-          </button>)
-        }
-      })}
-  </div>
+  <>{columns
+    .map((column) => ({
+      ...column,
+      toggle: toggles[column.dataField],
+    }))
+    .map((column) => {
+      if (column.dataField != 'id' && column.dataField != 'id_perizia') {
+        return (<button
+          type="button"
+          key={column.dataField}
+          className={`btn ms-1 btn-warning ${column.toggle ? "active" : ""}`}
+          data-toggle="button"
+          aria-pressed={column.toggle ? "true" : "false"}
+          onClick={() => onColumnToggle(column.dataField)}
+        >
+          {column.text}
+        </button>)
+      }
+    })}
+  </>
 );
 
-class DataTableErroriDiConiazione extends React.Component {
+export default class DataTableErroriDiConiazione extends React.Component {
 
   row = this.props.row
 
   AddButton = ({ row }) => {
-    console.log(row)
+    //console.log(row)
     return <button
       type="button"
       className={`btn btn-primary m-1`}
@@ -65,7 +63,7 @@ class DataTableErroriDiConiazione extends React.Component {
             },
           });
           let data = response.data;
-          console.log(data[0]);
+          //console.log(data[0]);
           var copiedData = [data[0], ...this.state.data]
           this.setState({
             data: copiedData,
@@ -88,55 +86,55 @@ class DataTableErroriDiConiazione extends React.Component {
     handleDataChange,
     totalSize,
   }) => (
-      <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
-        {(props) => (
-          <>
-            <CustomToggleList
-              {...props.columnToggleProps}
-              onColumnToggle={(field) => {
-                console.log(field);
-                this.columns.forEach((item) => {
-                  if (item.dataField == field) {
-                    item.hidden = !item.hidden;
-                  }
-                });
-                props.columnToggleProps.onColumnToggle(field);
-              }}
-            />
-            <BootstrapTable
-              onDataSizeChange={handleDataChange}
-              striped={true}
-              hover={true}
-              condensed={true}
-              remote
-              {...props.baseProps}
-              filter={filterFactory()}
-              pagination={paginationFactory({
-                page,
-                sizePerPage,
-                totalSize,
-              })}
-              onTableChange={onTableChange}
-              cellEdit={cellEditFactory({
-                mode: "click",
-                blurToSave: true,
-                beforeSaveCell(oldValue, newValue, row, column, done) {
-                  done(); // contine to save the changes
-                  // setTimeout(() => {
-                  //   if (window.confirm("Do you want to accep this change?")) {
-                  //     done(); // contine to save the changes
-                  //   } else {
-                  //     done(false); // reject the changes
-                  //   }
-                  // }, 0);
-                  return { async: true };
-                },
-              })}
-            />
-          </>
-        )}
-      </ToolkitProvider>
-    );
+    <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
+      {(props) => (
+        <>
+          <CustomToggleList
+            {...props.columnToggleProps}
+            onColumnToggle={(field) => {
+              //console.log(field);
+              this.columns.forEach((item) => {
+                if (item.dataField == field) {
+                  item.hidden = !item.hidden;
+                }
+              });
+              props.columnToggleProps.onColumnToggle(field);
+            }}
+          />
+          <BootstrapTable
+            onDataSizeChange={handleDataChange}
+            striped={true}
+            hover={true}
+            condensed={true}
+            remote
+            {...props.baseProps}
+            filter={filterFactory()}
+            pagination={paginationFactory({
+              page,
+              sizePerPage,
+              totalSize,
+            })}
+            onTableChange={onTableChange}
+            cellEdit={cellEditFactory({
+              mode: "click",
+              blurToSave: true,
+              beforeSaveCell(oldValue, newValue, row, column, done) {
+                done(); // contine to save the changes
+                // setTimeout(() => {
+                //   if (window.confirm("Do you want to accep this change?")) {
+                //     done(); // contine to save the changes
+                //   } else {
+                //     done(false); // reject the changes
+                //   }
+                // }, 0);
+                return { async: true };
+              },
+            })}
+          />
+        </>
+      )}
+    </ToolkitProvider>
+  );
 
   columns = [
     {
@@ -234,7 +232,7 @@ class DataTableErroriDiConiazione extends React.Component {
 
     const row = this.props.row
 
-    console.log(row)
+    //console.log(row)
 
     const headers = {
       Authorization: `Bearer ${idToken}`,
@@ -274,7 +272,7 @@ class DataTableErroriDiConiazione extends React.Component {
     type,
     { page, sizePerPage, sortField, sortOrder, filters, cellEdit }
   ) => {
-    console.log(type);
+    //console.log(type);
 
     const idToken = loadIdToken();
 
@@ -284,11 +282,11 @@ class DataTableErroriDiConiazione extends React.Component {
       Authorization: `Bearer ${idToken}`,
     };
 
-    console.log(page, sizePerPage, sortField, sortOrder, filters);
+    //console.log(page, sizePerPage, sortField, sortOrder, filters);
 
     if (type == "cellEdit") {
       const { rowId, dataField, newValue } = cellEdit;
-      console.log(rowId, dataField, newValue);
+      //console.log(rowId, dataField, newValue);
       try {
         const response = await axios({
           baseURL,
@@ -298,7 +296,7 @@ class DataTableErroriDiConiazione extends React.Component {
           data: { rowId, dataField, newValue },
         });
         let data = response.data;
-        console.log(data[0]);
+        //console.log(data[0]);
         var copiedData = this.state.data.map((item) => {
           if (item.id == rowId) {
             return data[0];
@@ -346,7 +344,7 @@ class DataTableErroriDiConiazione extends React.Component {
     if (this.state == null) return null;
     const { data, sizePerPage, page, total } = this.state;
     const { row } = this.props
-    console.log(row)
+    //console.log(row)
     return (
       <div className="card border-primary mb-3 mx-auto" style={{}}>
         <div className="card-header">Errori di coniazione</div>
@@ -367,5 +365,3 @@ class DataTableErroriDiConiazione extends React.Component {
     );
   }
 }
-
-export default DataTableErroriDiConiazione = DataTableErroriDiConiazione;

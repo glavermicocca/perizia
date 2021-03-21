@@ -25,7 +25,7 @@ export const ModalAreaCopy = (props) => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true);
   const handleConfirm = (items) => {
-    console.log("here")
+    //console.log("here")
     setShow(false)
     let copyColumnsConfirmed = checked.filter((it) => it.checked == true)
     confirmedColumns(copyColumnsConfirmed)
@@ -65,7 +65,7 @@ const makeListOfButton = (checked, setChecked) => {
         checked={item.checked}
         value="1"
         onChange={(e) => {
-          console.log(index)
+          //console.log(index)
           let newChecked = [...checked]
           newChecked[index].checked = !newChecked[index].checked
           setChecked(newChecked)

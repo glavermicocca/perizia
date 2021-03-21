@@ -18,7 +18,7 @@ export const RowExpanded = (props) => {
   const [listFiles, setListFiles] = useState([])
 
   const onChangeHandler = event => {
-    console.log(event.target.files[0])
+    //console.log(event.target.files[0])
     selectFile({
       selectedFile: event.target.files[0],
       loaded: 0,
@@ -101,7 +101,7 @@ export const RowExpanded = (props) => {
         data: { filename }
       });
       let dataResponse = response.data;
-      console.log(dataResponse);
+      //console.log(dataResponse);
       if (dataResponse.delete == true) {
         //TODO
         var copiedList = listFiles.filter((item) => {
@@ -119,7 +119,7 @@ export const RowExpanded = (props) => {
   }
 
   useEffect(() => {
-    console.log(row)
+    //console.log(row)
     getData(row)
   }, [])
 
@@ -132,7 +132,7 @@ export const RowExpanded = (props) => {
       <div className="card border-primary mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
         <div className="card-header">QrCode</div>
         <div className="card-body text-primary">
-          <h5 className="card-title"><a target="_blank" href={row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}>{row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}</a></h5>
+          <a className="m-3 btn btn-outline-primary" role="button" target="_blank" rel="noreferrer" href={row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}>{row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid}</a>
           <GeneratorQrCode />
           <br />
           <button type="button"
