@@ -201,7 +201,7 @@ const Cartellini = (rows, url, checkedQrCode) => {
             </ViewEdgeArea>
             <ViewEdgeArea>
               <ViewEdgeAreaInterna>
-                <TextViewTsmall>DR. <TextViewTmSmall>A </TextViewTmSmall><TextViewTsmall>NDREA <TextViewTmSmall>D </TextViewTmSmall>EL <TextViewTmSmall>P </TextViewTmSmall>UP</TextViewTsmall></TextViewTsmall>
+                <TextViewTsmall>DR. <TextViewTmSmall>A</TextViewTmSmall><TextViewTsmall>NDREA <TextViewTmSmall>D</TextViewTmSmall>EL <TextViewTmSmall>P</TextViewTmSmall>UP</TextViewTsmall></TextViewTsmall>
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
                 {/* <TextViewLabelCaratteristiche >{'Perizia n°\t'}<TextViewValue>{row.stato}/{row.anno}/{row.valore}/{row.uuid}</TextViewValue></TextViewLabelCaratteristiche> */}
                 <TextViewLabelCaratteristicheBig style={{ textAlign: 'center' }}>{row.descrizione}</TextViewLabelCaratteristicheBig>
