@@ -18,7 +18,9 @@ export default class carousel extends Component {
       <Container>
         <Row>
           <Col md={{ span: 6, offset: 3 }}>
-            <Carousel interval={null}>{itemsCarusel}</Carousel>
+            <Carousel nextLabel="" prevLabel="" interval={null}>
+              {itemsCarusel}
+            </Carousel>
           </Col>
         </Row>
       </Container>
