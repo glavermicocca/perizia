@@ -1,72 +1,65 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BootstrapTable from "react-bootstrap-table-next";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import BootstrapTable from 'react-bootstrap-table-next'
 /////////////////////////////////////////////////////////////////////////
 // BrowserRouter would be preferred over HashRouter, but BrowserRouter
 // would require configuring the server. So we will use HashRouter here.
 // Please change to BrowserRouter if you have your own backend server.
 ///////////////////////////////////////////////////////////////////////////
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import { connect } from "react-redux";
-import Header from "../../components/header/Header";
-import Footer from "../../components/footer/Footer";
-import Login from "../login/Login";
-import PrivateRoute from "../misc/PrivateRoute";
-import Home from "../home/Home";
-import DataTablePerizia from "../repo/DataTablePerizia";
+import { connect } from 'react-redux'
+import Header from '../../components/header/Header'
+import Footer from '../../components/footer/Footer'
+import Login from '../login/Login'
+import PrivateRoute from '../misc/PrivateRoute'
+import Home from '../home/Home'
+import DataTablePerizia from '../repo/DataTablePerizia'
 
-import { logout, dati } from "../../actions/auth";
+import { logout, dati } from '../../actions/auth'
 
-import "./app.css";
+import './app.css'
 
 class App extends Component {
-
   handleLogout() {
-    const { user } = this.props;
-    this.props.dispatch(logout(user));
+    const { user } = this.props
+    this.props.dispatch(logout(user))
   }
 
   render() {
-    const { user, data } = this.props;
-    const isAuthenticated = true && user;
+    const { user, data } = this.props
+    const isAuthenticated = true && user
 
-    var showHeader = true;
+    var showHeader = true
 
     if (data.perizia != null) {
-      showHeader = false;
+      showHeader = false
     }
 
     return (
       <Router>
         <div>
-          {showHeader == true && (
-            <Header user={user} handleLogout={() => this.handleLogout()} />
-          )}
-          <div style={{marginTop:"60px"}}>
+          {showHeader == true && <Header user={user} handleLogout={() => this.handleLogout()} />}
+          <div style={{ marginTop: '60px' }}>
             <Switch>
+              <PrivateRoute path="/app" isAuthenticated={isAuthenticated} component={DataTablePerizia} />
               <Route path="/login" component={Login} />
-              <PrivateRoute
-                path="/app"
-                isAuthenticated={isAuthenticated}
-                component={DataTablePerizia}
-              />
               <Route path="/" component={Home} />
             </Switch>
           </div>
           {/* <Footer /> */}
         </div>
       </Router>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => {
-  const { auth, data } = state;
+const mapStateToProps = state => {
+  const { auth, data } = state
   return {
     user: auth ? auth.user : null,
-    data,
-  };
-};
+    data
+  }
+}
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(App)

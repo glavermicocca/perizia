@@ -1,36 +1,48 @@
-version: "3.8"
+version: '3.8'
 services:
   perizia_web_server_app:
-    image: perizia_web_server_app:latest
-    restart: always
+    #image: perizia_web_server_app:latest
+    restart: unless-stopped
     depends_on:
       - db
-      - adminer
+      - pgadmin
     build:
       context: ./
       dockerfile: Dockerfile
       args:
         buildno: 1
     volumes:
-      - ./ServerApp/img/:/root/ServerApp/img/
+      - ./ServerApp/img/:./ServerApp/img/
     ports:
       - 3010:3000
     networks:
       - internal-network
   db:
-    image: postgres
-    restart: always
+    image: postgres:latest
+    restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: example1
+      POSTGRES_PORT: 5432
     networks:
       - internal-network
     ports:
-      - 5432:5432
-  adminer:
-    image: adminer
-    restart: always
+      - 5434:5432
+  # adminer:
+  #   image: adminer
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8081:8080
+  #   networks:
+  #     - internal-network
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: giacomo.cervignano@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: viapiccardi47!!thomas
+      PGADMIN_LISTEN_PORT: 8081
     ports:
-      - 8080:8080
+      - '8081:8081'
     networks:
       - internal-network
 

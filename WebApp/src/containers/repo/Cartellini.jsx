@@ -54,6 +54,14 @@ const TextViewLabelCaratteristicheBig = styled.Text`
   lineHeight: 1.3pt;
 `
 
+const TextViewValueCenterSpecializzato = styled.Text`
+  fontSize: 5pt;
+  fontFamily: 'KadwaRegular';
+  lineHeight: 1.3pt;
+  textAlign: center;
+  marginTop: 3pt;
+`;
+
 const TextViewValueCenter = styled.Text`
   fontSize: 5pt;
   fontFamily: 'KadwaRegular';
@@ -77,7 +85,7 @@ const TextViewT = styled.Text`
   fontSize: 10pt;
   fontFamily: 'KadwaRegular';
   text-align: center;
-  lineHeight: 1.1pt;
+  lineHeight: 1pt;
 `;
 
 const TextViewTred = styled.Text`
@@ -180,12 +188,12 @@ const Cartellini = (rows, url, checkedQrCode) => {
           }}>
             <ViewEdgeArea>
               <ViewEdgeAreaInterna>
-                <TextViewT>DR. <TextViewTm>A </TextViewTm><TextViewT>NDREA <TextViewTm>D </TextViewTm>EL <TextViewTm>P </TextViewTm>UP</TextViewT></TextViewT>
-                <TextViewTred><TextViewTm>P  </TextViewTm>ERITO <TextViewTm>N  </TextViewTm>UMISMATICO</TextViewTred>
-                <TextViewValueCenter style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenter>
+                <TextViewT>DR. <TextViewTm>A</TextViewTm><TextViewT>NDREA <TextViewTm>D</TextViewTm>EL <TextViewTm>P</TextViewTm>UP</TextViewT></TextViewT>
+                <TextViewTred><TextViewTm>P</TextViewTm>ERITO <TextViewTm>N</TextViewTm>UMISMATICO</TextViewTred>
+                <TextViewValueCenterSpecializzato style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenterSpecializzato>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>CCIAA di Trieste sigillo n.725</TextViewValueCenter>
-                {row.veridicita == true ? <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter> : <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è FALSO</TextViewValueCenter>}
-                <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
+                {row.veridicita === true ? <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter> : <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è FALSO</TextViewValueCenter>}
+                <Image style={{ marginTop: "3.5pt", marginBottom: "3.5pt" }} source={separator}></Image>
                 {checkedQrCode === true ? <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} /> : <Image style={{ width: "51pt" }} source={{ uri: getData({ id: 'statico' }) }} />}
                 <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {row.data_perizia}</TextViewValueData>
                 <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>

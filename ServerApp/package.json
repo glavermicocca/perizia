@@ -1,21 +1,22 @@
 {
-  "description": "This is for the api server",
-  "name": "server-api",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.5",
-    "knex-paginate": "^1.2.3",
-    "knex-paginator": "^2.0.0",
-    "multer": "^1.4.2",
-    "pg": "^8.3.3",
-    "socket.io": "^2.3.0",
-    "uuid": "^8.3.0"
-  },
-  "scripts": {
-    "start": "node server.js"
-  }
+    "description": "This is for the api server",
+    "name": "server-api",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "bootstrap": "^5.0.0-beta2",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "knex": "^0.95.2",
+        "knex-paginate": "^2.1.0",
+        "knex-paginator": "^2.0.0",
+        "multer": "^1.4.2",
+        "pg": "^8.5.1",
+        "socket.io": "^4.0.0",
+        "uuid": "^8.3.2"
+    },
+    "scripts": {
+        "start": "node server.js"
+    }
 }
