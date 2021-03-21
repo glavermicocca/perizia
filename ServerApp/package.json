@@ -16,6 +16,6 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "server": "node server.js"
+    "start": "node server.js"
   }
 }

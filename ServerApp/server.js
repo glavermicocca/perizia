@@ -27,19 +27,20 @@ var server = require("http").createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const imgDir = path.join(__dirname, "img");
-app.use("/static", express.static(imgDir));
-
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../WebApp/build')));
 app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, '../WebApp/build/index.html'));
 });
 app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, '../WebApp/build/index.html'));
 });
 app.get('/:stato/:anno/:valore/:uuid', (req,res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, '../WebApp/build/index.html'));
 });
+
+const imgDir = path.join(__dirname, "/img");
+console.log(imgDir);
+app.use("/static", express.static(imgDir));
 
 //NO in PRODUZIONE
 app.use((req, res, next) => {
@@ -260,3 +261,172 @@ app.post("/upload_file", checkToken, upload.single("file"), (req, res) => {
 // Start the server
 server.listen(port);
 console.log("Server is listening on port " + port);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

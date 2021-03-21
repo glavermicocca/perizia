@@ -20,6 +20,8 @@ import QRCode from "qrcode.react";
 
 import { baseURL } from '../../actions/action-types'
 
+import { Form } from 'react-bootstrap'
+
 const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   <>
     {columns
@@ -55,7 +57,8 @@ class DataTablePerizia extends React.Component {
       rows: false,
       rowCount: 0,
       // selezione
-      rowSelected: []
+      rowSelected: [],
+      checkedQrCode: true
     }
   }
 
@@ -194,58 +197,58 @@ class DataTablePerizia extends React.Component {
     handleDataChange,
     totalSize,
   }) => (
-      <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
-        {(props) => (
-          <>
-            <CustomToggleList
-              {...props.columnToggleProps}
-              onColumnToggle={(field) => {
-                console.log(field);
-                this.columns.forEach((item) => {
-                  if (item.dataField == field) {
-                    item.hidden = !item.hidden;
-                  }
-                });
-                props.columnToggleProps.onColumnToggle(field);
-              }}
-            />
-            <BootstrapTable
-              headerClasses="btn-warning active"
-              onDataSizeChange={handleDataChange}
-              striped={true}
-              hover={true}
-              condensed={true}
-              remote
-              {...props.baseProps}
-              filter={filterFactory()}
-              pagination={paginationFactory({
-                page,
-                sizePerPage,
-                totalSize,
-              })}
-              onTableChange={onTableChange}
-              expandRow={this.expandRow}
-              selectRow={this.selectRowProps}
-              cellEdit={cellEditFactory({
-                mode: "click",
-                blurToSave: true,
-                beforeSaveCell(oldValue, newValue, row, column, done) {
-                  done(); // contine to save the changes
-                  // setTimeout(() => {
-                  //   if (window.confirm("Do you want to accep this change?")) {
-                  //     done(); // contine to save the changes
-                  //   } else {
-                  //     done(false); // reject the changes
-                  //   }
-                  // }, 0);
-                  return { async: true };
-                },
-              })}
-            />
-          </>
-        )}
-      </ToolkitProvider>
-    );
+    <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
+      {(props) => (
+        <>
+          <CustomToggleList
+            {...props.columnToggleProps}
+            onColumnToggle={(field) => {
+              console.log(field);
+              this.columns.forEach((item) => {
+                if (item.dataField == field) {
+                  item.hidden = !item.hidden;
+                }
+              });
+              props.columnToggleProps.onColumnToggle(field);
+            }}
+          />
+          <BootstrapTable
+            headerClasses="btn-warning active"
+            onDataSizeChange={handleDataChange}
+            striped={true}
+            hover={true}
+            condensed={true}
+            remote
+            {...props.baseProps}
+            filter={filterFactory()}
+            pagination={paginationFactory({
+              page,
+              sizePerPage,
+              totalSize,
+            })}
+            onTableChange={onTableChange}
+            expandRow={this.expandRow}
+            selectRow={this.selectRowProps}
+            cellEdit={cellEditFactory({
+              mode: "click",
+              blurToSave: true,
+              beforeSaveCell(oldValue, newValue, row, column, done) {
+                done(); // contine to save the changes
+                // setTimeout(() => {
+                //   if (window.confirm("Do you want to accep this change?")) {
+                //     done(); // contine to save the changes
+                //   } else {
+                //     done(false); // reject the changes
+                //   }
+                // }, 0);
+                return { async: true };
+              },
+            })}
+          />
+        </>
+      )}
+    </ToolkitProvider>
+  );
 
   columnGeneratorQrCode(cell, row) {
     return <QRCode size={330} bgColor={"#FFEFD5"} id={`qr_${row.id}`} style={{ width: 30, height: 30 }} value={'https://p.erroridiconiazione.com/' + row.stato + "/" + row.anno + "/" + row.valore + "/" + row.uuid} />
@@ -535,6 +538,21 @@ class DataTablePerizia extends React.Component {
         type: Type.TEXTAREA,
       },
     },
+    {
+      dataField: "veridicita",
+      text: "Veridicità",
+      sort: true,
+      hidden: true,
+      filter: textFilter({
+        caseSensitive: false, // default is false, and true will only work when comparator is LIKE
+      }),
+      editor: {
+        type: Type.CHECKBOX,
+      },
+      formatter: (value, column, index) => {
+        return value ? 'VERA' : 'FALSA'
+      }
+    },
   ];
 
   async componentDidMount() {
@@ -646,8 +664,18 @@ class DataTablePerizia extends React.Component {
     }
   };
 
+  onClickToggle = (e) => {
+    console.log(this.state);
+    this.setState(Object.assign({}, this.state, { checkedQrCode: !this.state.checkedQrCode }))
+  }
+
+  columnGeneratorQrCodeStatico() {
+    return <QRCode size={330} bgColor={"#f2e6fd"} id='qr_statico' style={{ width: 30, height: 30 }} value={'https://www.erroridiconiazione.com/'} />
+  }
+
   render() {
     const { data, sizePerPage, page, total } = this.state;
+
     return (
       <div className="m-3">
         <ModalAreaCopy columns={this.columns} confirmedColumns={this.CloneConfirmedColumns} />
@@ -661,7 +689,11 @@ class DataTablePerizia extends React.Component {
           cellEdit={cellEditFactory({ mode: "click" })}
           onDataSizeChange={this.onDataSizeChange}
         />
-        {this.state.rowSelected.length > 0 && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.state.rowSelected, this.state.uri)}</PDFViewer>}
+        {this.columnGeneratorQrCodeStatico()}
+        <Form.Group controlId="formBasicCheckbox">
+          <Form.Check onClick={this.onClickToggle} value={this.state.checkedQrCode} type="checkbox" label="Qr.code statico" />
+        </Form.Group>
+        {this.state.rowSelected.length > 0 && <PDFViewer style={{ margin: "2%", width: "96%", height: "1280px" }}>{Cartellini(this.state.rowSelected, this.state.uri, this.state.checkedQrCode)}</PDFViewer>}
       </div>
     );
   }

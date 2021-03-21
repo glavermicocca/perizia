@@ -28,30 +28,7 @@ const ViewEdgeAreaSeparator = styled.View`
   margin: 4cm;
 `;
 
-const ViewEdgeArea = styled.View`
-  maxWidth: 4.2cm;
-  width: 4.2cm;
-  maxHeight: 4.2cm;
-  height: 4.2cm;
 
-  padding: 1pt;
-  margin: 1pt;
-  border: solid 0.2pt #B71C1C;
-  background: #FFEFD5;
-`;
-
-const ViewEdgeAreaInterna = styled.View`
-  maxWidth: 4cm;
-  width: 4cm;
-  maxHeight: 4cm;
-  height: 4cm;
-
-  padding: 1pt;
-  margin: 1pt;
-  border: solid 0.2pt;
-  borderColor: #B71C1C;
-  background: #FFEFD5;
-`;
 
 const TextViewLabel = styled.Text`
   fontSize: 5pt;
@@ -138,7 +115,7 @@ const TextViewTsmall = styled.Text`
 const getData = (row) => {
   const scaleFactor = 1
   const canvas = document.getElementById(`qr_${row.id}`)
-
+  console.log(row.id, canvas);
   //canvas.scale(scaleFactor, scaleFactor);
   // var oCtx = canvas.getContext('2d', { alpha: true });
   // oCtx.webkitImageSmoothingEnabled = false;
@@ -164,10 +141,34 @@ const getData = (row) => {
 }
 
 // Create Document Component
-const Cartellini = (rows) => {
-  
+const Cartellini = (rows, url, checkedQrCode) => {
+  const ViewEdgeArea = styled.View`
+  maxWidth: 4.2cm;
+  width: 4.2cm;
+  maxHeight: 4.2cm;
+  height: 4.2cm;
+
+  padding: 1pt;
+  margin: 1pt;
+  border: solid 0.2pt #B71C1C;
+  background: ${checkedQrCode ? '#FFEFD5' : '#f2e6fd'};
+`;
+
+  const ViewEdgeAreaInterna = styled.View`
+  maxWidth: 4cm;
+  width: 4cm;
+  maxHeight: 4cm;
+  height: 4cm;
+
+  padding: 1pt;
+  margin: 1pt;
+  border: solid 0.2pt;
+  borderColor: #B71C1C;
+  background: ${checkedQrCode ? '#FFEFD5' : '#f2e6fd'};
+`;
+
   // {moment(new Date()).format("DD MMMM YYYY")}
-  
+  console.log("PIPPO", checkedQrCode);
   return <Document>
     <Page size="A4" style={styles.page}>
       {rows.map((row, index) => {
@@ -183,9 +184,9 @@ const Cartellini = (rows) => {
                 <TextViewTred><TextViewTm>P  </TextViewTm>ERITO <TextViewTm>N  </TextViewTm>UMISMATICO</TextViewTred>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenter>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>CCIAA di Trieste sigillo n.725</TextViewValueCenter>
-                <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter>
+                {row.veridicita == true ? <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter> : <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è FALSO</TextViewValueCenter>}
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
-                <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} />
+                {checkedQrCode === true ? <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} /> : <Image style={{ width: "51pt" }} source={{ uri: getData({ id: 'statico' }) }} />}
                 <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {row.data_perizia}</TextViewValueData>
                 <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>
                 <TextViewValue style={{ position: 'absolute', bottom: 15, right: 3 }}>erroridiconiazione.com</TextViewValue>
@@ -196,7 +197,7 @@ const Cartellini = (rows) => {
               <ViewEdgeAreaInterna>
                 <TextViewTsmall>DR. <TextViewTmSmall>A </TextViewTmSmall><TextViewTsmall>NDREA <TextViewTmSmall>D </TextViewTmSmall>EL <TextViewTmSmall>P </TextViewTmSmall>UP</TextViewTsmall></TextViewTsmall>
                 <Image style={{ marginTop: "4pt", marginBottom: "4pt" }} source={separator}></Image>
-                <TextViewLabelCaratteristiche >{'Perizia n°\t'}<TextViewValue>{row.stato}/{row.anno}/{row.valore}/{row.uuid}</TextViewValue></TextViewLabelCaratteristiche>
+                {/* <TextViewLabelCaratteristiche >{'Perizia n°\t'}<TextViewValue>{row.stato}/{row.anno}/{row.valore}/{row.uuid}</TextViewValue></TextViewLabelCaratteristiche> */}
                 <TextViewLabelCaratteristicheBig style={{ textAlign: 'center' }}>{row.descrizione}</TextViewLabelCaratteristicheBig>
                 <TextViewLabelCaratteristiche style={{ textAlign: 'center' }}>{row.periodo}</TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Contorno: <TextViewValue>{row.contorno}</TextViewValue></TextViewLabelCaratteristiche>
