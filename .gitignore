@@ -124,3 +124,5 @@ ServerApp/img/
 #Build
 
 build/
+
+postgresql/
