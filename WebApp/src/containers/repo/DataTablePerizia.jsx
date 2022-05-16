@@ -668,7 +668,7 @@ export default class DataTablePerizia extends React.Component {
   }
 
   columnGeneratorQrCodeStatico() {
-    return <QRCode size={330} bgColor={"#f2e6fd"} id='qr_statico' style={{ width: 30, height: 30 }} value={'https://www.erroridiconiazione.com/'} />
+    return <QRCode size={330} bgColor={"#f2e6fd"} id='qr_statico' style={{ width: 30, height: 30 }} value={'https://www.numismaticadelpup.com'} />
   }
 
   render() {

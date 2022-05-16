@@ -1,14 +1,14 @@
-import React from "react";
-import { Page, Document, StyleSheet, View, Font, Image } from "@react-pdf/renderer";
+import { Document, Font, Image, Page, StyleSheet, View } from "@react-pdf/renderer";
 import styled from "@react-pdf/styled-components";
+import moment from 'moment';
+import 'moment/locale/it';
+import React from "react";
+import KadwaBold from '../../fonts/KadwaBold.ttf';
+import KadwaRegular from '../../fonts/KadwaRegular.ttf';
+import separator from '../../img/separator.png';
 
-import KadwaRegular from '../../fonts/KadwaRegular.ttf'
-import KadwaBold from '../../fonts/KadwaBold.ttf'
 
-import separator from '../../img/separator.png'
 
-import moment from 'moment'
-import 'moment/locale/it'
 moment.locale('it');
 
 Font.register(KadwaRegular, { family: 'KadwaRegular' });
@@ -65,6 +65,12 @@ const TextViewValueCenter = styled.Text`
   fontFamily: 'KadwaRegular';
   lineHeight: 1.3pt;
   textAlign: center;
+`;
+
+const TextViewValueVerySmall = styled.Text`
+  fontSize: 3pt;
+  fontFamily: 'KadwaRegular';
+  lineHeight: 1.3pt;
 `;
 
 const TextViewValue = styled.Text`
@@ -190,12 +196,12 @@ const Cartellini = (rows, url, checkedQrCode) => {
                 <TextViewTred><TextViewTm>P</TextViewTm>ERITO <TextViewTm>N</TextViewTm>UMISMATICO</TextViewTred>
                 <TextViewValueCenterSpecializzato style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenterSpecializzato>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>CCIAA di Trieste sigillo n.725</TextViewValueCenter>
-                {row.veridicita === true ? <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è garantito autentico</TextViewValueCenter> : <TextViewValueCenter>L'esemplare qui esaminato e descritto sul retro è FALSO</TextViewValueCenter>}
+                {row.veridicita === true ? <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è autentico</TextViewValueCenter> : <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è FALSO</TextViewValueCenter>}
                 <Image style={{ marginTop: "3.5pt", marginBottom: "3.5pt" }} source={separator}></Image>
                 {checkedQrCode === true ? <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} /> : <Image style={{ width: "51pt" }} source={{ uri: getData({ id: 'statico' }) }} />}
                 <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {row.data_perizia}</TextViewValueData>
                 <Image style={{ position: 'absolute', bottom: 25, left: '57pt', right: '0pt' }} source={separator}></Image>
-                <TextViewValue style={{ position: 'absolute', bottom: 15, right: 3 }}>erroridiconiazione.com</TextViewValue>
+                <TextViewValue style={{fontSize:'3.5pt', position: 'absolute', bottom: 15, right: 3 }}>www.numismaticadelpup.com</TextViewValue>
                 <TextViewValue style={{ position: 'absolute', bottom: 5, right: 3 }}>andreadelpup@libero.it</TextViewValue>
               </ViewEdgeAreaInterna>
             </ViewEdgeArea>
@@ -210,6 +216,7 @@ const Cartellini = (rows, url, checkedQrCode) => {
                 <TextViewLabelCaratteristiche>Peso: <TextViewValue>{row.peso}</TextViewValue><TextViewLabelCaratteristiche>   Diametro: <TextViewValue>{row.diametro}</TextViewValue></TextViewLabelCaratteristiche></TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Metallo: <TextViewValue>{row.lega_metallica}</TextViewValue></TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Note: <TextViewValue>{row.note}</TextViewValue></TextViewLabelCaratteristiche>
+                {(row.riferimento != null && row.riferimento.length > 0) && <TextViewLabelCaratteristiche>Rif.: <TextViewValue>{row.riferimento}</TextViewValue></TextViewLabelCaratteristiche>}
                 <View style={{ bottom: '1pt', position: 'absolute', display: "flex", alignItems: "center", width: "100%" }} >
                   <TextViewLabel >Rarità: <TextViewValue>{row.rarita}    </TextViewValue><TextViewLabel>Conservazione: <TextViewValue>{row.conservazione}</TextViewValue></TextViewLabel></TextViewLabel>
                 </View>

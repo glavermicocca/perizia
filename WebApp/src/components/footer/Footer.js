@@ -8,11 +8,11 @@ const Footer = () => (
       <p className="text-xs-center text-muted">
         Visita anche il mio sito...{" "}
         <a
-          href="https://www.erroridiconiazione.com/"
+          href="https://www.numismaticadelpup.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          ErroriDiConiazione.com
+          www.NumismaticaDelPup.com
         </a>{" "}
         oppure scrivimi ad{" "}
         <a href="mailto:andreadelpup@libero.it">andreadelpup@libero.it</a>
