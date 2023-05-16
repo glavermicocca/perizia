@@ -171,35 +171,53 @@ class Home extends Component {
                 {perizia.spessore}
               </h5>
             </FormGroup>
-            <FormGroup>
-              <FormLabel htmlFor="conservazione">Conservazione</FormLabel>
-              <h5 name="conservazione">{perizia.conservazione}</h5>
-            </FormGroup>
-            <FormGroup>
-              <FormLabel htmlFor="rarita">Rarità</FormLabel>
-              <h5 name="rarita" id="rarita">
-                {perizia.rarita}
-              </h5>
-            </FormGroup>
-            <FormGroup>
-              <FormLabel htmlFor="variante">Errore/Variante</FormLabel>
-              <h5 name="variante" id="variante">
-                {perizia.variante}
-              </h5>
-            </FormGroup>
-            <FormGroup>
-              <FormLabel htmlFor="collegamento">Collegamento a descrizione errore</FormLabel>
-              <br />
-              <a rel="noreferrer" className="m-3 btn btn-outline-primary" role="button" href={perizia.collegamento} target="_blank">
-                {perizia.collegamento}
-              </a>
-            </FormGroup>
-            <FormGroup>
-              <FormLabel htmlFor="note">Note</FormLabel>
-              <h5 name="note" id="note">
-                {perizia.note}
-              </h5>
-            </FormGroup>
+            {perizia.conservazione != null && perizia.conservazione.length > 0 && (
+              <FormGroup>
+                <FormLabel htmlFor="conservazione">Conservazione</FormLabel>
+                <h5 name="conservazione">{perizia.conservazione}</h5>
+              </FormGroup>
+            )}
+            {perizia.rarita != null && perizia.rarita.length > 0 && (
+              <FormGroup>
+                <FormLabel htmlFor="rarita">Rarità</FormLabel>
+                <h5 name="rarita" id="rarita">
+                  {perizia.rarita}
+                </h5>
+              </FormGroup>
+            )}
+            {perizia.variante != null && perizia.variante.length > 0 && (
+              <FormGroup>
+                <FormLabel htmlFor="variante">Errore/Variante</FormLabel>
+                <h5 name="variante" id="variante">
+                  {perizia.variante}
+                </h5>
+              </FormGroup>
+            )}
+            {perizia.collegamento != null && perizia.collegamento.length && (
+              <FormGroup>
+                <FormLabel htmlFor="collegamento">Collegamento a descrizione errore</FormLabel>
+                <br />
+                <a rel="noreferrer" className="m-3 btn btn-outline-primary" role="button" href={perizia.collegamento} target="_blank">
+                  {perizia.collegamento}
+                </a>
+              </FormGroup>
+            )}
+            {perizia.note != null && perizia.note.length > 0 && (
+              <FormGroup>
+                <FormLabel htmlFor="note">Note</FormLabel>
+                <h5 name="note" id="note">
+                  {perizia.note}
+                </h5>
+              </FormGroup>
+            )}
+            {perizia.collezione != null && perizia.collezione.length > 0 && (
+              <FormGroup>
+                <FormLabel htmlFor="collezione">Collezione</FormLabel>
+                <h5 name="collezione" id="collezione">
+                  {perizia.collezione}
+                </h5>
+              </FormGroup>
+            )}
           </Card.Body>
         </Card>
         <this.Errori />

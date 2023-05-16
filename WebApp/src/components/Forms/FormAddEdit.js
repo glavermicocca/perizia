@@ -34,6 +34,7 @@ class AddEditForm extends React.Component {
     variante: '',
     collegamento: '',
     note: '',
+    collezione: '',
 
     qrcode: ''
   }
@@ -157,6 +158,8 @@ class AddEditForm extends React.Component {
         variante: this.state.variante,
         collegamento: this.state.collegamento,
         note: this.state.note,
+        
+        collezione: this.state.collezione,
       })
     })
       .then(response => response.json())
@@ -168,7 +171,7 @@ class AddEditForm extends React.Component {
           //console.log('failure')
         }
       })
-      .catch(err => //console.log(err))
+      .catch(err => console.log(err))
   }
 
   componentDidMount() {
@@ -198,13 +201,14 @@ class AddEditForm extends React.Component {
         rarita,
         variante,
         collegamento,
-        note } = this.props.item
+        note, 
+        collezione } = this.props.item
 
       const qrcode = this.props.location.origin + '/' + stato + '/' + anno + '/' + valore + '/' + uuid
 
       this.setState({
         id, stato, anno, valore, uuid, descrizione, periodo, valuta, zecca, lega_metallica, orientamento_asse, contorno, riferimento, data_perizia,
-        peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, qrcode
+        peso, diametro, spessore, conservazione, rarita, variante, collegamento, note, qrcode, collezione
       })
     }
   }
@@ -322,6 +326,10 @@ class AddEditForm extends React.Component {
               <FormGroup>
                 <Label for="note">Note</Label>
                 <Input type="textarea" name="note" id="note" onChange={this.onChange} value={this.state.note} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="collezione">Collezione</Label>
+                <Input type="textarea" name="collezione" id="collezione" onChange={this.onChange} value={this.state.collezione} />
               </FormGroup>
             </CardBody>
           </Card>

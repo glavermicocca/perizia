@@ -7,12 +7,20 @@ import KadwaBold from '../../fonts/KadwaBold.ttf';
 import KadwaRegular from '../../fonts/KadwaRegular.ttf';
 import separator from '../../img/separator.png';
 
-
-
 moment.locale('it');
 
-Font.register(KadwaRegular, { family: 'KadwaRegular' });
-Font.register(KadwaBold, { family: 'KadwaBold' });
+Font.register({
+  family: 'KadwaRegular',
+  src: KadwaRegular,
+});
+
+Font.register({
+  family: 'KadwaBold',
+  src: KadwaBold,
+});
+
+// Font.register(KadwaRegular, { family: 'KadwaRegular' });
+// Font.register(KadwaBold, { family: 'KadwaBold' });
 
 // Create styles
 const styles = StyleSheet.create({
@@ -35,7 +43,7 @@ const TextViewLabel = styled.Text`
 `;
 
 const TextViewLabelCaratteristiche = styled.Text`
-  marginBottom: '3pt';
+  marginBottom: 3pt;
   marginLeft: 3pt;
   marginRight: 3pt;
   fontSize: 4.5pt;
@@ -44,7 +52,7 @@ const TextViewLabelCaratteristiche = styled.Text`
 `
 
 const TextViewLabelCaratteristicheBig = styled.Text`
-  marginBottom: '4pt';
+  marginBottom: 4pt;
   marginLeft: 3pt;
   marginRight: 3pt;
   fontSize: 6pt;
@@ -125,27 +133,7 @@ const TextViewTsmall = styled.Text`
 
 
 const getData = (row) => {
-  const scaleFactor = 1
   const canvas = document.getElementById(`qr_${row.id}`)
-  //console.log(row.id, canvas);
-  //canvas.scale(scaleFactor, scaleFactor);
-  // var oCtx = canvas.getContext('2d', { alpha: true });
-  // oCtx.webkitImageSmoothingEnabled = false;
-  // oCtx.mozImageSmoothingEnabled = false;
-  // oCtx.imageSmoothingEnabled = false;
-  // oCtx.scale(scaleFactor, scaleFactor);
-
-  // var imgData = oCtx.getImageData(0, 0, canvas.width, canvas.height);
-  // var data = imgData.data;
-  // for (var i = 0; i < data.length; i += 4) {
-  //   if (data[i + 3] < 255) {
-  //     data[i] = 255;
-  //     data[i + 1] = 255;
-  //     data[i + 2] = 255;
-  //     data[i + 3] = 255;
-  //   }
-  // }
-  // oCtx.putImageData(imgData, 0, 0);
 
   if (canvas == null) return null
 
@@ -215,11 +203,12 @@ const Cartellini = (rows, url, checkedQrCode) => {
                 <TextViewLabelCaratteristiche>Contorno: <TextViewValue>{row.contorno}</TextViewValue></TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Peso: <TextViewValue>{row.peso}</TextViewValue><TextViewLabelCaratteristiche>   Diametro: <TextViewValue>{row.diametro}</TextViewValue></TextViewLabelCaratteristiche></TextViewLabelCaratteristiche>
                 <TextViewLabelCaratteristiche>Metallo: <TextViewValue>{row.lega_metallica}</TextViewValue></TextViewLabelCaratteristiche>
-                <TextViewLabelCaratteristiche>Note: <TextViewValue>{row.note}</TextViewValue></TextViewLabelCaratteristiche>
+                {(row.note != null && row.note.length > 0) && <TextViewLabelCaratteristiche>Note: <TextViewValue>{row.note}</TextViewValue></TextViewLabelCaratteristiche>}
                 {(row.riferimento != null && row.riferimento.length > 0) && <TextViewLabelCaratteristiche>Rif.: <TextViewValue>{row.riferimento}</TextViewValue></TextViewLabelCaratteristiche>}
                 <View style={{ bottom: '1pt', position: 'absolute', display: "flex", alignItems: "center", width: "100%" }} >
                   <TextViewLabel >Rarità: <TextViewValue>{row.rarita}    </TextViewValue><TextViewLabel>Conservazione: <TextViewValue>{row.conservazione}</TextViewValue></TextViewLabel></TextViewLabel>
                 </View>
+                {(row.collezione != null && row.collezione.length > 0) && <TextViewLabelCaratteristiche>Coll.: <TextViewValue>{row.collezione}</TextViewValue></TextViewLabelCaratteristiche>}
               </ViewEdgeAreaInterna>
             </ViewEdgeArea>
             {/* {index % 7 == 0 && (<ViewEdgeAreaSeparator></ViewEdgeAreaSeparator>)} */}

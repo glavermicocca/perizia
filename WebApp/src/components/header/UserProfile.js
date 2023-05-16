@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const UserProfile = ({ user, handleLogout }) => {
   return (
-    <button onClick={handleLogout} type="button" class="btn btn-outline-primary">
+    <button onClick={handleLogout} type="button" className="btn btn-outline-primary">
       Logout
     </button>
   )

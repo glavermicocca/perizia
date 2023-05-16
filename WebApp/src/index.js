@@ -1,33 +1,33 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
-import configureStore from './store/configureStore'
-import connectToAlerts from './utils/socketUtils'
-import { unregister, register } from './serviceWorker'
 import App from './containers/app/App'
+import { unregister } from './serviceWorker'
+import configureStore from './store/configureStore'
 
-import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css'
+import { createRoot } from 'react-dom/client';
+
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css'
 
 ///////////////////////////////////////////
 // jquery and tether for bootstrap to use
 // alternative is to link them in index.html
-import 'bootstrap/dist/css/bootstrap.css'
+//import 'bootstrap/dist/css/bootstrap.css'
 // import jquery from "jquery";
 // window.$ = window.jQuery = jquery;
 // window.Popper = require("popper.js");
-require('bootstrap/dist/js/bootstrap')
+//require('bootstrap/dist/js/bootstrap')
 /////////////////////////////////////////////
 
 const store = configureStore()
-connectToAlerts(store)
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container) // createRoot(container!) if you use TypeScript
+root.render(
   <Provider store={store}>
     <App store={store} />
-  </Provider>,
-  document.getElementById('root')
+  </Provider>
 )
 
 unregister()

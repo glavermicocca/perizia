@@ -32,9 +32,7 @@ console.log(imgDir)
 app.use('/static', express.static(imgDir))
 
 app.use(express.static(path.join(__dirname, '../ServerApp/build')))
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
-// })
+
 app.get('/app', (req, res) => {
     res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
 })
@@ -52,9 +50,6 @@ app.use((req, res, next) => {
     )
     next()
 })
-
-// and support socket io
-var io = require('socket.io')(server)
 
 var cors = require('cors')
 
@@ -89,28 +84,10 @@ app.post('/login', function (req, res) {
         res.status(200).json({
             id_token: jwtToken,
         })
-
-        alertClients('info', `User '${credentials.user}' just logged in`)
     } else {
         res.status(401).json({ message: 'Invalid user/password' })
-
-        alertClients('error', `User '${credentials.user}' just failed to login`)
     }
 })
-
-// Alerts all clents via socket io.
-function alertClients(type, msg) {
-    console.log('SocketIO alerting clients: ', msg)
-    io.sockets.emit('alert', { message: msg, time: new Date(), type })
-}
-
-// setInterval(() => {
-//   io.sockets.emit("alert", {
-//     message: "Interval",
-//     time: new Date(),
-//     type: "info",
-//   });
-// }, 120000);
 
 /**
  * Util function to extract jwt token from the authorization header
@@ -135,30 +112,20 @@ app.post('/logout', function (req, res) {
     try {
         var profile = jwt.verify(jwtToken, JWT_SECRET)
         res.status(200).json({ message: `User ${profile.user} logged out` })
-
-        alertClients('info', `User '${profile.user}' just logged out`)
     } catch (err) {
         console.log('jwt verify error', err)
         res.status(500).json({ message: 'Invalid jwt token' })
-
-        alertClients('error', `JWT verify error`)
     }
 })
 
 app.post('/dati', function (req, res) {
-    console.log('Requesting /dati ...')
-
     var jwtToken = extractToken(req)
     try {
         var profile = jwt.verify(jwtToken, JWT_SECRET)
         res.status(200).json({ message: `User ${profile.user} logged out` })
-
-        alertClients('info', `User '${profile.user}' just dati`)
     } catch (err) {
         console.log('jwt verify error', err)
         res.status(500).json({ message: 'Invalid jwt token' })
-
-        alertClients('error', `JWT verify error`)
     }
 })
 
@@ -176,15 +143,24 @@ app.post('/dati', function (req, res) {
 // });
 
 // db Connection w/ localhost
+// var db = require('knex')({
+//     client: 'pg',
+//     connection: {
+//         host: process.env.PGHOST,
+//         user: process.env.PGUSER,
+//         password: process.env.PGPASSWORD,
+//         database: process.env.PGDATABASE,
+//         port: process.env.PGPORT,
+//     },
+//     useNullAsDefault: true,
+// })
+
 var db = require('knex')({
-    client: 'pg',
+    client: 'sqlite3',
     connection: {
-        host: process.env.PGHOST,
-        user: process.env.PGUSER,
-        password: process.env.PGPASSWORD,
-        database: process.env.PGDATABASE,
-        port: process.env.PGPORT,
+        filename: 'db.sqlite',
     },
+    useNullAsDefault: true,
 })
 
 const { attachPaginate } = require('knex-paginate')
@@ -194,13 +170,10 @@ const checkToken = (req, res, next) => {
     var jwtToken = extractToken(req)
     try {
         var profile = jwt.verify(jwtToken, JWT_SECRET)
-        console.log(profile)
         next()
     } catch (err) {
         console.log('jwt verify error', err)
         res.status(500).json({ message: 'Invalid jwt token' })
-
-        alertClients('error', `JWT verify error`)
     }
 }
 
