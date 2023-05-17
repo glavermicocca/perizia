@@ -1,1 +1,33 @@
+# compiled output
+**/.vscode
 **/node_modules
+**/dist
+**/estrapolazione
+**/data.db
+**/db.sqlite
+**/dev.sqlite3
+**/.git
+
+
+# code formatter
+**/.eslintrc
+**/.eslintignore
+**/.editorconfig
+**/.huskyrc
+**/.lintstagedrc.json
+**/.prettierrc
+
+# test
+**/jest.config.js
+
+# docker
+**/Dockerfile
+**/docker-compose.yml
+
+# NPM
+**/package-lock.json
+**/yarn.lock
+
+**/OLD
+**/.env.production
+**/.env.development

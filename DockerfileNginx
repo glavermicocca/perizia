@@ -1,0 +1,20 @@
+	
+FROM node:current-alpine AS ui-build
+
+WORKDIR /app
+
+COPY App/package.json /app
+RUN cd /app &&\
+    npm install --legacy-peer-deps
+COPY App /app
+
+RUN npm run build
+
+# Common build stage
+FROM nginx:alpine as myNginx
+
+COPY ./nginx.conf /etc/nginx/nginx.conf
+# COPY ./App/build /etc/nginx/build
+COPY --from=ui-build /app/build /etc/nginx/build
+
+EXPOSE 80

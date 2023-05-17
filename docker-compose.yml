@@ -1,35 +1,40 @@
-version: '3.8'
+version: '3.7'
+
 services:
-  perizia_web_server_app:
-    #image: perizia_web_server_app:latest
-    restart: unless-stopped
+  proxy:
+    env_file:
+      - .env.production.local
+    image: glavermi/perizia_app:latest
+    build:
+      context: ./
+      dockerfile: DockerfileNginx
+    ports:
+      - '7000:80'
+    restart: 'unless-stopped'
+    networks:
+      - backend
     depends_on:
-      - db
+      - server
+  server:
+    env_file:
+      - .env.production.local
+    deploy:
+      replicas: 1
+    image: glavermi/perizia_service:latest
     build:
       context: ./
       dockerfile: Dockerfile
-      args:
-        buildno: 1
+    ports:
+      - '3000'
+    restart: 'unless-stopped'
+    networks:
+      - backend
     volumes:
       - /root/perizia/ServerApp/img/:/root/ServerApp/img
-    ports:
-      - 3010:3000
-    networks:
-      - internal-network
-  db:
-    image: postgres:latest
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: example
-      POSTGRES_PORT: 5432
-    networks:
-      - internal-network
-    ports:
-      - 5434:5432
-    volumes:
-      -  /root/perizia/postgresql/data//:/var/lib/postgresql/data
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
-  db-data:
-networks:
-  internal-network:
+  perizia_img:
