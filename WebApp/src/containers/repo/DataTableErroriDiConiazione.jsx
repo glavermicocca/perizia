@@ -24,7 +24,7 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
             <button
               type="button"
               key={column.dataField}
-              className={`btn ms-1 btn-warning ${column.toggle ? 'active' : ''}`}
+              className={`m-1 btn ${column.toggle ? 'btn-secondary' : 'btn-light'}`}
               data-toggle="button"
               aria-pressed={column.toggle ? 'true' : 'false'}
               onClick={() => onColumnToggle(column.dataField)}>

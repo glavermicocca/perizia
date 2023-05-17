@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { FormGroup, FormLabel, Card } from 'react-bootstrap'
+import { FormGroup, FormLabel, Card, Button } from 'react-bootstrap'
 
 import { postPeriziaItem } from '../../actions/perizia'
 
@@ -197,9 +197,9 @@ class Home extends Component {
               <FormGroup>
                 <FormLabel htmlFor="collegamento">Collegamento a descrizione errore</FormLabel>
                 <br />
-                <a rel="noreferrer" className="m-3 btn btn-outline-primary" role="button" href={perizia.collegamento} target="_blank">
-                  {perizia.collegamento}
-                </a>
+                <Button rel="noreferrer" className="m-2 btn btn-info" href={perizia.collegamento} target="_blank">
+                  {perizia.collegamento.replace('https://www.erroridiconiazione.com/', '').replace('/', ' ')}
+                </Button>
               </FormGroup>
             )}
             {perizia.note != null && perizia.note.length > 0 && (

@@ -26,7 +26,8 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "react-zoom-pan-pinch": "3.0.7"
   },
   "homepage": "https://p.erroridiconiazione.com",
   "proxy": "http://192.168.5.105:3010",

@@ -184,7 +184,7 @@ const Cartellini = (rows, url, checkedQrCode) => {
                 <TextViewTred><TextViewTm>P</TextViewTm>ERITO <TextViewTm>N</TextViewTm>UMISMATICO</TextViewTred>
                 <TextViewValueCenterSpecializzato style={{ color: "#B71C1C" }}>Specializzato in errori di coniazione</TextViewValueCenterSpecializzato>
                 <TextViewValueCenter style={{ color: "#B71C1C" }}>CCIAA di Trieste sigillo n.725</TextViewValueCenter>
-                {row.veridicita === true ? <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è autentico</TextViewValueCenter> : <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è FALSO</TextViewValueCenter>}
+                {row.veridicita === 1 ? <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è autentico</TextViewValueCenter> : <TextViewValueCenter>A mio giudizio, l'esemplare qui esaminato e descritto è FALSO</TextViewValueCenter>}
                 <Image style={{ marginTop: "3.5pt", marginBottom: "3.5pt" }} source={separator}></Image>
                 {checkedQrCode === true ? <Image style={{ width: "51pt" }} source={{ uri: getData(row) }} /> : <Image style={{ width: "51pt" }} source={{ uri: getData({ id: 'statico' }) }} />}
                 <TextViewValueData style={{ position: 'absolute', bottom: 48, right: 3 }}>Trieste, {row.data_perizia}</TextViewValueData>
@@ -208,7 +208,7 @@ const Cartellini = (rows, url, checkedQrCode) => {
                 <View style={{ bottom: '1pt', position: 'absolute', display: "flex", alignItems: "center", width: "100%" }} >
                   <TextViewLabel >Rarità: <TextViewValue>{row.rarita}    </TextViewValue><TextViewLabel>Conservazione: <TextViewValue>{row.conservazione}</TextViewValue></TextViewLabel></TextViewLabel>
                 </View>
-                {(row.collezione != null && row.collezione.length > 0) && <TextViewLabelCaratteristiche>Coll.: <TextViewValue>{row.collezione}</TextViewValue></TextViewLabelCaratteristiche>}
+                {(row.collezione != null && row.collezione.length > 0) && <TextViewLabelCaratteristiche>Collezione: <TextViewValue>{row.collezione}</TextViewValue></TextViewLabelCaratteristiche>}
               </ViewEdgeAreaInterna>
             </ViewEdgeArea>
             {/* {index % 7 == 0 && (<ViewEdgeAreaSeparator></ViewEdgeAreaSeparator>)} */}
