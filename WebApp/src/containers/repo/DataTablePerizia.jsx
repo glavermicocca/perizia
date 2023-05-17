@@ -266,6 +266,7 @@ export default class DataTablePerizia extends React.Component {
             cellEdit={cellEditFactory({
               mode: 'click',
               blurToSave: true,
+              
               beforeSaveCell(oldValue, newValue, row, column, done) {
                 done()
                 return { async: true }
@@ -720,7 +721,7 @@ export default class DataTablePerizia extends React.Component {
     const { data, sizePerPage, page, total } = this.state
 
     return (
-      <>
+      <div>
         <this.RemotePagination
           data={data}
           page={page}
@@ -737,7 +738,7 @@ export default class DataTablePerizia extends React.Component {
         {this.state.rowSelected.length > 0 && (
           <PDFViewer style={{ margin: '2%', width: '96%', height: '1280px' }}>{Cartellini(this.state.rowSelected, this.state.uri, this.state.checkedQrCode)}</PDFViewer>
         )}
-      </>
+      </div>
     )
   }
 }

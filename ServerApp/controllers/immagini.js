@@ -28,13 +28,11 @@ const postTableData = (req, res, db) => {
 
     db('immagini')
         .insert({ id, originalname, filename })
-
         .then(async (item) => {
             fs.writeFileSync(serverLocation, req.file.buffer)
             fs.chmodSync(serverLocation, 4)
             if (item.length > 0) {
-                const it = item[0]
-                const row = await db('perizia').select('*').where('id', '=', it)
+                const row = await db('immagini').select('*').where('filename', '=', filename)
                 res.json(row)
             }
         })

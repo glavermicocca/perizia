@@ -22,7 +22,9 @@ const postTableData = async (req, res, db) => {
         .then(async (item) => {
             if (item.length > 0) {
                 const it = item[0]
-                const row = await db('perizia').select('*').where('id', '=', it)
+                const row = await db('errori_di_coniazione')
+                    .select('*')
+                    .where('id', '=', it)
                 res.json(row)
             }
         })
@@ -36,7 +38,9 @@ const putTableData = (req, res, db) => {
         .update({ [dataField]: newValue })
 
         .then(async (item) => {
-            const row = await db('perizia').select('*').where('id', '=', rowId)
+            const row = await db('errori_di_coniazione')
+                .select('*')
+                .where('id', '=', rowId)
             res.json(row)
         })
         .catch((err) => res.status(400).json({ dbError: err }))
@@ -70,12 +74,7 @@ function genericPagination(req, res, db, tableName) {
     if (page < 1) page = 1
     var offset = (page - 1) * per_page
 
-    var query = db
-        .select('*')
-        .from(tableName)
-        .where({ id_perizia })
-        .offset(offset)
-        .limit(per_page)
+    var query = db.select('*').from(tableName).where({ id_perizia })
 
     if (sortField != null) {
         query.orderBy(sortField, sortOrder)
@@ -93,11 +92,7 @@ function genericPagination(req, res, db, tableName) {
                         '%' + filters[key].filterVal + '%'
                     )
                 } else {
-                    query.where(
-                        key,
-                        'ILIKE',
-                        '%' + filters[key].filterVal + '%'
-                    )
+                    query.where(key, 'LIKE', '%' + filters[key].filterVal + '%')
                 }
             } else {
                 if (filters[key].caseSensitive == true) {
@@ -109,7 +104,7 @@ function genericPagination(req, res, db, tableName) {
                 } else {
                     query.orWhere(
                         key,
-                        'ILIKE',
+                        'LIKE',
                         '%' + filters[key].filterVal + '%'
                     )
                 }
@@ -117,9 +112,11 @@ function genericPagination(req, res, db, tableName) {
         }
     }
 
-    return Promise.all([db.count('* as count').from(tableName).first(), query])
+    var queryPagination = query.clone().offset(offset).limit(per_page)
+
+    return Promise.all([query, queryPagination])
         .then(([total, rows]) => {
-            var count = total.count
+            var count = total.length
             var rows = rows
             pagination.total = count
             pagination.per_page = per_page
