@@ -2,10 +2,7 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter'
 import paginationFactory from 'react-bootstrap-table2-paginator'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit'
 import { RowExpanded } from './RowExpand'
-
-import { ModalAreaCopy } from './AreaCopy'
 
 import axios from 'axios'
 import React from 'react'
@@ -20,14 +17,19 @@ import QRCode from 'qrcode.react'
 
 import { Form } from 'react-bootstrap'
 
+//import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit'
+
+import { AreaCopy } from './AreaCopy'
+
 const baseURL = process.env.REACT_APP_BASE_PATH
 
-class QualityRanger extends React.Component {
+class CustomToggleTrueFalse extends React.Component {
   getValue() {
     return this.props.value == 1 ? 0 : 1
   }
   p = this.props
-  debugger
+
   render() {
     return (
       <>
@@ -74,7 +76,7 @@ const CustomToggleList = ({ columns, onColumnToggle, toggles }) => (
   </>
 )
 
-export default class DataTablePerizia extends React.Component {
+class DataTablePerizia extends React.Component {
   constructor(props) {
     super(props)
 
@@ -135,8 +137,6 @@ export default class DataTablePerizia extends React.Component {
         data[item.dataField] = this.state.rowSelected[0][item.dataField]
       })
 
-      //console.log(data)
-
       const headers = {
         Authorization: `Bearer ${idToken}`
       }
@@ -150,7 +150,6 @@ export default class DataTablePerizia extends React.Component {
           data
         })
         let dataResponse = response.data
-        //console.log(dataResponse[0]);
         var copiedData = [dataResponse[0], ...this.state.data]
         this.setState({
           data: copiedData
@@ -180,7 +179,7 @@ export default class DataTablePerizia extends React.Component {
               data: { id }
             })
             let data = response.data
-            //console.log(data);
+
             if (data.delete == true) {
               var copiedData = this.state.data.filter(item => {
                 if (item.id == id) {
@@ -222,61 +221,6 @@ export default class DataTablePerizia extends React.Component {
       }
     }
   }
-
-  RemotePagination = ({ data, page, sizePerPage, onTableChange, handleDataChange, totalSize }) => (
-    <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
-      {props => (
-        <>
-          <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Mostra pulsanti
-          </button>
-          <div className="collapse" id="collapseExample">
-            <ModalAreaCopy columns={this.columns} confirmedColumns={this.CloneConfirmedColumns} />
-            <this.AddButton />
-            <CustomToggleList
-              {...props.columnToggleProps}
-              onColumnToggle={field => {
-                //console.log(field);
-                this.columns.forEach(item => {
-                  if (item.dataField == field) {
-                    item.hidden = !item.hidden
-                  }
-                })
-                props.columnToggleProps.onColumnToggle(field)
-              }}
-            />
-          </div>
-          <BootstrapTable
-            headerClasses="btn-warning active"
-            onDataSizeChange={handleDataChange}
-            striped={true}
-            hover={true}
-            condensed={true}
-            remote
-            {...props.baseProps}
-            filter={filterFactory()}
-            pagination={paginationFactory({
-              page,
-              sizePerPage,
-              totalSize
-            })}
-            onTableChange={onTableChange}
-            expandRow={this.expandRow}
-            selectRow={this.selectRowProps}
-            cellEdit={cellEditFactory({
-              mode: 'click',
-              blurToSave: true,
-
-              beforeSaveCell(oldValue, newValue, row, column, done) {
-                done()
-                return { async: true }
-              }
-            })}
-          />
-        </>
-      )}
-    </ToolkitProvider>
-  )
 
   columnGeneratorQrCode(cell, row) {
     return (
@@ -598,7 +542,7 @@ export default class DataTablePerizia extends React.Component {
       formatter: (value, column, index) => {
         return value ? 'VERA' : 'FALSA'
       },
-      editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) => <QualityRanger {...editorProps} value={value} />
+      editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) => <CustomToggleTrueFalse {...editorProps} value={value} />
     }
   ]
 
@@ -640,19 +584,14 @@ export default class DataTablePerizia extends React.Component {
   }
 
   handleTableChange = async (type, { page, sizePerPage, sortField, sortOrder, filters, cellEdit }) => {
-    //console.log(type);
-
     const idToken = loadIdToken()
 
     const headers = {
       Authorization: `Bearer ${idToken}`
     }
 
-    //console.log(page, sizePerPage, sortField, sortOrder, filters);
-
     if (type == 'cellEdit') {
       const { rowId, dataField, newValue } = cellEdit
-      //console.log(rowId, dataField, newValue);
       try {
         const response = await axios({
           baseURL,
@@ -662,7 +601,6 @@ export default class DataTablePerizia extends React.Component {
           data: { rowId, dataField, newValue }
         })
         let data = response.data
-        //console.log(data[0]);
         var copiedData = this.state.data.map(item => {
           if (item.id == rowId) {
             return data[0]
@@ -709,12 +647,11 @@ export default class DataTablePerizia extends React.Component {
   }
 
   onClickToggle = e => {
-    //console.log(this.state);
     this.setState(Object.assign({}, this.state, { checkedQrCode: !this.state.checkedQrCode }))
   }
 
   columnGeneratorQrCodeStatico() {
-    return <QRCode size={330} bgColor={'#f2e6fd'} id="qr_statico" style={{ width: 30, height: 30 }} value={'https://www.numismaticadelpup.com'} />
+    return <QRCode size={330} bgColor={'#f2e6fd'} id="qr_statico" style={{ width: 30, height: 30, display: 'none' }} value={'https://www.numismaticadelpup.com'} />
   }
 
   render() {
@@ -722,15 +659,70 @@ export default class DataTablePerizia extends React.Component {
 
     return (
       <div>
-        <this.RemotePagination
-          data={data}
-          page={page}
-          sizePerPage={sizePerPage}
-          totalSize={total}
-          onTableChange={this.handleTableChange}
-          cellEdit={cellEditFactory({ mode: 'click' })}
-          onDataSizeChange={this.onDataSizeChange}
-        />
+        <ToolkitProvider keyField="id" data={data} columns={this.columns} columnToggle>
+          {props => (
+            <>
+              <button
+                style={{ position: 'absolute', margin: -10 }}
+                className="btn btn-primary"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapseExample"
+                aria-expanded="false"
+                aria-controls="collapseExample">
+                PULSANTI
+              </button>
+              <div className="collapse" id="collapseExample" style={{ paddingTop: 40, paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}>
+                <AreaCopy columns={this.columns} confirmedColumns={this.CloneConfirmedColumns} />
+                <this.AddButton />
+                <CustomToggleList
+                  {...props.columnToggleProps}
+                  onColumnToggle={field => {
+                    //console.log(field);
+                    this.columns.forEach(item => {
+                      if (item.dataField == field) {
+                        item.hidden = !item.hidden
+                      }
+                    })
+                    props.columnToggleProps.onColumnToggle(field)
+                  }}
+                />
+              </div>
+
+              <BootstrapTable
+                {...props.baseProps}
+                data={data}
+                columns={this.columns}
+                // {...props.baseProps}
+                bootstrap4={true}
+                keyField="id"
+                headerClasses="btn-warning active"
+                onDataSizeChange={this.handleDataChange}
+                striped={true}
+                hover={true}
+                condensed={true}
+                remote={{ pagination: true, filter: true, sort: true, cellEdit: true, search: true }}
+                filter={filterFactory()}
+                pagination={paginationFactory({
+                  page: page,
+                  sizePerPage: sizePerPage,
+                  totalSize: total
+                })}
+                onTableChange={this.handleTableChange}
+                expandRow={this.expandRow}
+                selectRow={this.selectRowProps}
+                cellEdit={cellEditFactory({
+                  mode: 'click',
+                  blurToSave: true,
+                  // beforeSaveCell(oldValue, newValue, row, column, done) {
+                  //   done() // contine to save the changes
+                  //   return { async: true }
+                  // }
+                })}
+              />
+            </>
+          )}
+        </ToolkitProvider>
         {this.columnGeneratorQrCodeStatico()}
         <Form.Group controlId="formBasicCheckbox">
           <Form.Check onClick={this.onClickToggle} value={this.state.checkedQrCode} type="checkbox" label="Qr.code statico" />
@@ -742,3 +734,5 @@ export default class DataTablePerizia extends React.Component {
     )
   }
 }
+
+export default () => <DataTablePerizia />

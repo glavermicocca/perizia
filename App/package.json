@@ -6,7 +6,6 @@
     "@react-pdf/renderer": "^3.1.9",
     "@react-pdf/styled-components": "^1.4.0",
     "axios": "^1.4.0",
-    "bootstrap": "^5.2.3",
     "dotenv": "^16.0.3",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
@@ -24,14 +23,14 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
+    "react-zoom-pan-pinch": "3.0.7",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.4.2",
-    "react-zoom-pan-pinch": "3.0.7"
+    "redux-thunk": "^2.4.2"
   },
-  "proxy": "http://localhost:3010",
+  "proxy": "http://192.168.5.105:3010/endpoint",
   "scripts": {
-    "start": "PORT=7000 react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

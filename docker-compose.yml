@@ -30,7 +30,8 @@ services:
     networks:
       - backend
     volumes:
-      - /root/perizia/ServerApp/img/:/root/ServerApp/img
+      - /root/perizia/Service/img/:/app/img
+      - /root/perizia/Service/db/:/app/db
 
 networks:
   backend:

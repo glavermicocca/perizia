@@ -15,8 +15,6 @@ import DataTablePerizia from '../repo/DataTablePerizia'
 
 import { logout } from '../../actions/auth'
 
-import './app.css'
-
 class App extends Component {
   handleLogout() {
     const { user } = this.props
@@ -36,6 +34,7 @@ class App extends Component {
     return (
       <Router>
         <Switch>
+          <Route path="/app1" component={Pippo} />
           <PrivateRoute path="/app" isAuthenticated={isAuthenticated} component={DataTablePerizia} />
           <Route path="/login" component={Login} />
           <Route path="/" component={Home} />
@@ -43,6 +42,12 @@ class App extends Component {
         {showHeader === true && <Header user={user} handleLogout={() => this.handleLogout()} />}
       </Router>
     )
+  }
+}
+
+class Pippo extends Component {
+  render() {
+    return <p>PIPPO</p>
   }
 }
 

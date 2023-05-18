@@ -2,6 +2,8 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter'
 import paginationFactory from 'react-bootstrap-table2-paginator'
+
+//import ToolkitProvider from 'react-bootstrap-table2-toolkit'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit'
 
 import axios from 'axios'
@@ -40,13 +42,12 @@ export default class DataTableErroriDiConiazione extends React.Component {
   row = this.props.row
 
   AddButton = ({ row }) => {
-    //console.log(row)
     return (
       <button
         type="button"
         className={`btn btn-primary m-1`}
         data-toggle="button"
-        onClick={async e => {
+        onClick={async (e) => {
           const idToken = loadIdToken()
 
           const headers = {
@@ -55,6 +56,7 @@ export default class DataTableErroriDiConiazione extends React.Component {
 
           try {
             const response = await axios({
+              baseURL,
               url: '/crud_errori',
               method: 'post',
               headers,
@@ -107,11 +109,7 @@ export default class DataTableErroriDiConiazione extends React.Component {
             onTableChange={onTableChange}
             cellEdit={cellEditFactory({
               mode: 'click',
-              blurToSave: true,
-              beforeSaveCell(oldValue, newValue, row, column, done) {
-                done() // contine to save the changes
-                return { async: true }
-              }
+              blurToSave: true
             })}
           />
         </>
@@ -250,6 +248,7 @@ export default class DataTableErroriDiConiazione extends React.Component {
   }
 
   handleTableChange = async (type, { page, sizePerPage, sortField, sortOrder, filters, cellEdit }) => {
+
     const idToken = loadIdToken()
 
     const row = this.props.row

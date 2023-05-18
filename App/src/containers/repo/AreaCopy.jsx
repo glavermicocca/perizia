@@ -1,11 +1,10 @@
-import { Button, Modal, ToggleButton } from 'react-bootstrap';
-import React, { useState } from "react"
+import React, { useState } from 'react'
+import { Button, Modal } from 'react-bootstrap'
 
-export const ModalAreaCopy = (props) => {
-
+export function AreaCopy(props) {
   const { columns, confirmedColumns } = props
 
-  let copyColumns = columns.map((it) => {
+  let copyColumns = columns.map(it => {
     return Object.assign({}, it)
   })
 
@@ -16,66 +15,64 @@ export const ModalAreaCopy = (props) => {
     } else {
       item.checked = true
     }
-  });
+  })
 
-  const [checked, setChecked] = useState(copyColumns);
+  const [listChecked, setListChecked] = useState(copyColumns)
 
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true);
-  const handleConfirm = (items) => {
-    //console.log("here")
+  const handleShow = () => setShow(true)
+  const handleConfirm = items => {
     setShow(false)
-    let copyColumnsConfirmed = checked.filter((it) => it.checked == true)
+    let copyColumnsConfirmed = listChecked.filter(it => it.checked == true)
     confirmedColumns(copyColumnsConfirmed)
   }
 
-  return <>
-    <Button variant="primary" onClick={handleShow}>
-      Duplica riga selezionata
+  return (
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        Duplica riga selezionata
       </Button>
 
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Duplicazione riga</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{makeListOfButton(checked, setChecked)}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Chiudi
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Duplicazione riga</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{makeListOfButton(listChecked, setListChecked)}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Chiudi
           </Button>
-        <Button variant="primary" onClick={handleConfirm}>
-          Duplica
+          <Button variant="primary" onClick={handleConfirm}>
+            Duplica
           </Button>
-      </Modal.Footer>
-    </Modal>
-  </>
-};
+        </Modal.Footer>
+      </Modal>
+    </>
+  )
+}
 
 const makeListOfButton = (checked, setChecked) => {
-
   return checked.map((item, index) => {
-    if (item.dataField != "qrcode" && item.dataField != "id" && item.dataField != "added") {
-      return <ToggleButton
-        key={item.dataField}
-        className="m-1"
-        type="checkbox"
-        variant="secondary"
-        checked={item.checked}
-        value="1"
-        onChange={(e) => {
-          //console.log(index)
-          let newChecked = [...checked]
-          newChecked[index].checked = !newChecked[index].checked
-          setChecked(newChecked)
-        }}
-      >{item.text}</ToggleButton>
+    if (item.dataField != 'qrcode' && item.dataField != 'id' && item.dataField != 'added') {
+      return (
+        <Button
+          key={item.dataField}
+          className="m-1"
+          type="checkbox"
+          variant={item.checked == true ? 'secondary' : 'light'}
+          checked={item.checked}
+          value="1"
+          onClick={e => {
+            //console.log(index)
+            let newChecked = [...checked]
+            newChecked[index].checked = !newChecked[index].checked
+            setChecked(newChecked)
+          }}>
+          {item.text}
+        </Button>
+      )
     }
   })
 }
-
-
-
-
-

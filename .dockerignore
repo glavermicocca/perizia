@@ -31,3 +31,6 @@
 **/OLD
 **/.env.production
 **/.env.development
+
+Service/img
+Service/db

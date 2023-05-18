@@ -126,3 +126,5 @@ ServerApp/img/
 build/
 
 postgresql/
+
+Service/db

@@ -163,7 +163,7 @@ app.post(basePath + '/dati', function (req, res) {
 var db = require('knex')({
     client: 'sqlite3',
     connection: {
-        filename: 'db.sqlite',
+        filename: 'db/db.sqlite',
     },
     useNullAsDefault: true,
 })

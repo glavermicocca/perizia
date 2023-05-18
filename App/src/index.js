@@ -5,7 +5,7 @@ import App from './containers/app/App'
 import { unregister } from './serviceWorker'
 import configureStore from './store/configureStore'
 
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css'

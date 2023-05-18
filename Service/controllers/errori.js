@@ -16,6 +16,8 @@ const getTableData = (req, res, db) => {
 const postTableData = async (req, res, db) => {
     const { id_perizia } = req.body
 
+    console.log(id_perizia)
+
     db('errori_di_coniazione')
         .insert({ id_perizia })
 
