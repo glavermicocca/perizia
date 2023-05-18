@@ -19,15 +19,15 @@ export default class carousel extends Component {
         <TransformWrapper wheel={{ disabled: true }} initialScale={1} initialPositionX={0} initialPositionY={0}>
           {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
             <React.Fragment>
-              <div className="mx-auto" style={{ width: 150 }}>
-                <button type="button" className="btn btn-info m-1" onClick={() => zoomIn()}>
-                  +
+              <div className="mx-auto" style={{ width: 250 }}>
+                <button type="button" className="btn btn-light btn-sm m-1" onClick={() => zoomIn()}>
+                  zoom +
                 </button>
-                <button type="button" className="btn btn-info m-1" onClick={() => zoomOut()}>
-                  -
+                <button type="button" className="btn btn-light btn-sm m-1" onClick={() => zoomOut()}>
+                  zoom -
                 </button>
-                <button type="button" className="btn btn-info m-1" onClick={() => resetTransform()}>
-                  x
+                <button type="button" className="btn btn-light btn-sm m-1" onClick={() => resetTransform()}>
+                  zoom 0
                 </button>
               </div>
               <TransformComponent>
