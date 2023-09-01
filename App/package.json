@@ -28,7 +28,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.4.2"
   },
-  "proxy": "http://192.168.5.105:3010/endpoint",
+  "proxy": "http://192.168.5.110:3010/endpoint",
   "scripts": {
     "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",

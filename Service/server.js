@@ -1,14 +1,3 @@
-/**
- * This is a simple express server, to show basic authentication services (login and logout requests)
- * based JWT, and basic socket.io.
- *
- * Once a user is authenticated, a jwt token will be returned as response to the client.
- * It's expected the jwt token will be included in the subsequent client requests. The server
- * can then protect the services by verifying the jwt token in the subsequent API requests.
- *
- * The server will also broadcast the login/logout events to connected clients via socket.io.
- *
- */
 const path = require('path')
 
 if (process.env.NODE_ENV !== 'production') {
@@ -38,13 +27,6 @@ const imgDir = path.join(__dirname, '/img')
 console.log(imgDir)
 app.use(basePath + '/static', express.static(imgDir))
 
-app.get(basePath + '/app', (req, res) => {
-    res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
-})
-app.get(basePath + '/:stato/:anno/:valore/:uuid', (req, res) => {
-    res.sendFile(path.join(__dirname, '../ServerApp/build/index.html'))
-})
-
 //NO in PRODUZIONE
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
@@ -61,7 +43,7 @@ var cors = require('cors')
 app.use(cors())
 
 // Test server is working (GET http://localhost:3001)
-app.get(basePath + '/welcome', function (req, res) {
+app.get(basePath + '/', function (req, res) {
     res.json({ message: 'Hi, welcome to the server api!' })
 })
 
@@ -137,28 +119,6 @@ app.post(basePath + '/dati', function (req, res) {
 // -------------------------------------------------------------------------------------
 // -------------------------------- DB CRUD / API --------------------------------------
 // -------------------------------------------------------------------------------------
-
-// db Connection w/ Heroku
-// const db = require('knex')({
-//   client: 'pg',
-//   connection: {
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: true,
-//   }
-// });
-
-// db Connection w/ localhost
-// var db = require('knex')({
-//     client: 'pg',
-//     connection: {
-//         host: process.env.PGHOST,
-//         user: process.env.PGUSER,
-//         password: process.env.PGPASSWORD,
-//         database: process.env.PGDATABASE,
-//         port: process.env.PGPORT,
-//     },
-//     useNullAsDefault: true,
-// })
 
 var db = require('knex')({
     client: 'sqlite3',

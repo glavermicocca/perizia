@@ -128,3 +128,4 @@ build/
 postgresql/
 
 Service/db
+Service/img
